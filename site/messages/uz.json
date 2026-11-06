@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Xususiy bojxona ombori",
+    "description": "Xususiy bojxona ombori: bojxona nazorati ostida tovarlarni saqlash, qayta ishlash va jo‘natish."
+  },
+  "nav": {
+    "about": "Biz haqimizda",
+    "services": "Xizmatlar",
+    "warehouses": "Omborlar",
+    "admin": "Rahbariyat",
+    "tariffs": "Tariflar",
+    "contact": "Aloqa"
+  },
+  "hero": {
+    "title": "Yuklaringiz bojxona nazorati ostida saqlanadi",
+    "lede": "Xususiy bojxona ombori: bojxona to‘lovlari rasmiylashtirilgunga qadar tovarlarni qonuniy saqlash, qayta ishlash va jo‘natish.",
+    "cta1": "Tariflarni ko‘rish",
+    "cta2": "Bog‘lanish",
+    "sealText": "Xususiy bojxona ombori · Bonded warehouse · "
+  },
+  "about": {
+    "title": "Ishonchli saqlash, aniq hisobot",
+    "lede": "Ombor davlat bojxona nazorati ostida ishlaydi. Har bir partiya kuzatiladi, hujjatlar tizimli yuritiladi.",
+    "areaLabel": "m² maydon",
+    "capacityLabel": "tonna sig‘im",
+    "yearsLabel": "yil faoliyat"
+  },
+  "services": {
+    "title": "Xizmatlar",
+    "items": [
+      {
+        "title": "Bojxona saqlash",
+        "text": "Tovarlarni bojxona nazorati ostida, bojxona to‘lovlarini to‘lamasdan saqlash."
+      },
+      {
+        "title": "Rasmiylashtirishga tayyorlash",
+        "text": "Partiyalarni saralash, belgilash va deklaratsiyaga tayyorlash."
+      },
+      {
+        "title": "Konteynerlarni qayta yuklash",
+        "text": "Konteynerlarni tushirish, saralash va yuklash."
+      },
+      {
+        "title": "Yuk tashish va ekspeditorlik",
+        "text": "Yuklarni ombordan va omborga yetkazib berish."
+      },
+      {
+        "title": "Yuk sug‘urtasi",
+        "text": "Saqlash davridagi tovarlarni sug‘urta bilan himoyalash."
+      },
+      {
+        "title": "Hujjatlar bo‘yicha maslahat",
+        "text": "Bojxona hujjatlari va saqlash qoidalari bo‘yicha yordam."
+      }
+    ]
+  },
+  "warehouses": {
+    "title": "Omborlar",
+    "lede": "Ombor bloklari va ularning imkoniyatlari.",
+    "areaLabel": "Maydon",
+    "typeLabel": "Turi"
+  },
+  "admin": {
+    "title": "Rahbariyat",
+    "bioPlaceholder": "Qisqa biografiya."
+  },
+  "tariffs": {
+    "title": "Tariflar va hujjatlar",
+    "lede": "Tariflar PDF formatda. Yuklab olib, o‘qishingiz mumkin.",
+    "download": "Yuklab olish"
+  },
+  "contact": {
+    "title": "Manzil va aloqa",
+    "address": "Manzil",
+    "phone": "Telefon",
+    "email": "Email",
+    "hours": "Ish vaqti",
+    "license": "Litsenziya",
+    "hoursValue": "Du–Ju 09:00–18:00",
+    "formTitle": "Xabar qoldiring",
+    "name": "Ism",
+    "phoneField": "Telefon",
+    "message": "Xabar",
+    "submit": "Yuborish",
+    "sent": "Xabaringiz qabul qilindi. Tez orada bog‘lanamiz.",
+    "error": "Ism va telefon raqamini to‘g‘ri kiriting."
+  },
+  "footer": {
+    "rights": "Barcha huquqlar himoyalangan."
+  }
+}

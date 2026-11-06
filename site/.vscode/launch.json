@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js: dev (localhost:5555)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}",
+      "env": { "NODE_OPTIONS": "--inspect" }
+    },
+    {
+      "name": "Chrome: localhost:5555",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5555",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

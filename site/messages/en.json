@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Private bonded warehouse",
+    "description": "A private bonded warehouse: store goods under customs control, process and dispatch them."
+  },
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "warehouses": "Warehouses",
+    "admin": "Management",
+    "tariffs": "Tariffs",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Your cargo stays under customs control",
+    "lede": "A private bonded warehouse: store goods with duties deferred until formal release, then process and dispatch them.",
+    "cta1": "View tariffs",
+    "cta2": "Get in touch",
+    "sealText": "Private bonded warehouse · Bonded warehouse · "
+  },
+  "about": {
+    "title": "Reliable storage, precise records",
+    "lede": "The warehouse operates under customs supervision. Every consignment is tracked and every document is kept in order.",
+    "areaLabel": "m² of space",
+    "capacityLabel": "tonnes capacity",
+    "yearsLabel": "years in operation"
+  },
+  "services": {
+    "title": "Services",
+    "items": [
+      {
+        "title": "Customs storage",
+        "text": "Goods held under customs control, with duties deferred until release."
+      },
+      {
+        "title": "Preparation for clearance",
+        "text": "Sorting, marking and grouping consignments ahead of declaration."
+      },
+      {
+        "title": "Container handling",
+        "text": "Unloading, re-sorting and loading of containers."
+      },
+      {
+        "title": "Transport and forwarding",
+        "text": "Delivery of cargo to and from the warehouse."
+      },
+      {
+        "title": "Cargo insurance",
+        "text": "Insurance cover for goods during storage."
+      },
+      {
+        "title": "Documentation advice",
+        "text": "Help with customs paperwork and storage rules."
+      }
+    ]
+  },
+  "warehouses": {
+    "title": "Warehouses",
+    "lede": "Warehouse blocks and what each one handles.",
+    "areaLabel": "Area",
+    "typeLabel": "Type"
+  },
+  "admin": {
+    "title": "Management",
+    "bioPlaceholder": "Short biography."
+  },
+  "tariffs": {
+    "title": "Tariffs and documents",
+    "lede": "Tariffs are published as PDF. Download and review them.",
+    "download": "Download"
+  },
+  "contact": {
+    "title": "Address and contacts",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Opening hours",
+    "license": "Licence",
+    "hoursValue": "Mon–Fri 09:00–18:00",
+    "formTitle": "Leave a message",
+    "name": "Name",
+    "phoneField": "Phone",
+    "message": "Message",
+    "submit": "Send",
+    "sent": "Your message has been received. We will contact you shortly.",
+    "error": "Please enter a valid name and phone number."
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
