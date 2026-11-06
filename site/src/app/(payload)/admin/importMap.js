@@ -1,3 +1,6 @@
-// Payload admin: maxsus (custom) komponentlar yo‘q, shuning uchun map bo‘sh.
-// Maxsus komponent qo‘shsangiz, `payload generate:importmap` bilan qayta yarating.
-export const importMap = {}
+import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
+
+/** @type import('payload').ImportMap */
+export const importMap = {
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
+}

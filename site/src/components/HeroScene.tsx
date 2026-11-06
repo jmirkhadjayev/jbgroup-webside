@@ -1,72 +1,131 @@
 'use client'
 
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
-import type { Group } from 'three'
+import { useMemo } from 'react'
+import * as THREE from 'three'
+import { heroScroll } from '@/lib/scroll-store'
 
-// Stellaj (rafli ombor) va oltin halqadan iborat sodda 3D sahna.
-function Racks() {
-  const group = useRef<Group>(null)
+// Yo‘lak geometriyasi: ikki tomonda stellajlar, ustida yuk qutilari, oltin chiroqlar.
+const BAY_STEP = 3
+const BAYS = 16
+const LEVELS = [0.4, 1.9, 3.4]
+const RACK_X = [-2.4, 2.4]
 
-  useFrame((state, delta) => {
-    if (!group.current) return
-    // Sichqonchaga yumshoq moslashadi, o‘zi ham sekin aylanadi
-    group.current.rotation.y += delta * 0.12
-    group.current.rotation.x = state.pointer.y * 0.06
-  })
+// Deterministik “tasodifiy” — har safar bir xil joylashuv (SSR/hydration uchun muhim emas, lekin barqaror)
+const rand = (i: number) => {
+  const x = Math.sin(i * 127.1 + 311.7) * 43758.5453
+  return x - Math.floor(x)
+}
 
-  const posts: [number, number, number][] = []
-  for (let col = -3; col <= 3; col++) {
-    for (const z of [-1.2, 1.2]) posts.push([col * 1.1, 0, z])
-  }
+function Aisle() {
+  const { posts, beams, boxes } = useMemo(() => {
+    const steel = new THREE.MeshStandardMaterial({ color: '#15345f', roughness: 0.4, metalness: 0.5 })
+    const beamMat = new THREE.MeshStandardMaterial({ color: '#c9a227', roughness: 0.35, metalness: 0.6 })
+    const cargo = new THREE.MeshStandardMaterial({ color: '#8a6d1f', roughness: 0.85 })
+
+    const dummy = new THREE.Object3D()
+
+    // Ustunlar: har bay chegarasida ikki tomonda
+    const postCount = (BAYS + 1) * RACK_X.length
+    const postMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(0.1, 5.2, 0.1), steel, postCount)
+    let pi = 0
+    for (let b = 0; b <= BAYS; b++) {
+      const z = -b * BAY_STEP
+      for (const x of RACK_X) {
+        dummy.position.set(x, 2.2, z)
+        dummy.rotation.set(0, 0, 0)
+        dummy.updateMatrix()
+        postMesh.setMatrixAt(pi++, dummy.matrix)
+      }
+    }
+    postMesh.instanceMatrix.needsUpdate = true
+
+    // To‘sinlar: har bay, har daraja, ikki tomonda — oltin rang
+    const beamCount = BAYS * LEVELS.length * RACK_X.length
+    const beamMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(0.08, 0.08, BAY_STEP), beamMat, beamCount)
+    let bi = 0
+    for (let b = 0; b < BAYS; b++) {
+      const z = -b * BAY_STEP - BAY_STEP / 2
+      for (const x of RACK_X) {
+        for (const y of LEVELS) {
+          dummy.position.set(x, y, z)
+          dummy.updateMatrix()
+          beamMesh.setMatrixAt(bi++, dummy.matrix)
+        }
+      }
+    }
+    beamMesh.instanceMatrix.needsUpdate = true
+
+    // Yuk qutilari: raflar ustida tasodifiy joylashgan
+    const boxCount = BAYS * RACK_X.length * 2
+    const boxMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1.0, 0.75, 0.85), cargo, boxCount)
+    let ki = 0
+    for (let b = 0; b < BAYS; b++) {
+      for (const side of [-1, 1]) {
+        for (let k = 0; k < 2; k++) {
+          const level = LEVELS[Math.floor(rand(b * 5 + k + side * 3) * LEVELS.length)]
+          dummy.position.set(
+            side * (1.7 + rand(b * 3 + k) * 0.35),
+            level + 0.42,
+            -b * BAY_STEP - BAY_STEP / 2 + (rand(k + b * 11) - 0.5) * 1.4,
+          )
+          dummy.rotation.set(0, (rand(b + side * 2) - 0.5) * 0.25, 0)
+          dummy.updateMatrix()
+          boxMesh.setMatrixAt(ki++, dummy.matrix)
+        }
+      }
+    }
+    boxMesh.instanceMatrix.needsUpdate = true
+
+    return { posts: postMesh, beams: beamMesh, boxes: boxMesh }
+  }, [])
 
   return (
-    <group ref={group} rotation={[0.1, -0.5, 0]}>
-      {posts.map(([x, , z], i) => (
-        <mesh key={i} position={[x, 0, z]}>
-          <boxGeometry args={[0.07, 3.2, 0.07]} />
-          <meshStandardMaterial color="#0B2545" roughness={0.45} metalness={0.4} />
-        </mesh>
+    <group>
+      <primitive object={posts} />
+      <primitive object={beams} />
+      <primitive object={boxes} />
+      {Array.from({ length: 7 }).map((_, i) => (
+        <pointLight
+          key={i}
+          position={[0, 4.6, -i * 8 - 2]}
+          intensity={9}
+          distance={12}
+          color="#f2d27a"
+        />
       ))}
-      {[-1.2, -0.2, 0.8].map((y) =>
-        [-1.2, 1.2].map((z) => (
-          <mesh key={`beam-${y}-${z}`} position={[0, y, z]}>
-            <boxGeometry args={[7.2, 0.08, 0.08]} />
-            <meshStandardMaterial color="#15345F" roughness={0.5} metalness={0.3} />
-          </mesh>
-        )),
-      )}
-      {/* Yuk qutilari */}
-      {[
-        [-2.2, -1.2, 0.9],
-        [-1.1, -1.2, -0.4],
-        [1.1, -0.2, 1.2],
-        [2.2, -1.2, -1.2],
-      ].map(([x, y, z], i) => (
-        <mesh key={`box-${i}`} position={[x, y, z]}>
-          <boxGeometry args={[0.7, 0.5, 0.6]} />
-          <meshStandardMaterial color="#8a6d1f" roughness={0.8} />
-        </mesh>
-      ))}
-      {/* Oltin halqa */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-        <torusGeometry args={[2.6, 0.02, 16, 120]} />
-        <meshStandardMaterial color="#C9A227" metalness={0.8} roughness={0.2} />
-      </mesh>
     </group>
   )
+}
+
+function Camera() {
+  useFrame((state, delta) => {
+    const cam = state.camera
+    const p = heroScroll.progress
+    // Scroll bilan yo‘lak bo‘ylab siljiydi, sichqoncha bilan yumshoq og‘adi
+    const targetZ = THREE.MathUtils.lerp(5.5, -34, p)
+    cam.position.z = THREE.MathUtils.damp(cam.position.z, targetZ, 4, delta)
+    cam.position.x = THREE.MathUtils.damp(cam.position.x, state.pointer.x * 0.4, 3, delta)
+    cam.position.y = THREE.MathUtils.damp(cam.position.y, 1.6 + state.pointer.y * 0.2, 3, delta)
+    cam.lookAt(0, 1.5, cam.position.z - 8)
+  })
+  return null
 }
 
 export default function HeroScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0.6, 7], fov: 40 }}
-      dpr={[1, 1.75]}
-      gl={{ antialias: true, alpha: true }}
+      camera={{ position: [0, 1.6, 5.5], fov: 55, near: 0.1, far: 120 }}
+      dpr={[1, 1.5]}
+      gl={{ antialias: true }}
+      onCreated={({ scene }) => {
+        scene.background = new THREE.Color('#0b2545')
+        scene.fog = new THREE.Fog('#0b2545', 6, 32)
+      }}
     >
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[4, 6, 5]} intensity={1.2} />
-      <Racks />
+      <ambientLight intensity={0.6} />
+      <Aisle />
+      <Camera />
     </Canvas>
   )
 }

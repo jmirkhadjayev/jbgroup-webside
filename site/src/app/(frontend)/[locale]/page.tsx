@@ -6,25 +6,28 @@ import { getSiteData } from '@/lib/data'
 import { mediaUrl } from '@/lib/media'
 import Hero from '@/components/Hero'
 import Counter from '@/components/Counter'
+import CapacityBar from '@/components/CapacityBar'
 import BaysTrack from '@/components/BaysTrack'
+import ServicesList from '@/components/ServicesList'
 import ContactForm from '@/components/ContactForm'
 import SiteHeader from '@/components/SiteHeader'
+import Seal from '@/components/Seal'
 
 // Ma’lumotlar Payload (CMS) dan keladi — build vaqtida emas, har so‘rovda o‘qiladi
 export const dynamic = 'force-dynamic'
 
 type Props = { params: Promise<{ locale: string }> }
 
+const fmt = (n: number) => n.toLocaleString('en-US').replace(/,/g, ' ')
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
   setRequestLocale(locale)
 
-  const [t, data] = await Promise.all([
+  const data = await getSiteData(locale as Locale)
+  const [tHero, tAbout, tServ, tBays, tAdmin, tTariffs, tContact, tFooter, tMeta] = await Promise.all([
     getTranslations('hero'),
-    getSiteData(locale as Locale),
-  ])
-  const [tAbout, tServ, tBays, tAdmin, tTariffs, tContact, tFooter, tMeta] = await Promise.all([
     getTranslations('about'),
     getTranslations('services'),
     getTranslations('warehouses'),
@@ -42,68 +45,71 @@ export default async function HomePage({ params }: Props) {
     <>
       <SiteHeader />
       <main>
-        <Hero
-          title={t('title')}
-          lede={t('lede')}
-          cta1={t('cta1')}
-          cta2={t('cta2')}
-          sealText={t('sealText')}
-        />
+        <Hero title={tHero('title')} lede={tHero('lede')} cta1={tHero('cta1')} cta2={tHero('cta2')} />
 
         {/* ABOUT */}
-        <section id="about" className="mx-auto max-w-[1280px] px-5 py-24 md:px-18 md:py-40">
-          <div className="mb-16 grid items-end gap-10 md:grid-cols-2">
-            <h2 className="max-w-[18ch] text-[clamp(2.2rem,4.4vw,3.8rem)]">{tAbout('title')}</h2>
-            <p className="max-w-[52ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tAbout('lede')}</p>
+        <section id="about" className="mx-auto max-w-[1280px] px-5 py-28 md:px-18 md:py-44">
+          <div className="grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:items-start">
+            <div>
+              <h2 className="max-w-[16ch] text-[clamp(2.6rem,5.4vw,4.8rem)] font-light leading-[1] tracking-[-0.03em]">
+                {tAbout('title')}
+              </h2>
+              <p className="mt-8 max-w-[50ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tAbout('lede')}</p>
+            </div>
+            <Seal text={tHero('sealText')} className="mx-auto w-[min(70%,300px)] text-gold lg:mx-0 lg:justify-self-end" />
           </div>
-          <div className="grid gap-10 border-t border-line pt-10 md:grid-cols-3">
+
+          <div className="mt-20 grid gap-10 border-t border-line pt-12 md:grid-cols-3">
             <Stat value={stats.area} label={tAbout('areaLabel')} />
             <Stat value={stats.capacity} label={tAbout('capacityLabel')} />
             <Stat value={stats.years} label={tAbout('yearsLabel')} />
           </div>
+          <CapacityBar label={tAbout('capacityLabel')} value={`${fmt(stats.capacity)} t`} />
         </section>
 
-        {/* SERVICES */}
-        <section id="services" className="mx-auto max-w-[1280px] px-5 pb-24 md:px-18 md:pb-40">
-          <h2 className="mb-14 text-[clamp(2.2rem,4.4vw,3.8rem)]">{tServ('title')}</h2>
-          <div className="grid gap-x-24 md:grid-cols-2">
-            {data.services.map((s) => (
-              <article key={s.id} className="border-t border-line py-8 pb-10">
-                <h3 className="mb-3 text-[clamp(1.5rem,2.2vw,2rem)]">{s.title}</h3>
-                <p className="max-w-[44ch] text-steel">{s.text}</p>
-              </article>
-            ))}
+        {/* SERVICES: sarlavha yopishib turadi, ro‘yxat scroll bilan chiqadi */}
+        <section id="services" className="mx-auto max-w-[1280px] px-5 pb-28 md:px-18 md:pb-44">
+          <div className="grid gap-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-24">
+            <div className="md:sticky md:top-28 md:self-start">
+              <h2 className="text-[clamp(2.6rem,5vw,4.4rem)] font-light leading-[1] tracking-[-0.03em]">
+                {tServ('title')}
+              </h2>
+            </div>
+            <ServicesList items={data.services} />
           </div>
         </section>
 
-        {/* WAREHOUSES (pinned on desktop) */}
+        {/* WAREHOUSES: gorizontal lenta (desktopda pin) */}
         <section id="warehouses">
-          <div className="mx-auto max-w-[1280px] px-5 pb-16 md:px-18">
+          <div className="mx-auto max-w-[1280px] px-5 pb-14 pt-28 md:px-18 md:pt-44">
             <div className="grid items-end gap-10 md:grid-cols-2">
-              <h2 className="text-[clamp(2.2rem,4.4vw,3.8rem)]">{tBays('title')}</h2>
-              <p className="max-w-[52ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tBays('lede')}</p>
+              <h2 className="text-[clamp(2.6rem,5vw,4.4rem)] font-light leading-[1] tracking-[-0.03em]">{tBays('title')}</h2>
+              <p className="max-w-[50ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tBays('lede')}</p>
             </div>
           </div>
           <BaysTrack>
             {data.warehouses.map((w) => {
               const src = mediaUrl(typeof w.image === 'object' ? w.image : null, 'card')
               return (
-                <article key={w.id} className="grid w-full gap-6 lg:w-[min(60vw,800px)] lg:shrink-0 lg:grid-cols-2 lg:items-center lg:gap-14">
+                <article
+                  key={w.id}
+                  className="grid w-full gap-6 lg:w-[min(56vw,780px)] lg:shrink-0 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-12"
+                >
                   <div className="relative aspect-[4/3] overflow-hidden bg-navy-2">
                     {src ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={src} alt={w.name} loading="lazy" className="h-full w-full object-cover" />
                     ) : null}
                   </div>
-                  <div>
-                    <h3 className="mb-4 text-[clamp(1.5rem,2.2vw,2rem)]">{w.name}</h3>
-                    <dl className="border-t border-paper/20">
+                  <div className="pb-2">
+                    <h3 className="mb-5 text-[clamp(1.6rem,2.4vw,2.3rem)] font-light">{w.name}</h3>
+                    <dl className="border-t border-paper/20 text-[15px]">
                       <div className="flex justify-between gap-6 border-b border-paper/20 py-3">
-                        <dt className="text-paper/65">{tBays('areaLabel')}</dt>
-                        <dd>{w.area.toLocaleString('en-US').replace(/,/g, ' ')} m²</dd>
+                        <dt className="text-paper/60">{tBays('areaLabel')}</dt>
+                        <dd>{fmt(w.area)} m²</dd>
                       </div>
                       <div className="flex justify-between gap-6 border-b border-paper/20 py-3">
-                        <dt className="text-paper/65">{tBays('typeLabel')}</dt>
+                        <dt className="text-paper/60">{tBays('typeLabel')}</dt>
                         <dd className="text-right">{w.type}</dd>
                       </div>
                     </dl>
@@ -114,10 +120,12 @@ export default async function HomePage({ params }: Props) {
           </BaysTrack>
         </section>
 
-        {/* MANAGEMENT */}
-        <section id="admin" className="mx-auto max-w-[1280px] px-5 py-24 md:px-18 md:py-40">
-          <h2 className="mb-14 text-[clamp(2.2rem,4.4vw,3.8rem)]">{tAdmin('title')}</h2>
-          <div className="grid gap-10 md:grid-cols-3">
+        {/* MANAGEMENT: qatorlar, kartalar emas */}
+        <section id="admin" className="mx-auto max-w-[1280px] px-5 py-28 md:px-18 md:py-44">
+          <h2 className="mb-16 text-[clamp(2.6rem,5vw,4.4rem)] font-light leading-[1] tracking-[-0.03em]">
+            {tAdmin('title')}
+          </h2>
+          <div className="divide-y divide-line border-y border-line">
             {data.team.map((m) => {
               const photo = mediaUrl(typeof m.photo === 'object' ? m.photo : null, 'card')
               const initials = m.name
@@ -126,48 +134,52 @@ export default async function HomePage({ params }: Props) {
                 .join('')
                 .slice(0, 2)
               return (
-                <article key={m.id}>
-                  <div className="relative mb-6 flex aspect-[3/4] items-center justify-center bg-gradient-to-b from-navy-2 to-navy font-serif text-6xl text-paper">
+                <article key={m.id} className="grid items-center gap-6 py-10 md:grid-cols-[120px_1fr_1fr] md:gap-12">
+                  <div className="flex aspect-square w-24 items-center justify-center overflow-hidden bg-navy font-serif text-3xl text-paper md:w-[120px]">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={photo} alt={m.name} loading="lazy" className="h-full w-full object-cover" />
                     ) : (
                       initials
                     )}
-                    <span className="absolute inset-x-0 bottom-0 h-[3px] bg-gold" />
                   </div>
-                  <h3 className="mb-1 text-2xl">{m.name}</h3>
-                  <p className="mb-2.5 text-steel">{m.role}</p>
-                  {m.bio ? <p className="text-[15px] text-steel">{m.bio}</p> : null}
+                  <div>
+                    <h3 className="text-[clamp(1.6rem,2.6vw,2.4rem)] font-light">{m.name}</h3>
+                    <p className="mt-1 text-steel">{m.role}</p>
+                  </div>
+                  {m.bio ? <p className="max-w-[40ch] text-[15px] text-steel">{m.bio}</p> : <span />}
                 </article>
               )
             })}
           </div>
         </section>
 
-        {/* TARIFFS */}
-        <section id="tariffs" className="bg-[#e9ece5] py-24 md:py-40">
+        {/* TARIFFS: qator hover bo‘lganda oltin fon ochiladi */}
+        <section id="tariffs" className="bg-[#e7eae2] py-28 md:py-44">
           <div className="mx-auto max-w-[1280px] px-5 md:px-18">
-            <div className="mb-12 grid items-end gap-10 md:grid-cols-2">
-              <h2 className="text-[clamp(2.2rem,4.4vw,3.8rem)]">{tTariffs('title')}</h2>
-              <p className="max-w-[52ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tTariffs('lede')}</p>
+            <div className="mb-14 grid items-end gap-10 md:grid-cols-2">
+              <h2 className="text-[clamp(2.6rem,5vw,4.4rem)] font-light leading-[1] tracking-[-0.03em]">{tTariffs('title')}</h2>
+              <p className="max-w-[50ch] text-[clamp(1.05rem,1.3vw,1.2rem)] text-steel">{tTariffs('lede')}</p>
             </div>
-            <ul className="border-t border-line">
+            <ul className="border-t border-navy/20">
               {data.tariffs.map((tr) => {
                 const href = typeof tr.file === 'object' ? mediaUrl(tr.file) : null
                 return (
-                  <li key={tr.id} className="border-b border-line">
+                  <li
+                    key={tr.id}
+                    className="group relative isolate border-b border-navy/20 before:absolute before:inset-y-0 before:left-0 before:-z-10 before:w-0 before:bg-gold/25 before:transition-[width] before:duration-500 hover:before:w-full"
+                  >
                     <a
                       href={href ?? '#'}
                       target="_blank"
                       rel="noopener"
-                      className="group grid grid-cols-[1fr_auto] items-center gap-6 py-7 no-underline"
+                      className="grid grid-cols-[1fr_auto] items-center gap-6 px-1 py-8 no-underline md:px-4"
                     >
                       <span>
-                        <span className="block font-serif text-[clamp(1.3rem,2.4vw,1.8rem)]">{tr.title}</span>
+                        <span className="block font-serif text-[clamp(1.4rem,2.6vw,2rem)] font-light">{tr.title}</span>
                         <span className="mt-1 block text-sm text-steel">PDF{tr.date ? ` · ${tr.date}` : ''}</span>
                       </span>
-                      <span className="whitespace-nowrap font-medium text-navy underline decoration-gold decoration-2 underline-offset-[6px] group-hover:decoration-navy">
+                      <span className="whitespace-nowrap border-b border-navy pb-0.5 font-medium text-navy">
                         {tTariffs('download')}
                       </span>
                     </a>
@@ -179,10 +191,12 @@ export default async function HomePage({ params }: Props) {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="mx-auto max-w-[1280px] px-5 py-24 md:px-18 md:py-40">
-          <div className="grid gap-12 md:grid-cols-[1fr_1.2fr] md:gap-24">
+        <section id="contact" className="mx-auto max-w-[1280px] px-5 py-28 md:px-18 md:py-44">
+          <div className="grid gap-14 md:grid-cols-[1fr_1.2fr] md:gap-24">
             <div>
-              <h2 className="mb-8 text-[clamp(2.2rem,4.4vw,3.8rem)]">{tContact('title')}</h2>
+              <h2 className="mb-10 text-[clamp(2.6rem,5vw,4.4rem)] font-light leading-[1] tracking-[-0.03em]">
+                {tContact('title')}
+              </h2>
               <dl>
                 <Row label={tContact('address')}>{settings.address}</Row>
                 <Row label={tContact('phone')}>
@@ -198,27 +212,30 @@ export default async function HomePage({ params }: Props) {
                 <Row label={tContact('hours')}>{settings.hours}</Row>
                 <Row label={tContact('license')}>{settings.license}</Row>
               </dl>
+              <iframe
+                title="Map"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="mt-10 h-[260px] w-full border-0 grayscale-[40%] contrast-105"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(settings.mapQuery ?? 'Tashkent')}&output=embed`}
+              />
             </div>
-            <iframe
-              title="Map"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-[360px] w-full border-0 grayscale-[35%] contrast-105"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(settings.mapQuery ?? 'Tashkent')}&output=embed`}
-            />
-          </div>
-
-          <div className="mt-24 md:mt-32">
-            <h2 className="mb-8 text-[clamp(2.2rem,4.4vw,3.8rem)]">{tContact('formTitle')}</h2>
-            <ContactForm />
+            <div>
+              <h3 className="mb-8 text-2xl font-light">{tContact('formTitle')}</h3>
+              <ContactForm />
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="bg-navy py-12 text-paper">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap justify-between gap-5 px-5 text-sm text-paper/70 md:px-18">
-          <span className="font-serif text-lg text-paper">{tMeta('title')}</span>
-          <span>
+      <footer className="relative isolate overflow-hidden bg-navy py-20 text-paper">
+        <Seal
+          text={tHero('sealText')}
+          className="pointer-events-none absolute -right-24 -top-24 -z-10 w-[420px] text-gold/20 md:-right-10"
+        />
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-end justify-between gap-8 px-5 md:px-18">
+          <span className="font-serif text-2xl font-light">{tMeta('title')}</span>
+          <span className="text-sm text-paper/65">
             {new Date().getFullYear()} · {tFooter('rights')}
           </span>
         </div>
@@ -230,10 +247,10 @@ export default async function HomePage({ params }: Props) {
 function Stat({ value, label }: { value: number; label: string }) {
   return (
     <div>
-      <div className="font-serif text-[clamp(3.2rem,7vw,6rem)] leading-none tracking-[-0.03em] tabular-nums">
+      <div className="font-serif text-[clamp(3.4rem,7.5vw,6.6rem)] leading-none font-light tracking-[-0.03em] tabular-nums">
         <Counter to={value} />
       </div>
-      <div className="mt-2.5 text-[15px] text-steel">{label}</div>
+      <div className="mt-3 text-[15px] text-steel">{label}</div>
     </div>
   )
 }
