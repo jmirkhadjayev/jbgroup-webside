@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xususiy bojxona ombori</title>
+<meta name="description" content="Xususiy bojxona ombori: bojxona nazorati ostida tovarlarni saqlash, qayta ishlash va jo‘natish.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2545;
+  --navy-2:#15345F;
+  --gold:#C9A227;
+  --paper:#F4F5F0;
+  --steel:#4F5D70;
+  --line:rgba(11,37,69,.14);
+  --pad:clamp(20px,5vw,72px);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--navy);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1280px;margin-inline:auto;padding-inline:var(--pad)}
+section{padding-block:clamp(72px,11vw,150px)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.02em;line-height:1.04}
+h1{font-size:clamp(3rem,7vw,6.6rem)}
+h2{font-size:clamp(2.2rem,4.4vw,3.8rem);max-width:18ch}
+h3{font-size:clamp(1.5rem,2.2vw,2rem)}
+.lede{font-size:clamp(1.05rem,1.3vw,1.2rem);color:var(--steel);max-width:52ch}
+.section-head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(48px,7vw,88px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;font:500 15px var(--sans);text-decoration:none;border:1px solid var(--navy);background:var(--navy);color:var(--paper);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn.ghost{background:transparent;color:var(--navy)}
+.btn.ghost:hover{background:transparent;border-color:var(--gold);color:var(--navy)}
+
+/* header */
+.top{position:sticky;top:0;z-index:50;background:rgba(244,245,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:72px}
+.brand{font-family:var(--serif);font-size:1.25rem;text-decoration:none;white-space:nowrap}
+.nav{display:flex;gap:26px;font-size:15px}
+.nav a{text-decoration:none;color:var(--steel)}
+.nav a:hover{color:var(--navy)}
+.head-right{display:flex;align-items:center;gap:16px}
+.lang{display:flex;gap:2px}
+.lang button{background:none;border:0;font:500 14px var(--sans);color:var(--steel);padding:6px 8px;cursor:pointer}
+.lang button[aria-pressed="true"]{color:var(--navy);box-shadow:inset 0 -2px 0 var(--gold)}
+.head-cta{min-height:40px;padding:0 16px;font-size:14px}
+
+/* hero */
+.hero{min-height:calc(100svh - 72px);display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:clamp(32px,6vw,96px);padding-block:64px}
+.hero h1{margin-bottom:28px}
+.hero .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.hero .w>span{display:inline-block}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.seal{width:min(100%,380px);justify-self:end;color:var(--gold)}
+
+/* about */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px);border-top:1px solid var(--line);padding-top:40px}
+.stat .num{font-family:var(--serif);font-size:clamp(3.2rem,7vw,6rem);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat .lbl{margin-top:10px;color:var(--steel);font-size:15px}
+
+/* services */
+.services{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(32px,6vw,96px)}
+.service{border-top:1px solid var(--line);padding:32px 0 40px}
+.service h3{margin-bottom:12px}
+.service p{color:var(--steel);max-width:44ch}
+
+/* bays */
+.bays-head{padding-bottom:clamp(40px,6vw,72px)}
+.bays-pin{background:var(--navy);color:var(--paper);overflow:hidden}
+.bays-track{padding-block:clamp(56px,8vw,96px);padding-inline:var(--pad);display:flex;flex-direction:column;gap:56px}
+.bay{display:grid;gap:24px}
+.bay h3{margin-bottom:16px}
+.ph{position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 12px,transparent 12px 24px),var(--navy-2);overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph img.missing{visibility:hidden}
+.ph::after{content:attr(data-file);position:absolute;left:16px;bottom:14px;font-size:13px;color:rgba(244,245,240,.55);opacity:0}
+.ph:has(.missing)::after{opacity:1}
+.meta{border-top:1px solid rgba(244,245,240,.22)}
+.meta>div{display:flex;justify-content:space-between;gap:24px;padding:12px 0;border-bottom:1px solid rgba(244,245,240,.22)}
+.meta dt{color:rgba(244,245,240,.65)}
+.meta dd{text-align:right}
+@media (min-width:900px) and (prefers-reduced-motion:no-preference){
+  .bays-pin{height:100vh;display:flex;align-items:center}
+  .bays-track{flex-direction:row;width:max-content;gap:6vw;padding-inline:var(--pad);padding-block:0;align-items:center;min-height:0}
+  .bay{flex:0 0 min(60vw,800px);grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,4vw,56px)}
+  .bay .ph{aspect-ratio:4/3}
+}
+@media (min-width:900px){
+  .bay{grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,4vw,56px)}
+}
+
+/* management */
+.admins{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px)}
+.portrait{aspect-ratio:3/4;background:linear-gradient(160deg,var(--navy-2),var(--navy));color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:clamp(3rem,6vw,5rem);position:relative;margin-bottom:24px}
+.portrait::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--gold)}
+.admin h3{font-size:1.5rem;margin-bottom:4px}
+.admin .role{color:var(--steel);margin-bottom:10px}
+.admin .bio{color:var(--steel);font-size:15px}
+
+/* tariffs */
+.tariffs{background:#E9ECE5}
+.tariff-list{list-style:none;border-top:1px solid var(--line)}
+.tariff-list li{border-bottom:1px solid var(--line)}
+.tariff-list a{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:28px 0;text-decoration:none}
+.tariff-list .t{font-family:var(--serif);font-size:clamp(1.3rem,2.4vw,1.8rem)}
+.tariff-list .m{color:var(--steel);font-size:14px;margin-top:4px}
+.tariff-list .dl{color:var(--navy);text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:2px;text-underline-offset:6px;font-weight:500;white-space:nowrap}
+.tariff-list a:hover .dl{color:var(--navy);text-decoration-color:var(--navy)}
+.tariffs .lede{margin-bottom:48px}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(32px,6vw,96px);align-items:start}
+.info dl{margin-top:8px}
+.info dl>div{display:grid;grid-template-columns:140px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.info dt{color:var(--steel);font-size:15px}
+.info dd a{text-decoration:none;border-bottom:1px solid var(--gold)}
+.map{width:100%;height:360px;border:0;filter:grayscale(.35) contrast(1.05)}
+.form{display:grid;gap:28px}
+.field{display:grid;gap:8px}
+.field label{font-size:14px;color:var(--steel)}
+.field input,.field textarea{background:transparent;border:0;border-bottom:1px solid var(--navy);padding:10px 0;font-size:17px;border-radius:0;width:100%;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-bottom:2px solid var(--gold)}
+.form .btn{justify-self:start}
+.form-status{min-height:1.6em;color:var(--navy);font-size:15px}
+
+/* footer */
+footer{background:var(--navy);color:var(--paper);padding-block:48px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:14px;color:rgba(244,245,240,.72)}
+footer .brand{color:var(--paper);font-size:1.1rem}
+
+/* responsive */
+@media (max-width:900px){
+  .nav{display:none}
+  .hero{grid-template-columns:1fr;min-height:0}
+  .seal{order:-1;justify-self:start;width:170px}
+  .section-head,.services,.contact-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr;gap:32px}
+  .admins{grid-template-columns:1fr}
+  .admins{max-width:420px}
+  .info dl>div{grid-template-columns:1fr;gap:4px}
+  .bay{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .top .wrap{height:auto;flex-wrap:wrap;padding-block:12px;row-gap:8px}
+  .brand{font-size:1.05rem}
+  .lang button{padding:6px 5px}
+  .head-cta{display:none}
+  .hero h1{font-size:2.6rem}
+  .btn{width:100%}
+  .actions .btn{flex:1 1 100%}
+}
+.hero>*{min-width:0}
+.hero h1,.lede{overflow-wrap:break-word}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" data-i="brand">Xususiy bojxona ombori</a>
+    <nav class="nav" aria-label="Asosiy">
+      <a href="#about" data-i="navAbout">Biz haqimizda</a>
+      <a href="#services" data-i="navServices">Xizmatlar</a>
+      <a href="#bays" data-i="navBays">Omborlar</a>
+      <a href="#admin" data-i="navAdmin">Rahbariyat</a>
+      <a href="#tariffs" data-i="navTariffs">Tariflar</a>
+      <a href="#contact" data-i="navContact">Aloqa</a>
+    </nav>
+    <div class="head-right">
+      <div class="lang" role="group" aria-label="Til">
+        <button type="button" data-lang="uz" aria-pressed="true">UZ</button>
+        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn head-cta" href="#contact" data-i="navContact">Aloqa</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero wrap" aria-labelledby="heroTitle" style="padding-block:64px">
+    <div>
+      <h1 id="heroTitle" data-i="heroTitle">Yuklaringiz bojxona nazorati ostida saqlanadi</h1>
+      <p class="lede" data-i="heroLede">Xususiy bojxona ombori: bojxona to‘lovlari rasmiylashtirilgunga qadar tovarlarni qonuniy saqlash, qayta ishlash va jo‘natish.</p>
+      <div class="actions">
+        <a class="btn" href="#tariffs" data-i="heroCta">Tariflarni ko‘rish</a>
+        <a class="btn ghost" href="#contact" data-i="heroCta2">Bog‘lanish</a>
+      </div>
+    </div>
+
+    <svg class="seal" viewBox="0 0 240 240" aria-hidden="true">
+      <defs>
+        <path id="sealPath" d="M120,120 m-88,0 a88,88 0 1,1 176,0 a88,88 0 1,1 -176,0"/>
+      </defs>
+      <circle cx="120" cy="120" r="116" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="120" cy="120" r="72" fill="none" stroke="currentColor" stroke-width="1"/>
+      <text font-family="IBM Plex Sans, sans-serif" font-size="12.5" letter-spacing="2.2" fill="currentColor">
+        <textPath id="sealText" href="#sealPath"></textPath>
+      </text>
+      <path d="M84 146 L120 108 L156 146 M96 146 V166 H144 V146 M108 166 V152 H132 V166" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="wrap">
+    <div class="section-head">
+      <h2 data-i="aboutTitle">Ishonchli saqlash, aniq hisobot</h2>
+      <p class="lede" data-i="aboutLede">Ombor davlat bojxona nazorati ostida ishlaydi. Har bir partiya kuzatiladi, hujjatlar tizimli yuritiladi.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="wrap" style="padding-top:0">
+    <div class="section-head" style="margin-bottom:48px">
+      <h2 data-i="servTitle">Xizmatlar</h2>
+    </div>
+    <div class="services" id="services-list"></div>
+  </section>
+
+  <!-- BAYS -->
+  <section id="bays">
+    <div class="wrap bays-head">
+      <div class="section-head" style="margin-bottom:0">
+        <h2 data-i="baysTitle">Omborlar</h2>
+        <p class="lede" data-i="baysLede">Ombor bloklari va ularning imkoniyatlari.</p>
+      </div>
+    </div>
+    <div class="bays-pin" id="baysPin">
+      <div class="bays-track" id="bays-track"></div>
+    </div>
+  </section>
+
+  <!-- MANAGEMENT -->
+  <section id="admin" class="wrap">
+    <div class="section-head" style="margin-bottom:56px">
+      <h2 data-i="adminTitle">Rahbariyat</h2>
+    </div>
+    <div class="admins" id="admins"></div>
+  </section>
+
+  <!-- TARIFFS -->
+  <section id="tariffs" class="tariffs">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:24px">
+        <h2 data-i="tariffTitle">Tariflar va hujjatlar</h2>
+        <p class="lede" data-i="tariffLede">Tariflar PDF formatda. Yuklab olib, o‘qishingiz mumkin.</p>
+      </div>
+      <ul class="tariff-list" id="tariff-list"></ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <div class="contact-grid">
+      <div class="info">
+        <h2 data-i="addrTitle" style="margin-bottom:32px">Manzil va aloqa</h2>
+        <dl>
+          <div><dt data-i="labelAddr">Manzil</dt><dd id="c-address"></dd></div>
+          <div><dt data-i="labelPhone">Telefon</dt><dd><a id="c-phone" href="#"></a></dd></div>
+          <div><dt data-i="labelEmail">Email</dt><dd><a id="c-email" href="#"></a></dd></div>
+          <div><dt data-i="labelHours">Ish vaqti</dt><dd data-i="hours"></dd></div>
+          <div><dt data-i="labelLicense">Litsenziya</dt><dd id="c-license"></dd></div>
+        </dl>
+      </div>
+      <iframe class="map" id="map" title="Xarita" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div style="margin-top:clamp(64px,9vw,120px);max-width:640px">
+      <h2 data-i="contactTitle" style="margin-bottom:32px">Xabar qoldiring</h2>
+      <form class="form" id="contactForm" novalidate>
+        <div class="field">
+          <label for="f-name" data-i="fName">Ism</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-phone" data-i="fPhone">Telefon</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="f-msg" data-i="fMsg">Xabar</label>
+          <textarea id="f-msg" name="message" rows="4"></textarea>
+        </div>
+        <button class="btn" type="submit" data-i="fSubmit">Yuborish</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand" data-i="brand">Xususiy bojxona ombori</span>
+    <span><span id="year"></span> · <span data-i="footerRights">Barcha huquqlar himoyalangan.</span></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+  /* ==========================================================
+     DEFAULT DATA — shu yerni tahrirlang.
+     [qavs] ichidagilar haqiqiy ma’lumot bilan almashtirilishi kerak.
+     Statistika (stats, bays.area) hozircha NAMUNA qiymatlar.
+     ========================================================== */
+  const SITE = {
+    license: '[Litsenziya raqami]',
+    address: 'Toshkent shahri, [ko‘cha va uy raqami]',
+    phone: '+998 00 000 00 00',
+    phoneHref: '+998000000000',
+    email: 'info@example.uz',
+    mapQuery: 'Tashkent, Uzbekistan',
+    stats: { area: 12000, capacity: 5000, years: 10 }, // NAMUNA
+    bays: [
+      { area: 4000, img: 'images/ombor-1.jpg' },
+      { area: 3500, img: 'images/ombor-2.jpg' },
+      { area: 2500, img: 'images/ombor-3.jpg' },
+      { area: 2000, img: 'images/ombor-4.jpg' }
+    ],
+    tariffFiles: [
+      'files/tarif-saqlash.pdf',
+      'files/tarif-konteyner.pdf',
+      'files/tarif-qoshimcha.pdf'
+    ]
+  };
+
+  const I18N = {
+    uz: {
+      title: 'Xususiy bojxona ombori',
+      brand: 'Xususiy bojxona ombori',
+      sealText: 'Xususiy bojxona ombori · Bonded warehouse · ',
+      navAbout: 'Biz haqimizda', navServices: 'Xizmatlar', navBays: 'Omborlar',
+      navAdmin: 'Rahbariyat', navTariffs: 'Tariflar', navContact: 'Aloqa',
+      heroTitle: 'Yuklaringiz bojxona nazorati ostida saqlanadi',
+      heroLede: 'Xususiy bojxona ombori: bojxona to‘lovlari rasmiylashtirilgunga qadar tovarlarni qonuniy saqlash, qayta ishlash va jo‘natish.',
+      heroCta: 'Tariflarni ko‘rish', heroCta2: 'Bog‘lanish',
+      aboutTitle: 'Ishonchli saqlash, aniq hisobot',
+      aboutLede: 'Ombor davlat bojxona nazorati ostida ishlaydi. Har bir partiya kuzatiladi, hujjatlar tizimli yuritiladi.',
+      statArea: 'm² maydon', statCap: 'tonna sig‘im', statYears: 'yil faoliyat',
+      servTitle: 'Xizmatlar',
+      services: [
+        ['Bojxona saqlash', 'Tovarlarni bojxona nazorati ostida, bojxona to‘lovlarini to‘lamasdan saqlash.'],
+        ['Rasmiylashtirishga tayyorlash', 'Partiyalarni saralash, belgilash va deklaratsiyaga tayyorlash.'],
+        ['Konteynerlarni qayta yuklash', 'Konteynerlarni tushirish, saralash va yuklash.'],
+        ['Yuk tashish va ekspeditorlik', 'Yuklarni ombordan va omborga yetkazib berish.'],
+        ['Yuk sug‘urtasi', 'Saqlash davridagi tovarlarni sug‘urta bilan himoyalash.'],
+        ['Hujjatlar bo‘yicha maslahat', 'Bojxona hujjatlari va saqlash qoidalari bo‘yicha yordam.']
+      ],
+      baysTitle: 'Omborlar', baysLede: 'Ombor bloklari va ularning imkoniyatlari.',
+      baysArea: 'Maydon', baysType: 'Turi',
+      bays: [
+        { name: 'Sklad A', type: 'Umumiy saqlash' },
+        { name: 'Sklad B', type: 'Suyuqlik va kimyo' },
+        { name: 'Sklad C', type: 'Sovutgich (refrijerator)' },
+        { name: 'Sklad D', type: 'Konteyner maydoni' }
+      ],
+      adminTitle: 'Rahbariyat',
+      admins: [
+        { name: 'Ism Familiya', role: 'Bosh direktor', bio: 'Qisqa biografiya.' },
+        { name: 'Ism Familiya', role: 'Bojxona bo‘yicha direktor', bio: 'Qisqa biografiya.' },
+        { name: 'Ism Familiya', role: 'Operatsiyalar direktori', bio: 'Qisqa biografiya.' }
+      ],
+      addrTitle: 'Manzil va aloqa', labelAddr: 'Manzil', labelPhone: 'Telefon',
+      labelEmail: 'Email', labelHours: 'Ish vaqti', labelLicense: 'Litsenziya',
+      hours: 'Du–Ju 09:00–18:00',
+      tariffTitle: 'Tariflar va hujjatlar',
+      tariffLede: 'Tariflar PDF formatda. Yuklab olib, o‘qishingiz mumkin.',
+      tariffs: [
+        { title: 'Bojxona saqlash tarifi', meta: 'PDF · [sana]' },
+        { title: 'Konteyner xizmatlari tarifi', meta: 'PDF · [sana]' },
+        { title: 'Qo‘shimcha xizmatlar tarifi', meta: 'PDF · [sana]' }
+      ],
+      download: 'Yuklab olish',
+      contactTitle: 'Xabar qoldiring',
+      fName: 'Ism', fPhone: 'Telefon', fMsg: 'Xabar', fSubmit: 'Yuborish',
+      fSent: 'Xabaringiz qabul qilindi. Tez orada bog‘lanamiz.',
+      footerRights: 'Barcha huquqlar himoyalangan.'
+    },
+    ru: {
+      title: 'Частный таможенный склад',
+      brand: 'Частный таможенный склад',
+      sealText: 'Частный таможенный склад · Bonded warehouse · ',
+      navAbout: 'О нас', navServices: 'Услуги', navBays: 'Склады',
+      navAdmin: 'Руководство', navTariffs: 'Тарифы', navContact: 'Контакты',
+      heroTitle: 'Ваши грузы хранятся под таможенным контролем',
+      heroLede: 'Частный таможенный склад: хранение товаров до их официального выпуска с отложенными платежами, переработка и отправка.',
+      heroCta: 'Смотреть тарифы', heroCta2: 'Связаться',
+      aboutTitle: 'Надёжное хранение, точная отчётность',
+      aboutLede: 'Склад работает под контролем таможенных органов. Каждая партия учитывается, документы ведутся без пробелов.',
+      statArea: 'м² площади', statCap: 'тонн вместимости', statYears: 'лет работы',
+      servTitle: 'Услуги',
+      services: [
+        ['Таможенное хранение', 'Хранение товаров под таможенным контролем без уплаты пошлин до выпуска.'],
+        ['Подготовка к оформлению', 'Сортировка, маркировка и комплектация партий перед декларированием.'],
+        ['Перегрузка контейнеров', 'Выгрузка, пересортировка и погрузка контейнеров.'],
+        ['Перевозка и экспедирование', 'Доставка грузов до склада и от склада.'],
+        ['Страхование груза', 'Страховое покрытие на время хранения.'],
+        ['Консультации по документам', 'Помощь с таможенной документацией и правилами хранения.']
+      ],
+      baysTitle: 'Склады', baysLede: 'Блоки склада и их возможности.',
+      baysArea: 'Площадь', baysType: 'Тип',
+      bays: [
+        { name: 'Склад A', type: 'Общее хранение' },
+        { name: 'Склад B', type: 'Жидкости и химия' },
+        { name: 'Склад C', type: 'Холодильные камеры' },
+        { name: 'Склад D', type: 'Контейнерная площадка' }
+      ],
+      adminTitle: 'Руководство',
+      admins: [
+        { name: 'Имя Фамилия', role: 'Генеральный директор', bio: 'Краткая биография.' },
+        { name: 'Имя Фамилия', role: 'Директор по таможне', bio: 'Краткая биография.' },
+        { name: 'Имя Фамилия', role: 'Директор по операциям', bio: 'Краткая биография.' }
+      ],
+      addrTitle: 'Адрес и контакты', labelAddr: 'Адрес', labelPhone: 'Телефон',
+      labelEmail: 'Email', labelHours: 'Часы работы', labelLicense: 'Лицензия',
+      hours: 'Пн–Пт 09:00–18:00',
+      tariffTitle: 'Тарифы и документы',
+      tariffLede: 'Тарифы в формате PDF. Можно скачать и ознакомиться.',
+      tariffs: [
+        { title: 'Тариф на таможенное хранение', meta: 'PDF · [дата]' },
+        { title: 'Тариф на контейнерные услуги', meta: 'PDF · [дата]' },
+        { title: 'Тариф на дополнительные услуги', meta: 'PDF · [дата]' }
+      ],
+      download: 'Скачать',
+      contactTitle: 'Оставьте сообщение',
+      fName: 'Имя', fPhone: 'Телефон', fMsg: 'Сообщение', fSubmit: 'Отправить',
+      fSent: 'Ваше сообщение получено. Мы свяжемся с вами.',
+      footerRights: 'Все права защищены.'
+    },
+    en: {
+      title: 'Private bonded warehouse',
+      brand: 'Private bonded warehouse',
+      sealText: 'Private bonded warehouse · Bonded warehouse · ',
+      navAbout: 'About', navServices: 'Services', navBays: 'Warehouses',
+      navAdmin: 'Management', navTariffs: 'Tariffs', navContact: 'Contact',
+      heroTitle: 'Your cargo stays under customs control',
+      heroLede: 'A private bonded warehouse: store goods with duties deferred until formal release, then process and dispatch them.',
+      heroCta: 'View tariffs', heroCta2: 'Get in touch',
+      aboutTitle: 'Reliable storage, precise records',
+      aboutLede: 'The warehouse operates under customs supervision. Every consignment is tracked and every document is kept in order.',
+      statArea: 'm² of space', statCap: 'tonnes capacity', statYears: 'years in operation',
+      servTitle: 'Services',
+      services: [
+        ['Customs storage', 'Goods held under customs control, with duties deferred until release.'],
+        ['Preparation for clearance', 'Sorting, marking and grouping consignments ahead of declaration.'],
+        ['Container handling', 'Unloading, re-sorting and loading of containers.'],
+        ['Transport and forwarding', 'Delivery of cargo to and from the warehouse.'],
+        ['Cargo insurance', 'Insurance cover for goods during storage.'],
+        ['Documentation advice', 'Help with customs paperwork and storage rules.']
+      ],
+      baysTitle: 'Warehouses', baysLede: 'Warehouse blocks and what each one handles.',
+      baysArea: 'Area', baysType: 'Type',
+      bays: [
+        { name: 'Warehouse A', type: 'General storage' },
+        { name: 'Warehouse B', type: 'Liquids and chemicals' },
+        { name: 'Warehouse C', type: 'Refrigerated' },
+        { name: 'Warehouse D', type: 'Container yard' }
+      ],
+      adminTitle: 'Management',
+      admins: [
+        { name: 'First Last', role: 'General director', bio: 'Short biography.' },
+        { name: 'First Last', role: 'Customs director', bio: 'Short biography.' },
+        { name: 'First Last', role: 'Operations director', bio: 'Short biography.' }
+      ],
+      addrTitle: 'Address and contacts', labelAddr: 'Address', labelPhone: 'Phone',
+      labelEmail: 'Email', labelHours: 'Opening hours', labelLicense: 'Licence',
+      hours: 'Mon–Fri 09:00–18:00',
+      tariffTitle: 'Tariffs and documents',
+      tariffLede: 'Tariffs are published as PDF. Download and review them.',
+      tariffs: [
+        { title: 'Customs storage tariff', meta: 'PDF · [date]' },
+        { title: 'Container services tariff', meta: 'PDF · [date]' },
+        { title: 'Additional services tariff', meta: 'PDF · [date]' }
+      ],
+      download: 'Download',
+      contactTitle: 'Leave a message',
+      fName: 'Name', fPhone: 'Phone', fMsg: 'Message', fSubmit: 'Send',
+      fSent: 'Your message has been received. We will contact you shortly.',
+      footerRights: 'All rights reserved.'
+    }
+  };
+
+  /* ---------- helpers ---------- */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const fmt = n => Math.round(n).toLocaleString('en-US').replace(/,/g, ' ');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let lang = 'uz';
+  try { const s = localStorage.getItem('lang'); if (I18N[s]) lang = s; } catch (e) {}
+
+  /* ---------- render (til o‘zgarganda ham chaqiriladi) ---------- */
+  function render() {
+    const t = I18N[lang];
+    document.documentElement.lang = lang;
+    document.title = t.title;
+
+    $$('[data-i]').forEach(el => {
+      const k = el.dataset.i;
+      if (typeof t[k] === 'string') el.textContent = t[k];
+    });
+    $('#sealText').textContent = t.sealText;
+
+    // statistika
+    $('#stats').innerHTML = [
+      [SITE.stats.area, t.statArea],
+      [SITE.stats.capacity, t.statCap],
+      [SITE.stats.years, t.statYears]
+    ].map(([v, l]) => `<div class="stat"><div class="num" data-count="${v}">${fmt(v)}</div><div class="lbl">${esc(l)}</div></div>`).join('');
+
+    // xizmatlar
+    $('#services-list').innerHTML = t.services.map(([h, p]) =>
+      `<article class="service"><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join('');
+
+    // omborlar
+    $('#bays-track').innerHTML = SITE.bays.map((b, i) => {
+      const d = t.bays[i];
+      return `<article class="bay">
+        <div class="ph" data-file="${esc(b.img)}"><img src="${esc(b.img)}" alt="${esc(d.name)} — ${esc(d.type)}" loading="lazy" onerror="this.classList.add('missing')"></div>
+        <div>
+          <h3>${esc(d.name)}</h3>
+          <dl class="meta">
+            <div><dt>${esc(t.baysArea)}</dt><dd>${fmt(b.area)} m²</dd></div>
+            <div><dt>${esc(t.baysType)}</dt><dd>${esc(d.type)}</dd></div>
+          </dl>
+        </div>
+      </article>`;
+    }).join('');
+
+    // rahbariyat
+    $('#admins').innerHTML = t.admins.map(a => {
+      const initials = a.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+      return `<article class="admin">
+        <div class="portrait" aria-hidden="true">${esc(initials)}</div>
+        <h3>${esc(a.name)}</h3>
+        <p class="role">${esc(a.role)}</p>
+        <p class="bio">${esc(a.bio)}</p>
+      </article>`;
+    }).join('');
+
+    // tariflar (PDF)
+    $('#tariff-list').innerHTML = t.tariffs.map((tr, i) => `
+      <li><a href="${SITE.tariffFiles[i]}" target="_blank" rel="noopener">
+        <span><span class="t">${esc(tr.title)}</span><span class="m" style="display:block">${esc(tr.meta)}</span></span>
+        <span class="dl">${esc(t.download)}</span>
+      </a></li>`).join('');
+
+    // aloqa
+    $('#c-address').textContent = SITE.address;
+    const ph = $('#c-phone'); ph.textContent = SITE.phone; ph.href = 'tel:' + SITE.phoneHref;
+    const em = $('#c-email'); em.textContent = SITE.email; em.href = 'mailto:' + SITE.email;
+    $('#c-license').textContent = SITE.license;
+    $('#map').src = 'https://www.google.com/maps?q=' + encodeURIComponent(SITE.mapQuery) + '&output=embed';
+
+    // til tugmalari
+    $$('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  }
+
+  /* ---------- animatsiyalar (GSAP) ---------- */
+  function initMotion() {
+    if (!window.gsap || reduce) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1) Hero — yagona kirish sekvensi
+    const h1 = $('#heroTitle');
+    h1.innerHTML = h1.textContent.trim().split(/\s+/).map(w => `<span class="w"><span>${esc(w)}</span></span>`).join(' ');
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.from('.seal', { scale: .7, rotation: -120, opacity: 0, duration: 1.6, ease: 'expo.out' })
+      .from('#heroTitle .w > span', { yPercent: 110, duration: 1, stagger: .07 }, '-=1.2')
+      .from('.hero .lede, .actions', { y: 24, opacity: 0, duration: .8, stagger: .1 }, '-=.6');
+
+    // 2) Statistika — raqamlar 0 dan sanaladi
+    $$('.num[data-count]').forEach(el => {
+      const target = +el.dataset.count;
+      const o = { v: 0 };
+      el.textContent = fmt(0);
+      gsap.to(o, {
+        v: target, duration: 1.8, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        onUpdate: () => { el.textContent = fmt(o.v); }
+      });
+    });
+
+    // 3) Omborlar — faqat desktopda gorizontal pin
+    gsap.matchMedia().add('(min-width: 900px)', () => {
+      const track = $('#bays-track');
+      const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      gsap.to(track, {
+        x: () => -dist(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#baysPin',
+          start: 'top top',
+          end: () => '+=' + dist(),
+          pin: true,
+          scrub: .6,
+          invalidateOnRefresh: true
+        }
+      });
+    });
+  }
+
+  /* ---------- hodisalar ---------- */
+  $$('.lang button').forEach(b => b.addEventListener('click', () => {
+    lang = b.dataset.lang;
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    render();
+  }));
+
+  $('#contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    // TODO: formani backendga ulang. Hozircha faqat tasdiqlash xabari ko‘rsatiladi.
+    $('#formStatus').textContent = I18N[lang].fSent;
+    e.target.reset();
+  });
+
+  $('#year').textContent = new Date().getFullYear();
+
+  render();
+  initMotion();
+})();
+</script>
+</body>
+</html>
