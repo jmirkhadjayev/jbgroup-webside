@@ -184,6 +184,7 @@ function Scene() {
   const cargo = useRef<THREE.Group>(null)
   const bayLight = useRef<THREE.PointLight>(null)
   const pointer = useRef({ x: 0, y: 0 })
+  const isMobile = window.innerWidth < 768
   const cam = useRef({ x: -17, y: 3.4 })
 
   useEffect(() => {
@@ -196,6 +197,12 @@ function Scene() {
   }, [])
 
   useFrame((state, delta) => {
+    const cam0 = state.camera as THREE.PerspectiveCamera
+    const wantFov = cam0.aspect < 1 ? 72 : 50
+    if (cam0.fov !== wantFov) {
+      cam0.fov = wantFov
+      cam0.updateProjectionMatrix()
+    }
     const p = flow.p
     const pose = forkliftAt(p)
     if (fk.current) {
@@ -300,7 +307,7 @@ function Scene() {
       </group>
 
       {/* Chang zarralari — atmosfera */}
-      <Sparkles count={70} scale={[40, 6, 16]} position={[4, 3, 0]} size={2.5} speed={0.25} color="#f2d27a" opacity={0.7} />
+      <Sparkles count={isMobile ? 0 : 70} scale={[40, 6, 16]} position={[4, 3, 0]} size={2.5} speed={0.25} color="#f2d27a" opacity={0.7} />
     </>
   )
 }
@@ -309,7 +316,7 @@ export default function WarehouseScene() {
   return (
     <Canvas
       camera={{ position: [-17, 3.4, 11], fov: 50, near: 0.1, far: 200 }}
-      dpr={[1, 1.5]}
+      dpr={window.innerWidth < 768 ? 1 : [1, 1.5]}
       gl={{ antialias: true }}
       onCreated={({ scene }) => {
         scene.background = new THREE.Color('#0b2545')

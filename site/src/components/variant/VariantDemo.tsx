@@ -22,7 +22,6 @@ const LOGO = {
 const LICENSES = [{ src: '/licenses/litsenziya.jpg' }, { src: '/licenses/litsenziya-ilova.jpg' }]
 // Galereya: 5 ta karta — birinchi (A) katta (2×2), qolgan 4 tasi o‘ng tomonda 2×2
 const GALLERY_SPAN = ['lg:col-span-2 lg:row-span-2', '', '', '', '']
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI']
 const PHONE_HREF = `tel:${seedSettings.phone.replace(/\s/g, '')}`
 const YANDEX_PIN = 'https://yandex.com/maps/?pt=69.324979,41.269669&z=17&l=map'
 
@@ -43,6 +42,8 @@ const CAPACITY_PCT = Math.round(UNITS.reduce((s, u) => s + u.area * u.occ, 0) / 
 const unitStatus = (occ: number, b: Dict['board']) => (occ === 0 ? b.free : occ >= 85 ? b.full : b.busy)
 
 const fmt = (n: number) => Math.round(n).toLocaleString('en-US').replace(/,/g, ' ')
+const pad = (n: number) => String(n).padStart(2, '0')
+const ext = (file: string) => file.split('.').pop()?.toUpperCase() ?? ''
 
 function Stamp({ main, sub }: { main: string; sub: string }) {
   return (
@@ -108,7 +109,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
               className={`w-auto transition-[height] duration-500 ${scrolled ? 'h-10' : 'h-14'}`}
             />
             <span
-              className={`hidden max-w-[15rem] text-[13px] leading-snug transition-colors duration-500 xl:block ${
+              className={`hidden max-w-[15rem] text-[12px] leading-snug transition-colors duration-500 xl:block ${
                 scrolled ? 'text-steel' : 'text-paper/75'
               }`}
             >
@@ -117,7 +118,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
           </a>
 
           <nav aria-label="Asosiy" className="hidden lg:block">
-            <ul className="flex items-center gap-8">
+            <ul className="flex items-center gap-7">
               {NAV_IDS.map((id) => {
                 const isActive = active === id
                 const color = isActive
@@ -132,7 +133,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
                     <a
                       href={`#${id}`}
                       aria-current={isActive ? 'true' : undefined}
-                      className={`group relative block py-2 text-[14px] no-underline transition-colors duration-300 ${color}`}
+                      className={`group relative block py-2 text-[13px] no-underline transition-colors duration-300 ${color}`}
                     >
                       {t.nav[id]}
                       <span
@@ -152,7 +153,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
             <div
               role="group"
               aria-label={t.ui.lang}
-              className={`flex items-center gap-0.5 rounded-full border p-0.5 text-xs font-medium transition-colors duration-500 ${
+              className={`flex items-center gap-0.5 rounded-full border p-0.5 text-[11px] font-medium transition-colors duration-500 ${
                 scrolled ? 'border-line' : 'border-paper/30'
               }`}
             >
@@ -181,7 +182,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
 
             <a
               href="#contact"
-              className="group hidden h-11 items-center gap-2 bg-gold px-5 text-sm font-medium text-navy no-underline transition-colors duration-300 hover:bg-paper md:inline-flex"
+              className="group hidden h-10 items-center gap-2 bg-gold px-4 text-[13px] font-medium text-navy no-underline transition-colors duration-300 hover:bg-paper md:inline-flex"
             >
               {t.ui.cta}
               <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
@@ -194,7 +195,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
               aria-expanded={open}
               aria-label={t.ui.menu}
               onClick={() => setOpen((o) => !o)}
-              className={`flex h-11 w-11 flex-col items-center justify-center gap-1.5 border lg:hidden ${
+              className={`flex h-10 w-10 flex-col items-center justify-center gap-1.5 border lg:hidden ${
                 scrolled ? 'border-line text-navy' : 'border-paper/30 text-paper'
               }`}
             >
@@ -254,16 +255,28 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
 }
 
 // Bo‘lim sarlavhasi: raqam + kicker, katta serif sarlavha, nozik chiziq
-function SectionHead({ index, kicker, title, light = false }: { index: string; kicker: string; title: string; light?: boolean }) {
+function SectionHead({
+  index,
+  kicker,
+  title,
+  light = false,
+  reveal = true,
+}: {
+  index: string
+  kicker: string
+  title: string
+  light?: boolean
+  reveal?: boolean
+}) {
   return (
-    <div data-reveal className="mb-12 md:mb-16">
-      <p className={`flex items-center gap-3 text-[11px] uppercase tracking-[0.08em] ${light ? 'text-gold' : 'text-gold'}`}>
-        <span className="font-mono">{index}</span>
-        <span className="h-px w-8 bg-gold" />
-        <span>{kicker}</span>
+    <div data-reveal={reveal ? '' : undefined} className="mb-10 md:mb-14">
+      <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">
+        <span>{index}</span>
+        <span className="h-px w-6 bg-gold" />
+        <span className="font-sans">{kicker}</span>
       </p>
       <h2
-        className={`mt-4 max-w-3xl font-serif text-4xl leading-[1.05] tracking-[-0.02em] md:text-5xl ${
+        className={`mt-4 max-w-3xl font-serif text-[2.6rem] leading-[1.02] tracking-[-0.025em] md:text-[3.4rem] ${
           light ? 'text-paper' : ''
         }`}
       >
@@ -344,10 +357,10 @@ export default function VariantDemo() {
           scrollTrigger: { trigger: last ?? '[data-stamp]', start: 'top 35%' },
         })
 
-        // Umumiy bo‘lim sarlavhalari va kartalar: yumshoq paydo bo‘lish
+        // Umumiy bo‘lim sarlavhalari: yumshoq paydo bo‘lish
         q<HTMLElement>('[data-reveal]').forEach((el) => {
           gsap.from(el, {
-            y: 28,
+            y: 26,
             opacity: 0,
             duration: 0.9,
             ease: 'power3.out',
@@ -355,43 +368,17 @@ export default function VariantDemo() {
           })
         })
 
-        // Indeks ro‘yxati: qatorlar ketma-ket chiqadi
+        // Ro‘yxat qatorlari: ketma-ket chiqadi
         q<HTMLElement>('[data-index-row]').forEach((el, i) => {
           gsap.from(el, {
-            x: -24,
+            x: -20,
             opacity: 0,
             duration: 0.7,
-            delay: i * 0.05,
+            delay: (i % 4) * 0.06,
             ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 92%' },
+            scrollTrigger: { trigger: el, start: 'top 93%' },
           })
         })
-
-        // Galereya: rasmlar scroll bilan sekin siljiydi (parallax)
-        q<HTMLElement>('[data-parallax]').forEach((el) => {
-          gsap.fromTo(
-            el,
-            { yPercent: -6 },
-            {
-              yPercent: 6,
-              ease: 'none',
-              scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
-            },
-          )
-        })
-
-        // Bay taxtasi (yashirilgan bo‘lsa ham xavfsiz)
-        gsap.from('[data-bay]', {
-          scale: 0.7,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: 'back.out(2)',
-          scrollTrigger: { trigger: '[data-board]', start: 'top 85%' },
-        })
-        q<HTMLElement>('[data-live]').forEach((el, i) =>
-          gsap.to(el, { opacity: 0.2, duration: 0.8, repeat: -1, yoyo: true, delay: i * 0.2, ease: 'sine.inOut' }),
-        )
 
         // Sanoqlar
         q<HTMLElement>('[data-count]').forEach((el) => {
@@ -408,7 +395,20 @@ export default function VariantDemo() {
           })
         })
 
-        // Sig‘im chizig‘i
+        // Bay taxtasi (yashirilgan bo‘lsa ham xavfsiz)
+        gsap.from('[data-bay]', {
+          scale: 0.7,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.06,
+          ease: 'back.out(2)',
+          scrollTrigger: { trigger: '[data-board]', start: 'top 85%' },
+        })
+        q<HTMLElement>('[data-live]').forEach((el, i) =>
+          gsap.to(el, { opacity: 0.2, duration: 0.8, repeat: -1, yoyo: true, delay: i * 0.2, ease: 'sine.inOut' }),
+        )
+
+        // Sig‘im chizig‘i (yashirilgan bo‘lsa ham xavfsiz)
         gsap.fromTo(
           '[data-capacity]',
           { scaleX: 0 },
@@ -424,7 +424,7 @@ export default function VariantDemo() {
 
       // CTA: kursorga tortiladigan magnit effekti
       const btn = root.querySelector<HTMLElement>('[data-magnet]')
-      if (btn && !reduce) {
+      if (btn && !reduce && window.matchMedia('(pointer: fine)').matches) {
         const mx = gsap.quickTo(btn, 'x', { duration: 0.4, ease: 'power3.out' })
         const my = gsap.quickTo(btn, 'y', { duration: 0.4, ease: 'power3.out' })
         const onMove = (e: PointerEvent) => {
@@ -474,8 +474,14 @@ export default function VariantDemo() {
     { label: t.contact.license, value: seedSettings.license },
   ]
 
+  const metrics = [
+    { value: seedSettings.stats.area, label: t.stats.area },
+    { value: seedSettings.stats.capacity, label: t.stats.capacity },
+    { value: seedSettings.stats.years, label: t.stats.years },
+  ]
+
   return (
-    <div ref={rootRef} className="bg-paper text-navy">
+    <div ref={rootRef} className="overflow-x-clip bg-paper text-navy">
       {/* Doimiy 3D fon: scroll bilan forklift va yuk harakatlanadi */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <WarehouseScene />
@@ -486,7 +492,7 @@ export default function VariantDemo() {
       {/* 1. HERO */}
       <section
         id="top"
-        className="relative z-10 flex h-[100svh] min-h-[640px] items-end overflow-hidden px-6 pb-20 text-paper md:px-16"
+        className="relative z-10 flex h-[100svh] min-h-[600px] items-end overflow-hidden px-6 pb-16 text-paper md:px-16 md:pb-20"
       >
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/40 to-transparent" />
         <div className="pointer-events-none absolute right-6 top-28 hidden md:block md:right-16">
@@ -499,12 +505,12 @@ export default function VariantDemo() {
           />
         </div>
         <div className="relative max-w-4xl">
-          <p data-fade className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
+          <p data-fade className="mb-6 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">
             {t.tagline}
           </p>
           <h1
             aria-label={t.hero.title}
-            className="font-serif text-[clamp(2.8rem,6.5vw,6rem)] leading-[0.98] font-normal tracking-[-0.02em]"
+            className="font-serif text-[clamp(2.7rem,6.2vw,5.6rem)] leading-[0.98] font-normal tracking-[-0.025em]"
           >
             {t.hero.title.split(' ').map((w, i) => (
               <span key={`${w}-${i}`} data-hero-word className="mr-[0.2em] inline-block overflow-hidden align-top pb-[0.06em]">
@@ -512,24 +518,24 @@ export default function VariantDemo() {
               </span>
             ))}
           </h1>
-          <p data-fade className="mt-8 max-w-[46ch] text-base leading-relaxed text-paper/80 md:text-lg">
+          <p data-fade className="mt-7 max-w-[46ch] text-[15px] leading-relaxed text-paper/80 md:text-base">
             {t.hero.lede}
           </p>
-          <div data-fade className="mt-10 flex flex-wrap gap-3">
+          <div data-fade className="mt-9 flex flex-wrap gap-3">
             <a
               href="#tariffs"
-              className="inline-flex h-12 items-center bg-gold px-6 text-[15px] font-medium text-navy no-underline hover:bg-paper"
+              className="inline-flex h-11 items-center bg-gold px-5 text-sm font-medium text-navy no-underline hover:bg-paper"
             >
               {t.hero.cta1}
             </a>
             <a
               href="#contact"
-              className="inline-flex h-12 items-center border border-paper/40 px-6 text-[15px] font-medium text-paper no-underline hover:border-gold hover:text-gold"
+              className="inline-flex h-11 items-center border border-paper/40 px-5 text-sm font-medium text-paper no-underline hover:border-gold hover:text-gold"
             >
               {t.hero.cta2}
             </a>
           </div>
-          <p data-fade className="mt-12 text-[11px] uppercase tracking-[0.08em] text-paper/60">
+          <p data-fade className="mt-10 font-mono text-[10px] uppercase tracking-[0.1em] text-paper/55">
             {t.ui.scroll}
           </p>
         </div>
@@ -539,14 +545,14 @@ export default function VariantDemo() {
       <div id="about" data-beats className="relative z-10 scroll-mt-20 text-paper">
         {t.beats.map((b, i) => (
           <section key={b.title} className="flex min-h-[100svh] items-center px-6 md:px-16">
-            <article data-beat className="relative max-w-md border-l-2 border-gold bg-navy/80 p-8 backdrop-blur-md">
-              <p className="font-mono text-[11px] tracking-[0.08em] text-gold">
+            <article data-beat className="relative max-w-md border-l-2 border-gold bg-navy/80 p-7 backdrop-blur-md">
+              <p className="font-mono text-[10px] tracking-[0.1em] text-gold">
                 0{i + 1} / 0{t.beats.length}
               </p>
-              <h2 className="mt-3 font-serif text-4xl leading-[1.05]">{b.title}</h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-paper/80">{b.text}</p>
+              <h2 className="mt-3 font-serif text-3xl leading-[1.05]">{b.title}</h2>
+              <p className="mt-3 text-sm leading-relaxed text-paper/80">{b.text}</p>
               {i === t.beats.length - 1 && (
-                <div data-stamp className="absolute -right-8 -top-10 w-32 -rotate-12 text-gold md:w-40">
+                <div data-stamp className="absolute -right-8 -top-10 w-28 -rotate-12 text-gold md:w-36">
                   <Stamp main={t.stamp.main} sub={t.stamp.sub} />
                 </div>
               )}
@@ -555,85 +561,68 @@ export default function VariantDemo() {
         ))}
       </div>
 
-      {/* 3. XIZMATLAR — indeks ro‘yxati */}
-      <section id="services" className="relative z-10 scroll-mt-20 bg-paper px-6 py-20 md:px-16 md:py-28">
-        <div className="mx-auto max-w-[1280px]">
-          <SectionHead index="02" kicker={t.sections.services.kicker} title={t.sections.services.title} />
-          <ol className="border-t border-line">
+      {/* 3. XIZMATLAR — sticky sarlavha + ro‘yxat */}
+      <section id="services" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
+        <div className="mx-auto grid max-w-[1280px] gap-10 md:grid-cols-12 md:gap-16">
+          <div className="md:sticky md:top-28 md:col-span-4 md:h-fit">
+            <SectionHead index="02" kicker={t.sections.services.kicker} title={t.sections.services.title} />
+          </div>
+          <ol className="border-t border-navy md:col-span-8">
             {seedServices.map((s, i) => (
               <li
                 key={s.title.uz}
                 data-index-row
-                className="group grid grid-cols-[3rem_1fr] gap-x-4 gap-y-1 border-b border-line py-6 transition-colors duration-500 hover:bg-white/70 md:grid-cols-[4rem_1fr_1.3fr_2.5rem] md:items-center md:gap-x-8 md:px-4"
+                className="group grid grid-cols-[2.5rem_1fr] gap-x-4 border-b border-line py-6 transition-colors duration-500 hover:bg-navy hover:text-paper md:px-6 md:py-7"
               >
-                <span className="font-serif text-2xl text-gold">{ROMAN[i]}</span>
-                <h3 className="font-serif text-2xl leading-tight">{s.title[lang]}</h3>
-                <p className="col-span-2 text-[15px] leading-relaxed text-steel md:col-span-1">{s.text[lang]}</p>
-                <span
-                  aria-hidden="true"
-                  className="hidden justify-self-end text-xl text-steel transition-all duration-500 group-hover:translate-x-1 group-hover:text-gold md:block"
-                >
-                  →
-                </span>
+                <span className="pt-1.5 font-mono text-[11px] text-gold">{pad(i + 1)}</span>
+                <div>
+                  <h3 className="font-serif text-2xl leading-tight md:text-[1.65rem]">{s.title[lang]}</h3>
+                  <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-steel transition-colors duration-500 group-hover:text-paper/75">
+                    {s.text[lang]}
+                  </p>
+                </div>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* 4. OMBORLAR — galereya + raqamlar */}
+      {/* 4. OMBORLAR — statik galereya */}
       <section id="warehouses" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-20 md:px-16 md:py-28">
         <div className="mx-auto max-w-[1280px]">
           <SectionHead index="03" kicker={t.sections.warehouses.kicker} title={t.sections.warehouses.title} />
-
-          {/* Bento galereya */}
-          <div className="grid auto-rows-[220px] grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid auto-rows-[260px] grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {seedWarehouses.map((w, i) => (
-              <figure
-                key={w.name.uz}
-                data-reveal
-                className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}
-              >
-                <div data-parallax className="absolute left-0 right-0" style={{ top: '-8%', bottom: '-8%' }}>
-                  <Image
-                    src={`/images/${w.image}`}
-                    alt={w.name[lang]}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/20 to-transparent" />
-                <figcaption className="absolute inset-x-0 bottom-0 p-5 text-paper">
-                  <p className="text-[10px] uppercase tracking-[0.08em] text-gold">{w.type[lang]}</p>
-                  <div className="mt-1 flex items-end justify-between gap-3">
-                    <h3 className="font-serif text-xl leading-tight md:text-2xl">{w.name[lang]}</h3>
-                    <span className="shrink-0 text-[13px] text-paper/80">{fmt(w.area)} m²</span>
+              <figure key={w.name.uz} data-reveal className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}>
+                <Image
+                  src={`/images/${w.image}`}
+                  alt={w.name[lang]}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/15 to-transparent" />
+                <span className="absolute left-4 top-4 bg-navy/50 px-2 py-1 font-mono text-[10px] tracking-[0.1em] text-paper/85 backdrop-blur">
+                  {pad(i + 1)}
+                </span>
+                <figcaption className="absolute inset-x-0 bottom-0 grid gap-2 p-5 text-paper md:p-6">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{w.type[lang]}</p>
+                  <div className="flex items-end justify-between gap-3">
+                    <h3 className={`font-serif leading-[1.02] ${i === 0 ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
+                      {w.name[lang]}
+                    </h3>
+                    <p className="shrink-0 font-mono text-sm text-paper/85">{fmt(w.area)} m²</p>
                   </div>
                 </figcaption>
               </figure>
             ))}
           </div>
+        </div>
 
-          {/* Raqamlar: nozik ajratgichlar bilan */}
-          <div className="mt-14 grid divide-y divide-line border-y border-line md:grid-cols-3 md:divide-x md:divide-y-0">
-            {[
-              { value: seedSettings.stats.area, label: t.stats.area },
-              { value: seedSettings.stats.capacity, label: t.stats.capacity },
-              { value: seedSettings.stats.years, label: t.stats.years },
-            ].map((s) => (
-              <div key={s.label} data-reveal className="py-8 md:px-10 md:first:pl-0">
-                <p className="font-serif text-5xl leading-none md:text-6xl" data-count={s.value}>
-                  {fmt(s.value)}
-                </p>
-                <p className="mt-3 text-sm text-steel">{s.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
-          <div className="mt-20 hidden">
-            <p className="text-[11px] uppercase tracking-[0.08em] text-gold">{t.board.title}</p>
+        {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
+        <div className="hidden px-6 py-20 md:px-16">
+          <div className="mx-auto max-w-[1280px]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{t.board.title}</p>
             <div data-board className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-2 md:grid-cols-4">
               {UNITS.map((u) => (
                 <div key={u.id} data-bay className="flex flex-col bg-paper p-6">
@@ -673,142 +662,149 @@ export default function VariantDemo() {
         </div>
       </section>
 
-      {/* 5. RAHBARIYAT */}
-      <section id="admin" className="relative z-10 scroll-mt-20 bg-paper px-6 py-20 md:px-16 md:py-28">
+      {/* 5. RAQAMLAR — to‘liq kenglikdagi tasma */}
+      <section className="relative z-10 bg-navy-2 text-paper">
+        <div className="mx-auto grid max-w-[1280px] md:grid-cols-3">
+          {metrics.map((m, i) => (
+            <div
+              key={m.label}
+              className={`px-6 py-14 md:px-10 md:py-16 ${i > 0 ? 'border-t border-paper/10 md:border-l md:border-t-0' : ''}`}
+            >
+              <p className="font-serif text-6xl leading-none tracking-[-0.02em] md:text-7xl" data-count={m.value}>
+                {fmt(m.value)}
+              </p>
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{m.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. RAHBARIYAT — ro‘yxat ko‘rinishida */}
+      <section id="admin" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
         <div className="mx-auto max-w-[1280px]">
           <SectionHead index="04" kicker={t.sections.admin.kicker} title={t.sections.admin.title} />
-          <div className="grid gap-px bg-line md:grid-cols-3">
+          <ul className="border-t border-navy">
             {seedTeam.map((m, i) => (
-              <article key={`${m.role.uz}-${i}`} data-reveal className="group relative bg-paper p-8">
-                <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
-                <div className="flex h-16 w-16 items-center justify-center bg-navy font-serif text-xl text-gold">
-                  {m.name
-                    .split(' ')
-                    .map((w) => w[0])
-                    .join('')
-                    .slice(0, 2)}
-                </div>
-                <h3 className="mt-7 font-serif text-2xl leading-tight">{m.name}</h3>
-                <p className="mt-2 text-[11px] uppercase tracking-[0.08em] text-gold">{m.role[lang]}</p>
-                <p className="mt-4 text-[15px] leading-relaxed text-steel">{m.bio[lang]}</p>
-              </article>
+              <li
+                key={`${m.role.uz}-${i}`}
+                data-index-row
+                className="group grid grid-cols-[2.5rem_1fr] gap-x-4 gap-y-1 border-b border-line py-6 transition-colors duration-500 hover:bg-white/70 md:grid-cols-12 md:items-center md:gap-x-6 md:px-4"
+              >
+                <span className="font-mono text-[11px] text-gold md:col-span-1">{pad(i + 1)}</span>
+                <h3 className="font-serif text-2xl md:col-span-4">{m.name}</h3>
+                <p className="col-span-2 font-mono text-[10px] uppercase tracking-[0.1em] text-gold md:col-span-3">
+                  {m.role[lang]}
+                </p>
+                <p className="col-span-2 text-sm leading-relaxed text-steel md:col-span-4">{m.bio[lang]}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* 6. HUJJATLAR — litsenziya + tariflar */}
-      <section id="tariffs" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-20 md:px-16 md:py-28">
+      {/* 7. HUJJATLAR — tariflar daftari + litsenziya */}
+      <section id="tariffs" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-24 md:px-16">
         <div className="mx-auto max-w-[1280px]">
           <SectionHead index="05" kicker={t.sections.docs.kicker} title={t.sections.docs.title} />
-
-          {/* Litsenziya */}
-          <div className="mb-16">
-            <p data-reveal className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
-              {t.license.label}
-            </p>
-            <div className="grid justify-items-center gap-6 md:grid-cols-2 md:gap-8">
-              {LICENSES.map((l, i) => (
-                <figure key={l.src} data-reveal className="group w-full max-w-md">
-                  <div className="overflow-hidden border border-line bg-white shadow-[0_10px_30px_-18px_rgba(11,37,69,0.35)] transition-transform duration-500 group-hover:-translate-y-1">
-                    <Image
-                      src={l.src}
-                      alt={t.license.items[i].alt}
-                      width={929}
-                      height={1454}
-                      sizes="(max-width: 768px) 100vw, 420px"
-                      className="h-auto w-full"
-                    />
-                  </div>
-                  <figcaption className="mt-3 flex items-center justify-between text-sm">
-                    <span className="font-serif text-lg">{t.license.items[i].caption}</span>
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-7">
+              <p data-reveal className="mb-4 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">
+                {t.tariffsLabel}
+              </p>
+              <ul className="border-t border-navy">
+                {seedTariffs.map((tf, i) => (
+                  <li key={tf.file} data-index-row>
                     <a
-                      href={l.src}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="border-b border-gold text-navy no-underline"
+                      href={`/files/${tf.file}`}
+                      download
+                      className="group relative grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 overflow-hidden border-b border-line py-5 text-navy no-underline"
                     >
-                      {t.ui.fullView}
+                      <span className="absolute inset-0 origin-left scale-x-0 bg-gold/15 transition-transform duration-500 group-hover:scale-x-100" />
+                      <span className="relative font-mono text-[11px] text-gold">{pad(i + 1)}</span>
+                      <span className="relative">
+                        <span className="block font-serif text-xl leading-tight md:text-2xl">{tf.title[lang]}</span>
+                        <span className="mt-1 block font-mono text-[10px] tracking-[0.06em] text-steel">
+                          {tf.date} · {ext(tf.file)}
+                        </span>
+                      </span>
+                      <span className="relative flex items-center gap-2 text-sm font-medium">
+                        <span className="hidden sm:inline">{t.ui.download}</span>
+                        <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-y-0.5">
+                          ↓
+                        </span>
+                      </span>
                     </a>
-                  </figcaption>
-                </figure>
-              ))}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
 
-          {/* Tariflar */}
-          <p data-reveal className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
-            {t.tariffsLabel}
-          </p>
-          <div className="grid gap-4 md:grid-cols-3">
-            {seedTariffs.map((tf, i) => (
-              <a
-                key={tf.file}
-                data-reveal
-                href={`/files/${tf.file}`}
-                download
-                className="group relative flex min-h-52 flex-col justify-between overflow-hidden border border-line bg-paper p-7 text-navy no-underline transition-shadow duration-500 hover:shadow-[0_18px_40px_-18px_rgba(11,37,69,0.35)]"
-              >
-                <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
-                <div className="flex items-start justify-between">
-                  <span className="font-serif text-4xl leading-none text-gold">0{i + 1}</span>
-                  <span className="border border-navy px-2 py-0.5 font-mono text-[10px] tracking-[0.08em]">
-                    {tf.file.split('.').pop()?.toUpperCase()}
-                  </span>
-                </div>
-                <div>
-                  <p className="font-serif text-xl leading-snug">{tf.title[lang]}</p>
-                  <p className="mt-2 text-xs text-steel">{tf.date}</p>
-                </div>
-                <div className="mt-6 flex items-center justify-between border-t border-line pt-3 text-sm font-medium">
-                  <span>{t.ui.download}</span>
-                  <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-y-1">
-                    ↓
-                  </span>
-                </div>
-              </a>
-            ))}
+            <div className="lg:col-span-5">
+              <p data-reveal className="mb-4 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">
+                {t.license.label}
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                {LICENSES.map((l, i) => (
+                  <figure key={l.src} data-reveal className="group">
+                    <div className="overflow-hidden border border-line bg-white">
+                      <Image
+                        src={l.src}
+                        alt={t.license.items[i].alt}
+                        width={929}
+                        height={1454}
+                        sizes="(max-width: 1024px) 50vw, 240px"
+                        className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                    <figcaption className="mt-2 flex items-center justify-between gap-2 text-xs">
+                      <span className="font-serif text-base">{t.license.items[i].caption}</span>
+                      <a href={l.src} target="_blank" rel="noopener noreferrer" className="border-b border-gold text-navy no-underline">
+                        {t.ui.fullView}
+                      </a>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 7. ALOQA */}
-      <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-20 text-paper md:px-16 md:py-28">
+      {/* 8. ALOQA — chipta ko‘rinishida */}
+      <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-24 text-paper md:px-16">
         <div className="mx-auto max-w-[1280px]">
           <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <dl className="divide-y divide-paper/10 border-y border-paper/10 lg:col-span-5">
-              {contactRows.map((r) => (
-                <div key={r.label} data-reveal className="grid grid-cols-[7.5rem_1fr] gap-4 py-5">
-                  <dt className="pt-0.5 text-[11px] uppercase tracking-[0.08em] text-gold">{r.label}</dt>
-                  <dd className="text-[15px] leading-relaxed">{r.value}</dd>
-                </div>
-              ))}
-              <div className="pt-8">
-                <a
-                  data-magnet
-                  href={PHONE_HREF}
-                  className="inline-flex h-12 items-center bg-gold px-7 text-[15px] font-medium text-navy no-underline hover:bg-paper"
-                >
-                  {t.ui.call}
-                </a>
-              </div>
-            </dl>
-
-            <div className="relative lg:col-span-7">
-              <div aria-hidden="true" className="absolute -inset-3 translate-x-3 translate-y-3 border border-gold/40" />
+          <div data-reveal className="grid overflow-hidden border border-paper/15 md:grid-cols-12">
+            <div className="p-6 md:col-span-5 md:p-10">
+              <dl className="divide-y divide-paper/10">
+                {contactRows.map((r) => (
+                  <div key={r.label} className="grid grid-cols-[6.5rem_1fr] gap-4 py-3.5">
+                    <dt className="pt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{r.label}</dt>
+                    <dd className="text-sm leading-relaxed">{r.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <a
+                data-magnet
+                href={PHONE_HREF}
+                className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-sm font-medium text-navy no-underline hover:bg-paper"
+              >
+                {t.ui.call}
+              </a>
+            </div>
+            <div className="relative min-h-[340px] border-t border-dashed border-paper/15 md:col-span-7 md:border-l md:border-t-0">
               <iframe
                 title={t.mapTitle}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="relative h-[400px] w-full border-0 grayscale-[30%] contrast-105"
+                className="absolute inset-0 h-full w-full border-0 grayscale-[30%] contrast-105"
                 src="https://yandex.com/map-widget/v1/?ll=69.324979,41.269669&z=17&pt=69.324979,41.269669,pm2rdm"
               />
               <a
                 href={YANDEX_PIN}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-block border-b border-gold text-sm text-paper no-underline"
+                className="absolute bottom-4 right-4 bg-navy/90 px-3 py-2 text-xs text-paper no-underline hover:bg-gold hover:text-navy"
               >
                 {t.ui.openMap}
               </a>
@@ -823,7 +819,7 @@ export default function VariantDemo() {
             <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-14 w-auto" />
             <span className="font-serif text-lg">{t.tagline}</span>
           </div>
-          <p className="text-[13px] text-paper/60">
+          <p className="font-mono text-[11px] text-paper/60">
             © {new Date().getFullYear()} JB GROUP. {t.rights}
           </p>
         </div>
