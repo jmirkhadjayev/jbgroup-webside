@@ -1,0 +1,30 @@
+/* Variant tipografiyasi.
+   Sarlavha: Playfair Display (klassik, elegant). Matn: Manrope (aniq, o‘qilishi oson).
+   Harflar orasi normal, qatorlar orasi keng — o‘qish qulay bo‘lishi uchun. */
+
+:root {
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+
+p {
+  text-wrap: pretty;
+}

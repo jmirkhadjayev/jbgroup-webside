@@ -10,7 +10,7 @@ export const Settings: GlobalConfig = {
     { name: 'phone', type: 'text', required: true },
     { name: 'email', type: 'email', required: true },
     { name: 'hours', type: 'text', localized: true },
-    { name: 'mapQuery', type: 'text', defaultValue: 'Tashkent, Uzbekistan' },
+    { name: 'mapQuery', type: 'text', defaultValue: '41.269669,69.324979' },
     {
       name: 'stats',
       type: 'group',

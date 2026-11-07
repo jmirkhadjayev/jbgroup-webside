@@ -1,0 +1,201 @@
+// Variant sahifasi matnlari — o‘zbekcha, ruscha, inglizcha.
+// Xizmatlar, omborlar, rahbariyat, tariflar va manzil ma’lumotlari seed-data.ts da (uz/ru/en).
+
+export type Lang = 'uz' | 'ru' | 'en'
+export const LANGS: Lang[] = ['uz', 'ru', 'en']
+
+const uz = {
+  tagline: 'Bojxona Ombori & Logistika Majmuasi',
+  rights: 'Barcha huquqlar himoyalangan.',
+  nav: {
+    about: 'Biz haqimizda',
+    services: 'Xizmatlar',
+    warehouses: 'Omborlar',
+    admin: 'Rahbariyat',
+    tariffs: 'Tariflar',
+    contact: 'Aloqa',
+  },
+  ui: {
+    menu: 'Menyu',
+    lang: 'Til',
+    cta: 'Aloqa',
+    scroll: 'Pastga aylantiring ↓',
+    hint: 'Surib ko‘ring →',
+    call: 'Qo‘ng‘iroq qilish',
+    download: 'Yuklab olish',
+    fullView: 'To‘liq ko‘rish',
+    map: 'Xarita',
+    openMap: 'Yandex Xaritada ochish',
+  },
+  hero: {
+    title: 'Yuklaringiz bojxona nazorati ostida saqlanadi',
+    lede: 'Xususiy bojxona ombori: bojxona to‘lovlari rasmiylashtirilgunga qadar tovarlarni qonuniy saqlash, qayta ishlash va jo‘natish.',
+    cta1: 'Tariflarni ko‘rish',
+    cta2: 'Bog‘lanish',
+  },
+  beats: [
+    { title: 'Yuk keldi', text: 'Bojxona yuki darvozadan kiradi va rasmiy ro‘yxatga olinadi.' },
+    { title: 'Forklift yukni oldi', text: 'Malakali operator yukni xavfsiz ilib, yo‘lak bo‘ylab olib boradi.' },
+    { title: 'Skladga joylashtirildi', text: 'Yuk belgilangan bay (katak)ga aniq va xavfsiz joylashtiriladi.' },
+    { title: 'Saqlandi', text: 'Yuk nazorat ostida saqlanadi va hujjat bilan tasdiqlanadi.' },
+  ],
+  stamp: { main: 'TASDIQLANDI', sub: 'BOJXONA OMBORI' },
+  sections: {
+    services: { kicker: 'Nima qilamiz', title: 'Xizmatlar' },
+    warehouses: { kicker: 'Ombor bloklari', title: 'Omborlar' },
+    admin: { kicker: 'Jamoa', title: 'Rahbariyat' },
+    docs: { kicker: 'Hujjatlar', title: 'Tariflar va hujjatlar' },
+    contact: { kicker: 'Manzil va aloqa', title: 'Biz bilan bog‘laning' },
+  },
+  license: {
+    label: 'Litsenziya',
+    items: [
+      { caption: 'Litsenziya', alt: 'Bojxona ombori litsenziyasi' },
+      { caption: 'Ilova', alt: 'Litsenziya ilovasi: faoliyat turi va qo‘shimcha ma’lumotlar' },
+    ],
+  },
+  tariffsLabel: 'Tariflar',
+  stats: { area: 'm² maydon', capacity: 'tonna sig‘im', years: 'yil faoliyat' },
+  board: {
+    title: 'Jonli holat (namuna)',
+    occupancy: 'Bandlik',
+    total: 'Umumiy sig‘im bandligi',
+    free: 'Bo‘sh',
+    busy: 'Band',
+    full: 'To‘lgan',
+  },
+  contact: { address: 'Manzil', phone: 'Telefon', email: 'Email', hours: 'Ish vaqti', license: 'Litsenziya' },
+  mapTitle: 'Xarita',
+}
+
+export type Dict = typeof uz
+
+const ru: Dict = {
+  tagline: 'Таможенный склад и логистический комплекс',
+  rights: 'Все права защищены.',
+  nav: {
+    about: 'О нас',
+    services: 'Услуги',
+    warehouses: 'Склады',
+    admin: 'Руководство',
+    tariffs: 'Тарифы',
+    contact: 'Контакты',
+  },
+  ui: {
+    menu: 'Меню',
+    lang: 'Язык',
+    cta: 'Связаться',
+    scroll: 'Прокрутите вниз ↓',
+    hint: 'Листайте →',
+    call: 'Позвонить',
+    download: 'Скачать',
+    fullView: 'Открыть полностью',
+    map: 'Карта',
+    openMap: 'Открыть в Яндекс Картах',
+  },
+  hero: {
+    title: 'Ваши грузы хранятся под таможенным контролем',
+    lede: 'Частный таможенный склад: хранение товаров под таможенным контролем до оформления таможенных платежей, переработка и отправка.',
+    cta1: 'Смотреть тарифы',
+    cta2: 'Связаться',
+  },
+  beats: [
+    { title: 'Груз прибыл', text: 'Таможенный груз проходит через ворота и официально регистрируется.' },
+    { title: 'Погрузчик забрал груз', text: 'Опытный оператор безопасно поднимает груз и перевозит его по проходу.' },
+    { title: 'Размещение на складе', text: 'Груз точно и безопасно устанавливается в назначенную ячейку.' },
+    { title: 'Хранение', text: 'Груз хранится под контролем и подтверждается документально.' },
+  ],
+  stamp: { main: 'ПОДТВЕРЖДЕНО', sub: 'ТАМОЖЕННЫЙ СКЛАД' },
+  sections: {
+    services: { kicker: 'Что мы делаем', title: 'Услуги' },
+    warehouses: { kicker: 'Складские блоки', title: 'Склады' },
+    admin: { kicker: 'Команда', title: 'Руководство' },
+    docs: { kicker: 'Документы', title: 'Тарифы и документы' },
+    contact: { kicker: 'Адрес и контакты', title: 'Свяжитесь с нами' },
+  },
+  license: {
+    label: 'Лицензия',
+    items: [
+      { caption: 'Лицензия', alt: 'Лицензия таможенного склада' },
+      { caption: 'Приложение', alt: 'Приложение к лицензии: вид деятельности и дополнительные сведения' },
+    ],
+  },
+  tariffsLabel: 'Тарифы',
+  stats: { area: 'м² площади', capacity: 'тонн вместимости', years: 'лет работы' },
+  board: {
+    title: 'Оперативный статус (пример)',
+    occupancy: 'Заполненность',
+    total: 'Общая заполненность',
+    free: 'Свободно',
+    busy: 'Занято',
+    full: 'Заполнен',
+  },
+  contact: { address: 'Адрес', phone: 'Телефон', email: 'Email', hours: 'Часы работы', license: 'Лицензия' },
+  mapTitle: 'Карта',
+}
+
+const en: Dict = {
+  tagline: 'Customs Warehouse & Logistics Complex',
+  rights: 'All rights reserved.',
+  nav: {
+    about: 'About us',
+    services: 'Services',
+    warehouses: 'Warehouses',
+    admin: 'Management',
+    tariffs: 'Tariffs',
+    contact: 'Contact',
+  },
+  ui: {
+    menu: 'Menu',
+    lang: 'Language',
+    cta: 'Contact',
+    scroll: 'Scroll down ↓',
+    hint: 'Scroll sideways →',
+    call: 'Call us',
+    download: 'Download',
+    fullView: 'View full size',
+    map: 'Map',
+    openMap: 'Open in Yandex Maps',
+  },
+  hero: {
+    title: 'Your cargo is stored under customs control',
+    lede: 'A private bonded warehouse: goods are stored under customs control until duties are settled, then processed and dispatched.',
+    cta1: 'View tariffs',
+    cta2: 'Get in touch',
+  },
+  beats: [
+    { title: 'Cargo arrives', text: 'Customs cargo passes the gate and is officially registered.' },
+    { title: 'Forklift picks it up', text: 'An experienced operator lifts the cargo safely and moves it along the aisle.' },
+    { title: 'Placed in the warehouse', text: 'The cargo is precisely and safely placed in its assigned bay.' },
+    { title: 'Stored under control', text: 'The cargo is kept under supervision and confirmed with documents.' },
+  ],
+  stamp: { main: 'CONFIRMED', sub: 'CUSTOMS WAREHOUSE' },
+  sections: {
+    services: { kicker: 'What we do', title: 'Services' },
+    warehouses: { kicker: 'Warehouse units', title: 'Warehouses' },
+    admin: { kicker: 'Team', title: 'Management' },
+    docs: { kicker: 'Documents', title: 'Tariffs and documents' },
+    contact: { kicker: 'Address and contacts', title: 'Get in touch with us' },
+  },
+  license: {
+    label: 'License',
+    items: [
+      { caption: 'License', alt: 'Customs warehouse license' },
+      { caption: 'Annex', alt: 'License annex: activity type and additional details' },
+    ],
+  },
+  tariffsLabel: 'Tariffs',
+  stats: { area: 'm² area', capacity: 'tonnes capacity', years: 'years in operation' },
+  board: {
+    title: 'Live status (sample)',
+    occupancy: 'Occupancy',
+    total: 'Overall occupancy',
+    free: 'Free',
+    busy: 'Occupied',
+    full: 'Full',
+  },
+  contact: { address: 'Address', phone: 'Phone', email: 'Email', hours: 'Working hours', license: 'License' },
+  mapTitle: 'Map',
+}
+
+export const T: Record<Lang, Dict> = { uz, ru, en }

@@ -5,29 +5,39 @@ type L = { uz: string; ru: string; en: string }
 
 export const seedSettings = {
   license: '[Litsenziya raqami]',
-  phone: '+998 00 000 00 00',
-  email: 'info@example.uz',
-  mapQuery: 'Tashkent, Uzbekistan',
+  phone: '+998 93 523 53 00',
+  email: 'zulfiya1023@mail.ru',
+  mapQuery: '41.269669,69.324979',
   address: {
-    uz: 'Toshkent shahri, [ko‘cha va uy raqami]',
-    ru: 'г. Ташкент, [улица и номер дома]',
-    en: 'Tashkent, [street and building number]',
+    uz: 'Toshkent shahri, Yashnobod tumani, Do‘stobod MFY, Maxtumquli ko‘chasi, 99-uy, 25-xona',
+    ru: 'г. Ташкент, Яшнабадский район, МФЙ Дустобод, ул. Махтумкули, дом 99, офис 25',
+    en: 'Tashkent city, Yashnobod district, Do‘stobod neighborhood, Maxtumquli street, building 99, room 25',
   } as L,
   hours: {
     uz: 'Du–Ju 09:00–18:00',
     ru: 'Пн–Пт 09:00–18:00',
     en: 'Mon–Fri 09:00–18:00',
   } as L,
-  stats: { area: 12000, capacity: 5000, years: 10 }, // NAMUNA
+  // area — jadvaldan (B skladsiz: 16 228 m²); capacity va years — NAMUNA
+  stats: { area: 16228, capacity: 4350, years: 7 },
 }
 
 export const seedWarehouses: { image: string; area: number; name: L; type: L }[] = [
-  { image: 'ombor-1.jpg', area: 4000, name: { uz: 'Sklad A', ru: 'Склад A', en: 'Warehouse A' }, type: { uz: 'Umumiy saqlash', ru: 'Общее хранение', en: 'General storage' } },
-  { image: 'ombor-2.jpg', area: 3500, name: { uz: 'Sklad B', ru: 'Склад B', en: 'Warehouse B' }, type: { uz: 'Ochiq maydon', ru: 'Открытая площадка', en: 'Open yard' } },
-  { image: 'ombor-3.jpg', area: 2500, name: { uz: 'Sklad C', ru: 'Склад C', en: 'Warehouse C' }, type: { uz: 'Ombor binosi', ru: 'Здание склада', en: 'Warehouse building' } },
-  { image: 'ombor-4.jpg', area: 2000, name: { uz: 'Sklad D', ru: 'Склад D', en: 'Warehouse D' }, type: { uz: 'Ombor binosi', ru: 'Здание склада', en: 'Warehouse building' } },
-  { image: 'ombor-5.jpg', area: 3000, name: { uz: 'Sklad E', ru: 'Склад E', en: 'Warehouse E' }, type: { uz: 'Ochiq maydon', ru: 'Открытая площадка', en: 'Open yard' } },
-  { image: 'ombor-6.jpg', area: 2800, name: { uz: 'Sklad F', ru: 'Склад F', en: 'Warehouse F' }, type: { uz: 'Yopiq yuklash maydoni', ru: 'Крытая погрузочная зона', en: 'Covered loading area' } },
+  // Maydonlar: "Omborxonalar turlari va maydoni" jadvalidan (jami 17 593 m²)
+  {
+    image: 'ombor-1.jpg',
+    area: 6676,
+    name: { uz: 'A. Bojxona ombori', ru: 'A. Таможенный склад', en: 'A. Customs warehouse' },
+    type: {
+      uz: 'A1 · 731 m²  |  A2 · 814 m²  |  A3 · 5 131 m²',
+      ru: 'A1 · 731 м²  |  A2 · 814 м²  |  A3 · 5 131 м²',
+      en: 'A1 · 731 m²  |  A2 · 814 m²  |  A3 · 5,131 m²',
+    },
+  },
+  { image: 'ombor-3.jpg', area: 3120, name: { uz: 'C. Sklad', ru: 'C. Склад', en: 'C. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
+  { image: 'ombor-4.jpg', area: 3072, name: { uz: 'F. Sklad + garaj', ru: 'F. Склад + гараж', en: 'F. Warehouse + garage' }, type: { uz: 'F1 · 480 m²  |  F2 · 2 592 m²', ru: 'F1 · 480 м²  |  F2 · 2 592 м²', en: 'F1 · 480 m²  |  F2 · 2,592 m²' } },
+  { image: 'ombor-5.jpg', area: 1560, name: { uz: 'D. Sklad', ru: 'D. Склад', en: 'D. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
+  { image: 'ombor-6.jpg', area: 1800, name: { uz: 'E. Sklad', ru: 'E. Склад', en: 'E. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
 ]
 
 export const seedServices: { title: L; text: L }[] = [
