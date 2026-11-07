@@ -5,13 +5,13 @@ type L = { uz: string; ru: string; en: string }
 
 export const seedSettings = {
   license: '[Litsenziya raqami]',
-  phone: '+998 00 000 00 00',
-  email: 'info@example.uz',
-  mapQuery: 'Tashkent, Uzbekistan',
+  phone: '+998 93 523 53 00',
+  email: 'zulfiya1023@mail.ru',
+  mapQuery: '41.269669,69.324979',
   address: {
-    uz: 'Toshkent shahri, [ko‘cha va uy raqami]',
-    ru: 'г. Ташкент, [улица и номер дома]',
-    en: 'Tashkent, [street and building number]',
+    uz: 'Toshkent shahri, Yashnobod tumani, Do‘stobod MFY, Maxtumquli ko‘chasi, 99-uy, 25-xona',
+    ru: 'г. Ташкент, Яшнабадский район, МФЙ Дустобод, ул. Махтумкули, дом 99, офис 25',
+    en: 'Tashkent city, Yashnobod district, Do‘stobod neighborhood, Maxtumquli street, building 99, room 25',
   } as L,
   hours: {
     uz: 'Du–Ju 09:00–18:00',

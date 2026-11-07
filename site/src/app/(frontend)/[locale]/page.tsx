@@ -20,6 +20,17 @@ type Props = { params: Promise<{ locale: string }> }
 
 const fmt = (n: number) => n.toLocaleString('en-US').replace(/,/g, ' ')
 
+// Yandex Maps widget. mapQuery "lat,lon" bo‘lsa koordinata bilan, aks holda matn bo‘yicha qidiruv.
+// Yandex widget da ll = "lon,lat" tartibida.
+function yandexMapSrc(mapQuery: string): string {
+  const m = mapQuery.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/)
+  if (m) {
+    const [lat, lon] = [m[1], m[2]]
+    return `https://yandex.com/map-widget/v1/?ll=${lon},${lat}&z=17&pt=${lon},${lat},pm2rdm`
+  }
+  return `https://yandex.com/map-widget/v1/?text=${encodeURIComponent(mapQuery)}&z=17`
+}
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
@@ -200,7 +211,7 @@ export default async function HomePage({ params }: Props) {
               <dl>
                 <Row label={tContact('address')}>{settings.address}</Row>
                 <Row label={tContact('phone')}>
-                  <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="border-b border-gold no-underline">
+                  <a href={`tel:${(settings.phone ?? '').replace(/\s/g, '')}`} className="border-b border-gold no-underline">
                     {settings.phone}
                   </a>
                 </Row>
@@ -217,7 +228,7 @@ export default async function HomePage({ params }: Props) {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="mt-10 h-[260px] w-full border-0 grayscale-[40%] contrast-105"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(settings.mapQuery ?? 'Tashkent')}&output=embed`}
+                src={yandexMapSrc(settings.mapQuery ?? 'Tashkent')}
               />
             </div>
             <div>
