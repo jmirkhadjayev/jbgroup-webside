@@ -6,86 +6,63 @@ import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { flow } from './flow'
+import { LANGS, T, type Dict, type Lang } from './i18n'
 import { seedServices, seedSettings, seedTariffs, seedTeam, seedWarehouses } from '@/lib/seed-data'
 
 // 3D sahna faqat brauzerda yuklanadi (SSR yo‘q)
 const WarehouseScene = dynamic(() => import('./WarehouseScene'), { ssr: false })
 
-// Eski saytning menyu punktlari va bo‘limlari
-const NAV = [
-  { id: 'about', label: 'Biz haqimizda' },
-  { id: 'services', label: 'Xizmatlar' },
-  { id: 'warehouses', label: 'Omborlar' },
-  { id: 'admin', label: 'Rahbariyat' },
-  { id: 'tariffs', label: 'Tariflar' },
-  { id: 'contact', label: 'Aloqa' },
-]
-
-const HERO_TITLE = 'Yuklaringiz bojxona nazorati ostida saqlanadi'
-const HERO_LEDE =
-  'Xususiy bojxona ombori: bojxona to‘lovlari rasmiylashtirilgunga qadar tovarlarni qonuniy saqlash, qayta ishlash va jo‘natish.'
-
-const BEATS = [
-  { title: 'Yuk keldi', text: 'Bojxona yuki darvozadan kiradi va rasmiy ro‘yxatga olinadi.' },
-  { title: 'Forklift yukni oldi', text: 'Malakali operator yukni xavfsiz ilib, yo‘lak bo‘ylab olib boradi.' },
-  { title: 'Skladga joylashtirildi', text: 'Yuk belgilangan bay (katak)ga aniq va xavfsiz joylashtiriladi.' },
-  { title: 'Saqlandi', text: 'Yuk nazorat ostida saqlanadi va hujjat bilan tasdiqlanadi.' },
-]
-
-// Namuna holat: B02 — yangi kelgan yuk
-const BAYS = Array.from({ length: 9 }, (_, i) => ({
-  id: `B${String(i + 1).padStart(2, '0')}`,
-  status: i === 1 ? 'new' : i % 3 === 0 ? 'free' : 'busy',
-}))
-
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI']
-
-// Til almashtirgich: faqat brend nomi va tagline uchun to‘liq tarjima
-type Lang = 'uz' | 'ru' | 'en'
-const LANGS: Lang[] = ['uz', 'ru', 'en']
-const TAGLINE: Record<Lang, string> = {
-  uz: 'Bojxona Ombori & Logistika Majmuasi',
-  ru: 'Таможенный склад и логистический комплекс',
-  en: 'Customs Warehouse & Logistics Complex',
-}
-const RIGHTS: Record<Lang, string> = {
-  uz: 'Barcha huquqlar himoyalangan.',
-  ru: 'Все права защищены.',
-  en: 'All rights reserved.',
-}
+const NAV_IDS = ['about', 'services', 'warehouses', 'admin', 'tariffs', 'contact'] as const
 const LOGO = {
   src: '/brand/jb-group-logo.png', // och fonlar uchun (header)
   dark: '/brand/jb-group-logo-dark.png', // to‘q fonlar uchun (hero, footer)
   width: 988,
   height: 739,
 }
-
 const LICENSES = [
-  { src: '/licenses/litsenziya.jpg', alt: 'Bojxona ombori litsenziyasi', caption: 'Litsenziya' },
-  { src: '/licenses/litsenziya-ilova.jpg', alt: 'Litsenziya ilovasi: faoliyat turi va qo‘shimcha ma’lumotlar', caption: 'Ilova' },
+  { src: '/licenses/litsenziya.jpg' },
+  { src: '/licenses/litsenziya-ilova.jpg' },
 ]
-// Bento galereya: katakchalar o‘lchami (lg da 4 ustun)
-const GALLERY_SPAN = ['lg:col-span-2 lg:row-span-2', '', '', 'lg:col-span-2', '', '']
-const PHONE_HREF =`tel:${seedSettings.phone.replace(/\s/g, '')}`
+// Galereya: 5 ta karta — birinchi (A) katta (2×2), qolgan 4 tasi o‘ng tomonda 2×2
+const GALLERY_SPAN = ['lg:col-span-2 lg:row-span-2', '', '', '', '']
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI']
+const PHONE_HREF = `tel:${seedSettings.phone.replace(/\s/g, '')}`
+const YANDEX_PIN = 'https://yandex.com/maps/?pt=69.324979,41.269669&z=17&l=map'
+
+// Sklad birliklari va bandlik — NAMUNA (random). Haqiqiy ma’lumot kelganda shu yerni yangilang.
+const UNITS = [
+  { id: 'A1', area: 731, occ: 72 },
+  { id: 'A2', area: 814, occ: 64 },
+  { id: 'A3', area: 5131, occ: 85 },
+  { id: 'C', area: 3120, occ: 58 },
+  { id: 'D', area: 1560, occ: 91 },
+  { id: 'E', area: 1800, occ: 40 },
+  { id: 'F1', area: 480, occ: 0 },
+  { id: 'F2', area: 2592, occ: 77 },
+]
+const UNITS_AREA = UNITS.reduce((s, u) => s + u.area, 0)
+// Umumiy bandlik — maydon bo‘yicha o‘rtacha
+const CAPACITY_PCT = Math.round(UNITS.reduce((s, u) => s + u.area * u.occ, 0) / UNITS_AREA)
+const unitStatus = (occ: number, b: Dict['board']) => (occ === 0 ? b.free : occ >= 85 ? b.full : b.busy)
 
 const fmt = (n: number) => Math.round(n).toLocaleString('en-US').replace(/,/g, ' ')
 
-function Stamp() {
+function Stamp({ main, sub }: { main: string; sub: string }) {
   return (
     <svg viewBox="0 0 200 200" className="h-full w-full" aria-hidden="true">
       <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" strokeWidth="4" />
       <circle cx="100" cy="100" r="72" fill="none" stroke="currentColor" strokeWidth="2" />
-      <text x="100" y="94" textAnchor="middle" fontSize="17" fontWeight="600" fill="currentColor" letterSpacing="2">
-        TASDIQLANDI
+      <text x="100" y="94" textAnchor="middle" fontSize="15" fontWeight="600" fill="currentColor" letterSpacing="1">
+        {main}
       </text>
-      <text x="100" y="120" textAnchor="middle" fontSize="12" fill="currentColor" letterSpacing="3">
-        BOJXONA OMBORI
+      <text x="100" y="120" textAnchor="middle" fontSize="11" fill="currentColor" letterSpacing="1">
+        {sub}
       </text>
     </svg>
   )
 }
 
-function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
+function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t: Dict }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('')
@@ -100,7 +77,7 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
 
   // Faol bo‘lim: ekranning o‘rtasidan o‘tayotgan bo‘lim menyuda belgilanadi
   useEffect(() => {
-    const els = NAV.map((n) => document.getElementById(n.id)).filter((el): el is HTMLElement => el !== null)
+    const els = NAV_IDS.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null)
     const io = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting)
@@ -124,7 +101,7 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
             scrolled ? 'py-2' : 'py-5'
           }`}
         >
-          <a href="#top" aria-label="JB GROUP — bosh sahifa" className="flex items-center gap-5 no-underline">
+          <a href="#top" aria-label="JB GROUP" className="flex items-center gap-5 no-underline">
             <Image
               src={scrolled ? LOGO.src : LOGO.dark}
               alt="JB GROUP"
@@ -138,14 +115,14 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
                 scrolled ? 'text-steel' : 'text-paper/75'
               }`}
             >
-              {TAGLINE[lang]}
+              {t.tagline}
             </span>
           </a>
 
           <nav aria-label="Asosiy" className="hidden lg:block">
             <ul className="flex items-center gap-8">
-              {NAV.map((n) => {
-                const isActive = active === n.id
+              {NAV_IDS.map((id) => {
+                const isActive = active === id
                 const color = isActive
                   ? scrolled
                     ? 'text-navy'
@@ -154,13 +131,13 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
                     ? 'text-steel hover:text-navy'
                     : 'text-paper/75 hover:text-paper'
                 return (
-                  <li key={n.id}>
+                  <li key={id}>
                     <a
-                      href={`#${n.id}`}
+                      href={`#${id}`}
                       aria-current={isActive ? 'true' : undefined}
                       className={`group relative block py-2 text-[15px] no-underline transition-colors duration-300 ${color}`}
                     >
-                      {n.label}
+                      {t.nav[id]}
                       <span
                         className={`absolute inset-x-0 -bottom-0.5 h-[2px] origin-left bg-gold transition-transform duration-500 ${
                           isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
@@ -177,7 +154,7 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
             {/* Til: kapsula ko‘rinishida */}
             <div
               role="group"
-              aria-label="Til"
+              aria-label={t.ui.lang}
               className={`flex items-center gap-0.5 rounded-full border p-0.5 text-xs font-medium transition-colors duration-500 ${
                 scrolled ? 'border-line' : 'border-paper/30'
               }`}
@@ -209,7 +186,7 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
               href="#contact"
               className="group hidden h-11 items-center gap-2 bg-gold px-5 text-sm font-medium text-navy no-underline transition-colors duration-300 hover:bg-paper md:inline-flex"
             >
-              Aloqa
+              {t.ui.cta}
               <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
                 →
               </span>
@@ -218,7 +195,7 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
             <button
               type="button"
               aria-expanded={open}
-              aria-label="Menyu"
+              aria-label={t.ui.menu}
               onClick={() => setOpen((o) => !o)}
               className={`flex h-11 w-11 flex-col items-center justify-center gap-1.5 border lg:hidden ${
                 scrolled ? 'border-line text-navy' : 'border-paper/30 text-paper'
@@ -250,20 +227,20 @@ function Header({ lang, onLang }: { lang: Lang; onLang: (l: Lang) => void }) {
         }`}
       >
         <ul>
-          {NAV.map((n, i) => (
+          {NAV_IDS.map((id, i) => (
             <li
-              key={n.id}
+              key={id}
               className={`border-b border-paper/10 transition-all duration-500 ${
                 open ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
               }`}
               style={{ transitionDelay: open ? `${i * 60 + 120}ms` : '0ms' }}
             >
               <a
-                href={`#${n.id}`}
+                href={`#${id}`}
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-between py-4 font-serif text-3xl no-underline"
               >
-                {n.label}
+                {t.nav[id]}
                 <span aria-hidden="true" className="text-gold">
                   →
                 </span>
@@ -292,6 +269,12 @@ function SectionHead({ kicker, title, light = false }: { kicker: string; title: 
 export default function VariantDemo() {
   const rootRef = useRef<HTMLDivElement>(null)
   const [lang, setLang] = useState<Lang>('uz')
+  const t = T[lang]
+
+  // <html lang> ni til bilan moslashtiramiz
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
 
   useEffect(() => {
     const root = rootRef.current
@@ -299,7 +282,7 @@ export default function VariantDemo() {
     gsap.registerPlugin(ScrollTrigger)
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const q = <T extends Element>(sel: string) => Array.from(root.querySelectorAll<T>(sel))
+    const q = <T2 extends Element>(sel: string) => Array.from(root.querySelectorAll<T2>(sel))
     const cleanups: Array<() => void> = []
 
     const ctx = gsap.context(() => {
@@ -378,7 +361,7 @@ export default function VariantDemo() {
           )
         })
 
-        // Bay taxtasi
+        // Bay taxtasi (yashirilgan bo‘lsa ham xavfsiz)
         gsap.from('[data-bay]', {
           scale: 0.7,
           opacity: 0,
@@ -411,7 +394,7 @@ export default function VariantDemo() {
           '[data-capacity]',
           { scaleX: 0 },
           {
-            scaleX: 0.78,
+            scaleX: CAPACITY_PCT / 100,
             duration: 1.6,
             ease: 'power3.out',
             transformOrigin: 'left center',
@@ -457,7 +440,7 @@ export default function VariantDemo() {
         <WarehouseScene />
       </div>
 
-      <Header lang={lang} onLang={setLang} />
+      <Header lang={lang} onLang={setLang} t={t} />
 
       {/* 1. HERO */}
       <section
@@ -465,7 +448,7 @@ export default function VariantDemo() {
         className="relative z-10 flex h-[100svh] min-h-[640px] items-end overflow-hidden px-6 pb-20 text-paper md:px-16"
       >
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/40 to-transparent" />
-        <div className="absolute right-6 top-28 hidden md:block md:right-16">
+        <div className="pointer-events-none absolute right-6 top-28 hidden md:block md:right-16">
           <Image
             src={LOGO.dark}
             alt="JB GROUP"
@@ -476,51 +459,54 @@ export default function VariantDemo() {
         </div>
         <div className="relative max-w-4xl">
           <p data-fade className="mb-6 text-xs uppercase tracking-[0.08em] text-gold">
-            {TAGLINE[lang]}
+            {t.tagline}
           </p>
           <h1
-            aria-label={HERO_TITLE}
+            aria-label={t.hero.title}
             className="font-serif text-[clamp(2.8rem,6.5vw,6rem)] leading-[0.98] font-normal tracking-[-0.02em]"
           >
-            {HERO_TITLE.split(' ').map((w) => (
-              <span key={w} data-hero-word className="mr-[0.2em] inline-block overflow-hidden align-top pb-[0.06em]">
+            {t.hero.title.split(' ').map((w, i) => (
+              <span key={`${w}-${i}`} data-hero-word className="mr-[0.2em] inline-block overflow-hidden align-top pb-[0.06em]">
                 <span className="inline-block">{w}</span>
               </span>
             ))}
           </h1>
           <p data-fade className="mt-8 max-w-[46ch] text-lg text-paper/80">
-            {HERO_LEDE}
+            {t.hero.lede}
           </p>
           <div data-fade className="mt-10 flex flex-wrap gap-3">
             <a
               href="#tariffs"
               className="inline-flex h-12 items-center bg-gold px-6 font-medium text-navy no-underline hover:bg-paper"
             >
-              Tariflarni ko‘rish
+              {t.hero.cta1}
             </a>
             <a
               href="#contact"
               className="inline-flex h-12 items-center border border-paper/40 px-6 font-medium text-paper no-underline hover:border-gold hover:text-gold"
             >
-              Bog‘lanish
+              {t.hero.cta2}
             </a>
           </div>
+          <p data-fade className="mt-12 text-xs uppercase tracking-[0.08em] text-paper/60">
+            {t.ui.scroll}
+          </p>
         </div>
       </section>
 
       {/* 2. BIZ HAQIMIZDA — bosqichlar, scroll bilan 3D sahna bilan sinxron */}
       <div id="about" data-beats className="relative z-10 scroll-mt-20 text-paper">
-        {BEATS.map((b, i) => (
+        {t.beats.map((b, i) => (
           <section key={b.title} className="flex min-h-[100svh] items-center px-6 md:px-16">
             <article data-beat className="relative max-w-md border-l-2 border-gold bg-navy/80 p-8 backdrop-blur-md">
               <p className="text-sm tracking-[0.08em] text-gold">
-                0{i + 1} / 0{BEATS.length}
+                0{i + 1} / 0{t.beats.length}
               </p>
               <h2 className="mt-3 font-serif text-4xl leading-tight">{b.title}</h2>
               <p className="mt-4 text-paper/80">{b.text}</p>
-              {i === BEATS.length - 1 && (
+              {i === t.beats.length - 1 && (
                 <div data-stamp className="absolute -right-8 -top-10 w-32 -rotate-12 text-gold md:w-40">
-                  <Stamp />
+                  <Stamp main={t.stamp.main} sub={t.stamp.sub} />
                 </div>
               )}
             </article>
@@ -530,29 +516,30 @@ export default function VariantDemo() {
 
       {/* 3. XIZMATLAR */}
       <section id="services" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
-        <SectionHead kicker="Nima qilamiz" title="Xizmatlar" />
+        <SectionHead kicker={t.sections.services.kicker} title={t.sections.services.title} />
         <div className="grid gap-px bg-line md:grid-cols-2 lg:grid-cols-3">
           {seedServices.map((s, i) => (
             <article key={s.title.uz} data-reveal className="bg-paper p-8">
               <p className="font-serif text-3xl text-gold">{ROMAN[i]}</p>
-              <h3 className="mt-4 font-serif text-2xl">{s.title.uz}</h3>
-              <p className="mt-3 text-steel">{s.text.uz}</p>
+              <h3 className="mt-4 font-serif text-2xl">{s.title[lang]}</h3>
+              <p className="mt-3 text-steel">{s.text[lang]}</p>
             </article>
           ))}
         </div>
       </section>
 
-      {/* 4. OMBORLAR + RAQAMLAR + JONLI HOLAT */}
+      {/* 4. OMBORLAR — galereya + raqamlar */}
       <section id="warehouses" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-24 md:px-16">
-        <SectionHead kicker="Ombor bloklari" title="Omborlar" />
-        {/* Bento galereya: birinchi karta katta, qolganlari turli o‘lchamda */}
+        <SectionHead kicker={t.sections.warehouses.kicker} title={t.sections.warehouses.title} />
+
+        {/* Bento galereya */}
         <div className="grid auto-rows-[240px] grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {seedWarehouses.map((w, i) => (
             <figure key={w.name.uz} data-reveal className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}>
               <div data-parallax className="absolute left-0 right-0" style={{ top: '-8%', bottom: '-8%' }}>
                 <Image
                   src={`/images/${w.image}`}
-                  alt={w.name.uz}
+                  alt={w.name[lang]}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
@@ -560,9 +547,9 @@ export default function VariantDemo() {
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-transparent" />
               <figcaption className="absolute inset-x-0 bottom-0 p-5 text-paper">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-gold">{w.type.uz}</p>
+                <p className="text-[11px] uppercase tracking-[0.08em] text-gold">{w.type[lang]}</p>
                 <div className="mt-1 flex items-end justify-between gap-3">
-                  <h3 className="font-serif text-2xl leading-tight">{w.name.uz}</h3>
+                  <h3 className="font-serif text-2xl leading-tight">{w.name[lang]}</h3>
                   <span className="shrink-0 text-sm text-paper/80">{fmt(w.area)} m²</span>
                 </div>
               </figcaption>
@@ -572,9 +559,9 @@ export default function VariantDemo() {
 
         <div className="mt-20 grid gap-12 md:grid-cols-3">
           {[
-            { value: seedSettings.stats.area, label: 'm² maydon' },
-            { value: seedSettings.stats.capacity, label: 'tonna sig‘im' },
-            { value: seedSettings.stats.years, label: 'yil faoliyat' },
+            { value: seedSettings.stats.area, label: t.stats.area },
+            { value: seedSettings.stats.capacity, label: t.stats.capacity },
+            { value: seedSettings.stats.years, label: t.stats.years },
           ].map((s) => (
             <div key={s.label} data-reveal className="border-t border-gold pt-6">
               <p className="font-serif text-6xl" data-count={s.value}>
@@ -585,29 +572,39 @@ export default function VariantDemo() {
           ))}
         </div>
 
-        <div className="mt-20">
-          <p className="text-xs uppercase tracking-[0.08em] text-gold">Jonli holat (namuna)</p>
-          <div data-board className="mt-6 grid grid-cols-3 gap-px bg-line md:grid-cols-9">
-            {BAYS.map((b) => (
-              <div
-                key={b.id}
-                data-bay
-                className={`flex aspect-square flex-col justify-between bg-paper p-3 ${
-                  b.status === 'new' ? 'bg-gold/20' : ''
-                }`}
-              >
-                <span className="font-mono text-xs text-steel">{b.id}</span>
-                <span
-                  data-live={b.status !== 'free' ? '' : undefined}
-                  className={`h-2 w-2 rounded-full ${b.status === 'free' ? 'bg-line' : 'bg-gold'}`}
-                />
+        {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
+        <div className="mt-20 hidden">
+          <p className="text-xs uppercase tracking-[0.08em] text-gold">{t.board.title}</p>
+          <div data-board className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-2 md:grid-cols-4">
+            {UNITS.map((u) => (
+              <div key={u.id} data-bay className="flex flex-col bg-paper p-6">
+                <div className="flex items-start justify-between gap-3">
+                  <span className="font-serif text-4xl leading-none">{u.id}</span>
+                  <span className={`flex items-center gap-2 pt-1 text-xs ${u.occ === 0 ? 'text-steel' : 'text-navy'}`}>
+                    <span
+                      data-live={u.occ > 0 ? '' : undefined}
+                      className={`h-2 w-2 rounded-full ${u.occ === 0 ? 'bg-line' : u.occ >= 85 ? 'bg-navy' : 'bg-gold'}`}
+                    />
+                    {unitStatus(u.occ, t.board)}
+                  </span>
+                </div>
+                <p className="mt-6 text-sm text-steel">{fmt(u.area)} m²</p>
+                <div className="mt-auto pt-6">
+                  <div className="flex justify-between text-xs text-steel">
+                    <span>{t.board.occupancy}</span>
+                    <span>{u.occ}%</span>
+                  </div>
+                  <div className="mt-2 h-1.5 w-full bg-line">
+                    <div className="h-full bg-gold" style={{ width: `${u.occ}%` }} />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
           <div className="mt-10">
             <div className="flex justify-between text-sm text-steel">
-              <span>Sig‘im bandligi</span>
-              <span>78%</span>
+              <span>{t.board.total}</span>
+              <span>{CAPACITY_PCT}%</span>
             </div>
             <div className="mt-3 h-2 w-full overflow-hidden bg-line">
               <div data-capacity className="h-full bg-navy" />
@@ -618,7 +615,7 @@ export default function VariantDemo() {
 
       {/* 5. RAHBARIYAT */}
       <section id="admin" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
-        <SectionHead kicker="Jamoa" title="Rahbariyat" />
+        <SectionHead kicker={t.sections.admin.kicker} title={t.sections.admin.title} />
         <div className="grid gap-10 md:grid-cols-3">
           {seedTeam.map((m, i) => (
             <article key={`${m.role.uz}-${i}`} data-reveal className="border-t border-gold pt-6">
@@ -630,29 +627,29 @@ export default function VariantDemo() {
                   .slice(0, 2)}
               </div>
               <h3 className="mt-6 font-serif text-2xl">{m.name}</h3>
-              <p className="mt-1 text-sm text-gold">{m.role.uz}</p>
-              <p className="mt-4 text-steel">{m.bio.uz}</p>
+              <p className="mt-1 text-sm text-gold">{m.role[lang]}</p>
+              <p className="mt-4 text-steel">{m.bio[lang]}</p>
             </article>
           ))}
         </div>
       </section>
 
-      {/* 6. TARIFLAR */}
+      {/* 6. HUJJATLAR — litsenziya + tariflar */}
       <section id="tariffs" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-24 md:px-16">
-        <SectionHead kicker="Hujjatlar" title="Tariflar va hujjatlar" />
+        <SectionHead kicker={t.sections.docs.kicker} title={t.sections.docs.title} />
 
         {/* Litsenziya */}
         <div className="mb-20">
           <p data-reveal className="text-xs uppercase tracking-[0.08em] text-gold">
-            Litsenziya
+            {t.license.label}
           </p>
           <div className="mt-6 grid justify-items-center gap-8 md:grid-cols-2 md:gap-10">
-            {LICENSES.map((l) => (
+            {LICENSES.map((l, i) => (
               <figure key={l.src} data-reveal className="group w-full max-w-md">
                 <div className="overflow-hidden border border-line bg-white shadow-[0_10px_30px_-18px_rgba(11,37,69,0.35)] transition-transform duration-500 group-hover:-translate-y-1">
                   <Image
                     src={l.src}
-                    alt={l.alt}
+                    alt={t.license.items[i].alt}
                     width={929}
                     height={1454}
                     sizes="(max-width: 768px) 100vw, 420px"
@@ -660,14 +657,14 @@ export default function VariantDemo() {
                   />
                 </div>
                 <figcaption className="mt-4 flex items-center justify-between text-sm">
-                  <span className="font-serif text-lg">{l.caption}</span>
+                  <span className="font-serif text-lg">{t.license.items[i].caption}</span>
                   <a
                     href={l.src}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="border-b border-gold text-navy no-underline"
                   >
-                    To‘liq ko‘rish
+                    {t.ui.fullView}
                   </a>
                 </figcaption>
               </figure>
@@ -677,14 +674,14 @@ export default function VariantDemo() {
 
         {/* Tariflar */}
         <p data-reveal className="mb-6 text-xs uppercase tracking-[0.08em] text-gold">
-          Tariflar
+          {t.tariffsLabel}
         </p>
         <div className="grid gap-6 md:grid-cols-3">
-          {seedTariffs.map((t, i) => (
+          {seedTariffs.map((tf, i) => (
             <a
-              key={t.file}
+              key={tf.file}
               data-reveal
-              href={`/files/${t.file}`}
+              href={`/files/${tf.file}`}
               download
               className="group relative flex min-h-64 flex-col justify-between overflow-hidden border border-line bg-paper p-8 text-navy no-underline transition-shadow duration-500 hover:shadow-[0_18px_40px_-18px_rgba(11,37,69,0.35)]"
             >
@@ -692,15 +689,15 @@ export default function VariantDemo() {
               <div className="flex items-start justify-between">
                 <span className="font-serif text-5xl text-gold">0{i + 1}</span>
                 <span className="border border-navy px-2 py-1 text-[11px] font-medium tracking-[0.08em]">
-                  {t.file.split('.').pop()?.toUpperCase()}
+                  {tf.file.split('.').pop()?.toUpperCase()}
                 </span>
               </div>
               <div>
-                <p className="font-serif text-2xl leading-snug">{t.title.uz}</p>
-                <p className="mt-2 text-sm text-steel">{t.date}</p>
+                <p className="font-serif text-2xl leading-snug">{tf.title[lang]}</p>
+                <p className="mt-2 text-sm text-steel">{tf.date}</p>
               </div>
               <div className="mt-8 flex items-center justify-between border-t border-line pt-4 text-sm font-medium">
-                <span>Yuklab olish</span>
+                <span>{t.ui.download}</span>
                 <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-y-1">
                   ↓
                 </span>
@@ -712,15 +709,15 @@ export default function VariantDemo() {
 
       {/* 7. ALOQA */}
       <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-24 text-paper md:px-16">
-        <SectionHead kicker="Manzil va aloqa" title="Biz bilan bog‘laning" light />
+        <SectionHead kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
         <div className="grid gap-12 lg:grid-cols-2">
           <dl className="grid gap-8 text-lg">
             <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">Manzil</dt>
-              <dd className="mt-2">{seedSettings.address.uz}</dd>
+              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.address}</dt>
+              <dd className="mt-2">{seedSettings.address[lang]}</dd>
             </div>
             <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">Telefon</dt>
+              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.phone}</dt>
               <dd className="mt-2">
                 <a href={PHONE_HREF} className="border-b border-gold no-underline">
                   {seedSettings.phone}
@@ -728,7 +725,7 @@ export default function VariantDemo() {
               </dd>
             </div>
             <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">Email</dt>
+              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.email}</dt>
               <dd className="mt-2">
                 <a href={`mailto:${seedSettings.email}`} className="border-b border-gold no-underline">
                   {seedSettings.email}
@@ -736,11 +733,11 @@ export default function VariantDemo() {
               </dd>
             </div>
             <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">Ish vaqti</dt>
-              <dd className="mt-2">{seedSettings.hours.uz}</dd>
+              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.hours}</dt>
+              <dd className="mt-2">{seedSettings.hours[lang]}</dd>
             </div>
             <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">Litsenziya</dt>
+              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.license}</dt>
               <dd className="mt-2">{seedSettings.license}</dd>
             </div>
             <div className="pt-2">
@@ -749,17 +746,22 @@ export default function VariantDemo() {
                 href={PHONE_HREF}
                 className="inline-flex h-14 items-center bg-gold px-8 font-medium text-navy no-underline hover:bg-paper"
               >
-                Qo‘ng‘iroq qilish
+                {t.ui.call}
               </a>
             </div>
           </dl>
-          <iframe
-            title="Xarita"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="h-[420px] w-full border-0 grayscale-[30%] contrast-105"
-            src="https://yandex.com/map-widget/v1/?ll=69.324979,41.269669&z=17&pt=69.324979,41.269669,pm2rdm"
-          />
+          <div>
+            <iframe
+              title={t.mapTitle}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-[420px] w-full border-0 grayscale-[30%] contrast-105"
+              src="https://yandex.com/map-widget/v1/?ll=69.324979,41.269669&z=17&pt=69.324979,41.269669,pm2rdm"
+            />
+            <a href={YANDEX_PIN} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block border-b border-gold text-sm text-paper no-underline">
+              {t.ui.openMap}
+            </a>
+          </div>
         </div>
       </section>
 
@@ -767,10 +769,10 @@ export default function VariantDemo() {
         <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-6 md:flex-row md:justify-between">
           <div className="flex items-center gap-5">
             <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-16 w-auto" />
-            <span className="font-serif text-xl">{TAGLINE[lang]}</span>
+            <span className="font-serif text-xl">{t.tagline}</span>
           </div>
           <p className="text-sm text-paper/60">
-            © {new Date().getFullYear()} JB GROUP. {RIGHTS[lang]}
+            © {new Date().getFullYear()} JB GROUP. {t.rights}
           </p>
         </div>
       </footer>
