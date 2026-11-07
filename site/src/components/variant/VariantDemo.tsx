@@ -19,10 +19,7 @@ const LOGO = {
   width: 988,
   height: 739,
 }
-const LICENSES = [
-  { src: '/licenses/litsenziya.jpg' },
-  { src: '/licenses/litsenziya-ilova.jpg' },
-]
+const LICENSES = [{ src: '/licenses/litsenziya.jpg' }, { src: '/licenses/litsenziya-ilova.jpg' }]
 // Galereya: 5 ta karta — birinchi (A) katta (2×2), qolgan 4 tasi o‘ng tomonda 2×2
 const GALLERY_SPAN = ['lg:col-span-2 lg:row-span-2', '', '', '', '']
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI']
@@ -135,7 +132,7 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
                     <a
                       href={`#${id}`}
                       aria-current={isActive ? 'true' : undefined}
-                      className={`group relative block py-2 text-[15px] no-underline transition-colors duration-300 ${color}`}
+                      className={`group relative block py-2 text-[14px] no-underline transition-colors duration-300 ${color}`}
                     >
                       {t.nav[id]}
                       <span
@@ -256,12 +253,22 @@ function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t:
   )
 }
 
-function SectionHead({ kicker, title, light = false }: { kicker: string; title: string; light?: boolean }) {
+// Bo‘lim sarlavhasi: raqam + kicker, katta serif sarlavha, nozik chiziq
+function SectionHead({ index, kicker, title, light = false }: { index: string; kicker: string; title: string; light?: boolean }) {
   return (
-    <div data-reveal className="mb-14">
-      <p className="text-xs uppercase tracking-[0.08em] text-gold">{kicker}</p>
-      <h2 className={`mt-4 font-serif text-4xl leading-tight md:text-5xl ${light ? 'text-paper' : ''}`}>{title}</h2>
-      <div className="mt-6 h-px w-24 bg-gold" />
+    <div data-reveal className="mb-12 md:mb-16">
+      <p className={`flex items-center gap-3 text-[11px] uppercase tracking-[0.08em] ${light ? 'text-gold' : 'text-gold'}`}>
+        <span className="font-mono">{index}</span>
+        <span className="h-px w-8 bg-gold" />
+        <span>{kicker}</span>
+      </p>
+      <h2
+        className={`mt-4 max-w-3xl font-serif text-4xl leading-[1.05] tracking-[-0.02em] md:text-5xl ${
+          light ? 'text-paper' : ''
+        }`}
+      >
+        {title}
+      </h2>
     </div>
   )
 }
@@ -340,11 +347,23 @@ export default function VariantDemo() {
         // Umumiy bo‘lim sarlavhalari va kartalar: yumshoq paydo bo‘lish
         q<HTMLElement>('[data-reveal]').forEach((el) => {
           gsap.from(el, {
-            y: 30,
+            y: 28,
             opacity: 0,
             duration: 0.9,
             ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 88%' },
+            scrollTrigger: { trigger: el, start: 'top 90%' },
+          })
+        })
+
+        // Indeks ro‘yxati: qatorlar ketma-ket chiqadi
+        q<HTMLElement>('[data-index-row]').forEach((el, i) => {
+          gsap.from(el, {
+            x: -24,
+            opacity: 0,
+            duration: 0.7,
+            delay: i * 0.05,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 92%' },
           })
         })
 
@@ -433,6 +452,28 @@ export default function VariantDemo() {
     }
   }, [])
 
+  const contactRows = [
+    { label: t.contact.address, value: seedSettings.address[lang] },
+    {
+      label: t.contact.phone,
+      value: (
+        <a href={PHONE_HREF} className="border-b border-gold no-underline">
+          {seedSettings.phone}
+        </a>
+      ),
+    },
+    {
+      label: t.contact.email,
+      value: (
+        <a href={`mailto:${seedSettings.email}`} className="border-b border-gold no-underline">
+          {seedSettings.email}
+        </a>
+      ),
+    },
+    { label: t.contact.hours, value: seedSettings.hours[lang] },
+    { label: t.contact.license, value: seedSettings.license },
+  ]
+
   return (
     <div ref={rootRef} className="bg-paper text-navy">
       {/* Doimiy 3D fon: scroll bilan forklift va yuk harakatlanadi */}
@@ -458,7 +499,7 @@ export default function VariantDemo() {
           />
         </div>
         <div className="relative max-w-4xl">
-          <p data-fade className="mb-6 text-xs uppercase tracking-[0.08em] text-gold">
+          <p data-fade className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
             {t.tagline}
           </p>
           <h1
@@ -471,24 +512,24 @@ export default function VariantDemo() {
               </span>
             ))}
           </h1>
-          <p data-fade className="mt-8 max-w-[46ch] text-lg text-paper/80">
+          <p data-fade className="mt-8 max-w-[46ch] text-base leading-relaxed text-paper/80 md:text-lg">
             {t.hero.lede}
           </p>
           <div data-fade className="mt-10 flex flex-wrap gap-3">
             <a
               href="#tariffs"
-              className="inline-flex h-12 items-center bg-gold px-6 font-medium text-navy no-underline hover:bg-paper"
+              className="inline-flex h-12 items-center bg-gold px-6 text-[15px] font-medium text-navy no-underline hover:bg-paper"
             >
               {t.hero.cta1}
             </a>
             <a
               href="#contact"
-              className="inline-flex h-12 items-center border border-paper/40 px-6 font-medium text-paper no-underline hover:border-gold hover:text-gold"
+              className="inline-flex h-12 items-center border border-paper/40 px-6 text-[15px] font-medium text-paper no-underline hover:border-gold hover:text-gold"
             >
               {t.hero.cta2}
             </a>
           </div>
-          <p data-fade className="mt-12 text-xs uppercase tracking-[0.08em] text-paper/60">
+          <p data-fade className="mt-12 text-[11px] uppercase tracking-[0.08em] text-paper/60">
             {t.ui.scroll}
           </p>
         </div>
@@ -499,11 +540,11 @@ export default function VariantDemo() {
         {t.beats.map((b, i) => (
           <section key={b.title} className="flex min-h-[100svh] items-center px-6 md:px-16">
             <article data-beat className="relative max-w-md border-l-2 border-gold bg-navy/80 p-8 backdrop-blur-md">
-              <p className="text-sm tracking-[0.08em] text-gold">
+              <p className="font-mono text-[11px] tracking-[0.08em] text-gold">
                 0{i + 1} / 0{t.beats.length}
               </p>
-              <h2 className="mt-3 font-serif text-4xl leading-tight">{b.title}</h2>
-              <p className="mt-4 text-paper/80">{b.text}</p>
+              <h2 className="mt-3 font-serif text-4xl leading-[1.05]">{b.title}</h2>
+              <p className="mt-4 text-[15px] leading-relaxed text-paper/80">{b.text}</p>
               {i === t.beats.length - 1 && (
                 <div data-stamp className="absolute -right-8 -top-10 w-32 -rotate-12 text-gold md:w-40">
                   <Stamp main={t.stamp.main} sub={t.stamp.sub} />
@@ -514,264 +555,275 @@ export default function VariantDemo() {
         ))}
       </div>
 
-      {/* 3. XIZMATLAR */}
-      <section id="services" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
-        <SectionHead kicker={t.sections.services.kicker} title={t.sections.services.title} />
-        <div className="grid gap-px bg-line md:grid-cols-2 lg:grid-cols-3">
-          {seedServices.map((s, i) => (
-            <article key={s.title.uz} data-reveal className="bg-paper p-8">
-              <p className="font-serif text-3xl text-gold">{ROMAN[i]}</p>
-              <h3 className="mt-4 font-serif text-2xl">{s.title[lang]}</h3>
-              <p className="mt-3 text-steel">{s.text[lang]}</p>
-            </article>
-          ))}
+      {/* 3. XIZMATLAR — indeks ro‘yxati */}
+      <section id="services" className="relative z-10 scroll-mt-20 bg-paper px-6 py-20 md:px-16 md:py-28">
+        <div className="mx-auto max-w-[1280px]">
+          <SectionHead index="02" kicker={t.sections.services.kicker} title={t.sections.services.title} />
+          <ol className="border-t border-line">
+            {seedServices.map((s, i) => (
+              <li
+                key={s.title.uz}
+                data-index-row
+                className="group grid grid-cols-[3rem_1fr] gap-x-4 gap-y-1 border-b border-line py-6 transition-colors duration-500 hover:bg-white/70 md:grid-cols-[4rem_1fr_1.3fr_2.5rem] md:items-center md:gap-x-8 md:px-4"
+              >
+                <span className="font-serif text-2xl text-gold">{ROMAN[i]}</span>
+                <h3 className="font-serif text-2xl leading-tight">{s.title[lang]}</h3>
+                <p className="col-span-2 text-[15px] leading-relaxed text-steel md:col-span-1">{s.text[lang]}</p>
+                <span
+                  aria-hidden="true"
+                  className="hidden justify-self-end text-xl text-steel transition-all duration-500 group-hover:translate-x-1 group-hover:text-gold md:block"
+                >
+                  →
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
       {/* 4. OMBORLAR — galereya + raqamlar */}
-      <section id="warehouses" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-24 md:px-16">
-        <SectionHead kicker={t.sections.warehouses.kicker} title={t.sections.warehouses.title} />
+      <section id="warehouses" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-20 md:px-16 md:py-28">
+        <div className="mx-auto max-w-[1280px]">
+          <SectionHead index="03" kicker={t.sections.warehouses.kicker} title={t.sections.warehouses.title} />
 
-        {/* Bento galereya */}
-        <div className="grid auto-rows-[240px] grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {seedWarehouses.map((w, i) => (
-            <figure key={w.name.uz} data-reveal className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}>
-              <div data-parallax className="absolute left-0 right-0" style={{ top: '-8%', bottom: '-8%' }}>
-                <Image
-                  src={`/images/${w.image}`}
-                  alt={w.name[lang]}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-transparent" />
-              <figcaption className="absolute inset-x-0 bottom-0 p-5 text-paper">
-                <p className="text-[11px] uppercase tracking-[0.08em] text-gold">{w.type[lang]}</p>
-                <div className="mt-1 flex items-end justify-between gap-3">
-                  <h3 className="font-serif text-2xl leading-tight">{w.name[lang]}</h3>
-                  <span className="shrink-0 text-sm text-paper/80">{fmt(w.area)} m²</span>
+          {/* Bento galereya */}
+          <div className="grid auto-rows-[220px] grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {seedWarehouses.map((w, i) => (
+              <figure
+                key={w.name.uz}
+                data-reveal
+                className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}
+              >
+                <div data-parallax className="absolute left-0 right-0" style={{ top: '-8%', bottom: '-8%' }}>
+                  <Image
+                    src={`/images/${w.image}`}
+                    alt={w.name[lang]}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
                 </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        <div className="mt-20 grid gap-12 md:grid-cols-3">
-          {[
-            { value: seedSettings.stats.area, label: t.stats.area },
-            { value: seedSettings.stats.capacity, label: t.stats.capacity },
-            { value: seedSettings.stats.years, label: t.stats.years },
-          ].map((s) => (
-            <div key={s.label} data-reveal className="border-t border-gold pt-6">
-              <p className="font-serif text-6xl" data-count={s.value}>
-                {fmt(s.value)}
-              </p>
-              <p className="mt-2 text-steel">{s.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
-        <div className="mt-20 hidden">
-          <p className="text-xs uppercase tracking-[0.08em] text-gold">{t.board.title}</p>
-          <div data-board className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-2 md:grid-cols-4">
-            {UNITS.map((u) => (
-              <div key={u.id} data-bay className="flex flex-col bg-paper p-6">
-                <div className="flex items-start justify-between gap-3">
-                  <span className="font-serif text-4xl leading-none">{u.id}</span>
-                  <span className={`flex items-center gap-2 pt-1 text-xs ${u.occ === 0 ? 'text-steel' : 'text-navy'}`}>
-                    <span
-                      data-live={u.occ > 0 ? '' : undefined}
-                      className={`h-2 w-2 rounded-full ${u.occ === 0 ? 'bg-line' : u.occ >= 85 ? 'bg-navy' : 'bg-gold'}`}
-                    />
-                    {unitStatus(u.occ, t.board)}
-                  </span>
-                </div>
-                <p className="mt-6 text-sm text-steel">{fmt(u.area)} m²</p>
-                <div className="mt-auto pt-6">
-                  <div className="flex justify-between text-xs text-steel">
-                    <span>{t.board.occupancy}</span>
-                    <span>{u.occ}%</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/20 to-transparent" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-5 text-paper">
+                  <p className="text-[10px] uppercase tracking-[0.08em] text-gold">{w.type[lang]}</p>
+                  <div className="mt-1 flex items-end justify-between gap-3">
+                    <h3 className="font-serif text-xl leading-tight md:text-2xl">{w.name[lang]}</h3>
+                    <span className="shrink-0 text-[13px] text-paper/80">{fmt(w.area)} m²</span>
                   </div>
-                  <div className="mt-2 h-1.5 w-full bg-line">
-                    <div className="h-full bg-gold" style={{ width: `${u.occ}%` }} />
-                  </div>
-                </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+
+          {/* Raqamlar: nozik ajratgichlar bilan */}
+          <div className="mt-14 grid divide-y divide-line border-y border-line md:grid-cols-3 md:divide-x md:divide-y-0">
+            {[
+              { value: seedSettings.stats.area, label: t.stats.area },
+              { value: seedSettings.stats.capacity, label: t.stats.capacity },
+              { value: seedSettings.stats.years, label: t.stats.years },
+            ].map((s) => (
+              <div key={s.label} data-reveal className="py-8 md:px-10 md:first:pl-0">
+                <p className="font-serif text-5xl leading-none md:text-6xl" data-count={s.value}>
+                  {fmt(s.value)}
+                </p>
+                <p className="mt-3 text-sm text-steel">{s.label}</p>
               </div>
             ))}
           </div>
-          <div className="mt-10">
-            <div className="flex justify-between text-sm text-steel">
-              <span>{t.board.total}</span>
-              <span>{CAPACITY_PCT}%</span>
+
+          {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
+          <div className="mt-20 hidden">
+            <p className="text-[11px] uppercase tracking-[0.08em] text-gold">{t.board.title}</p>
+            <div data-board className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-2 md:grid-cols-4">
+              {UNITS.map((u) => (
+                <div key={u.id} data-bay className="flex flex-col bg-paper p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="font-serif text-4xl leading-none">{u.id}</span>
+                    <span className={`flex items-center gap-2 pt-1 text-xs ${u.occ === 0 ? 'text-steel' : 'text-navy'}`}>
+                      <span
+                        data-live={u.occ > 0 ? '' : undefined}
+                        className={`h-2 w-2 rounded-full ${u.occ === 0 ? 'bg-line' : u.occ >= 85 ? 'bg-navy' : 'bg-gold'}`}
+                      />
+                      {unitStatus(u.occ, t.board)}
+                    </span>
+                  </div>
+                  <p className="mt-6 text-sm text-steel">{fmt(u.area)} m²</p>
+                  <div className="mt-auto pt-6">
+                    <div className="flex justify-between text-xs text-steel">
+                      <span>{t.board.occupancy}</span>
+                      <span>{u.occ}%</span>
+                    </div>
+                    <div className="mt-2 h-1.5 w-full bg-line">
+                      <div className="h-full bg-gold" style={{ width: `${u.occ}%` }} />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="mt-3 h-2 w-full overflow-hidden bg-line">
-              <div data-capacity className="h-full bg-navy" />
+            <div className="mt-10">
+              <div className="flex justify-between text-sm text-steel">
+                <span>{t.board.total}</span>
+                <span>{CAPACITY_PCT}%</span>
+              </div>
+              <div className="mt-3 h-2 w-full overflow-hidden bg-line">
+                <div data-capacity className="h-full bg-navy" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 5. RAHBARIYAT */}
-      <section id="admin" className="relative z-10 scroll-mt-20 bg-paper px-6 py-24 md:px-16">
-        <SectionHead kicker={t.sections.admin.kicker} title={t.sections.admin.title} />
-        <div className="grid gap-10 md:grid-cols-3">
-          {seedTeam.map((m, i) => (
-            <article key={`${m.role.uz}-${i}`} data-reveal className="border-t border-gold pt-6">
-              <div className="flex h-20 w-20 items-center justify-center bg-navy font-serif text-2xl text-gold">
-                {m.name
-                  .split(' ')
-                  .map((w) => w[0])
-                  .join('')
-                  .slice(0, 2)}
-              </div>
-              <h3 className="mt-6 font-serif text-2xl">{m.name}</h3>
-              <p className="mt-1 text-sm text-gold">{m.role[lang]}</p>
-              <p className="mt-4 text-steel">{m.bio[lang]}</p>
-            </article>
-          ))}
+      <section id="admin" className="relative z-10 scroll-mt-20 bg-paper px-6 py-20 md:px-16 md:py-28">
+        <div className="mx-auto max-w-[1280px]">
+          <SectionHead index="04" kicker={t.sections.admin.kicker} title={t.sections.admin.title} />
+          <div className="grid gap-px bg-line md:grid-cols-3">
+            {seedTeam.map((m, i) => (
+              <article key={`${m.role.uz}-${i}`} data-reveal className="group relative bg-paper p-8">
+                <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
+                <div className="flex h-16 w-16 items-center justify-center bg-navy font-serif text-xl text-gold">
+                  {m.name
+                    .split(' ')
+                    .map((w) => w[0])
+                    .join('')
+                    .slice(0, 2)}
+                </div>
+                <h3 className="mt-7 font-serif text-2xl leading-tight">{m.name}</h3>
+                <p className="mt-2 text-[11px] uppercase tracking-[0.08em] text-gold">{m.role[lang]}</p>
+                <p className="mt-4 text-[15px] leading-relaxed text-steel">{m.bio[lang]}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* 6. HUJJATLAR — litsenziya + tariflar */}
-      <section id="tariffs" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-24 md:px-16">
-        <SectionHead kicker={t.sections.docs.kicker} title={t.sections.docs.title} />
+      <section id="tariffs" className="relative z-10 scroll-mt-20 bg-[#fbfbf8] px-6 py-20 md:px-16 md:py-28">
+        <div className="mx-auto max-w-[1280px]">
+          <SectionHead index="05" kicker={t.sections.docs.kicker} title={t.sections.docs.title} />
 
-        {/* Litsenziya */}
-        <div className="mb-20">
-          <p data-reveal className="text-xs uppercase tracking-[0.08em] text-gold">
-            {t.license.label}
+          {/* Litsenziya */}
+          <div className="mb-16">
+            <p data-reveal className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
+              {t.license.label}
+            </p>
+            <div className="grid justify-items-center gap-6 md:grid-cols-2 md:gap-8">
+              {LICENSES.map((l, i) => (
+                <figure key={l.src} data-reveal className="group w-full max-w-md">
+                  <div className="overflow-hidden border border-line bg-white shadow-[0_10px_30px_-18px_rgba(11,37,69,0.35)] transition-transform duration-500 group-hover:-translate-y-1">
+                    <Image
+                      src={l.src}
+                      alt={t.license.items[i].alt}
+                      width={929}
+                      height={1454}
+                      sizes="(max-width: 768px) 100vw, 420px"
+                      className="h-auto w-full"
+                    />
+                  </div>
+                  <figcaption className="mt-3 flex items-center justify-between text-sm">
+                    <span className="font-serif text-lg">{t.license.items[i].caption}</span>
+                    <a
+                      href={l.src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border-b border-gold text-navy no-underline"
+                    >
+                      {t.ui.fullView}
+                    </a>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+
+          {/* Tariflar */}
+          <p data-reveal className="mb-6 text-[11px] uppercase tracking-[0.08em] text-gold">
+            {t.tariffsLabel}
           </p>
-          <div className="mt-6 grid justify-items-center gap-8 md:grid-cols-2 md:gap-10">
-            {LICENSES.map((l, i) => (
-              <figure key={l.src} data-reveal className="group w-full max-w-md">
-                <div className="overflow-hidden border border-line bg-white shadow-[0_10px_30px_-18px_rgba(11,37,69,0.35)] transition-transform duration-500 group-hover:-translate-y-1">
-                  <Image
-                    src={l.src}
-                    alt={t.license.items[i].alt}
-                    width={929}
-                    height={1454}
-                    sizes="(max-width: 768px) 100vw, 420px"
-                    className="h-auto w-full"
-                  />
+          <div className="grid gap-4 md:grid-cols-3">
+            {seedTariffs.map((tf, i) => (
+              <a
+                key={tf.file}
+                data-reveal
+                href={`/files/${tf.file}`}
+                download
+                className="group relative flex min-h-52 flex-col justify-between overflow-hidden border border-line bg-paper p-7 text-navy no-underline transition-shadow duration-500 hover:shadow-[0_18px_40px_-18px_rgba(11,37,69,0.35)]"
+              >
+                <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
+                <div className="flex items-start justify-between">
+                  <span className="font-serif text-4xl leading-none text-gold">0{i + 1}</span>
+                  <span className="border border-navy px-2 py-0.5 font-mono text-[10px] tracking-[0.08em]">
+                    {tf.file.split('.').pop()?.toUpperCase()}
+                  </span>
                 </div>
-                <figcaption className="mt-4 flex items-center justify-between text-sm">
-                  <span className="font-serif text-lg">{t.license.items[i].caption}</span>
-                  <a
-                    href={l.src}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="border-b border-gold text-navy no-underline"
-                  >
-                    {t.ui.fullView}
-                  </a>
-                </figcaption>
-              </figure>
+                <div>
+                  <p className="font-serif text-xl leading-snug">{tf.title[lang]}</p>
+                  <p className="mt-2 text-xs text-steel">{tf.date}</p>
+                </div>
+                <div className="mt-6 flex items-center justify-between border-t border-line pt-3 text-sm font-medium">
+                  <span>{t.ui.download}</span>
+                  <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-y-1">
+                    ↓
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
-        </div>
-
-        {/* Tariflar */}
-        <p data-reveal className="mb-6 text-xs uppercase tracking-[0.08em] text-gold">
-          {t.tariffsLabel}
-        </p>
-        <div className="grid gap-6 md:grid-cols-3">
-          {seedTariffs.map((tf, i) => (
-            <a
-              key={tf.file}
-              data-reveal
-              href={`/files/${tf.file}`}
-              download
-              className="group relative flex min-h-64 flex-col justify-between overflow-hidden border border-line bg-paper p-8 text-navy no-underline transition-shadow duration-500 hover:shadow-[0_18px_40px_-18px_rgba(11,37,69,0.35)]"
-            >
-              <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" />
-              <div className="flex items-start justify-between">
-                <span className="font-serif text-5xl text-gold">0{i + 1}</span>
-                <span className="border border-navy px-2 py-1 text-[11px] font-medium tracking-[0.08em]">
-                  {tf.file.split('.').pop()?.toUpperCase()}
-                </span>
-              </div>
-              <div>
-                <p className="font-serif text-2xl leading-snug">{tf.title[lang]}</p>
-                <p className="mt-2 text-sm text-steel">{tf.date}</p>
-              </div>
-              <div className="mt-8 flex items-center justify-between border-t border-line pt-4 text-sm font-medium">
-                <span>{t.ui.download}</span>
-                <span aria-hidden="true" className="transition-transform duration-500 group-hover:translate-y-1">
-                  ↓
-                </span>
-              </div>
-            </a>
-          ))}
         </div>
       </section>
 
       {/* 7. ALOQA */}
-      <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-24 text-paper md:px-16">
-        <SectionHead kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
-        <div className="grid gap-12 lg:grid-cols-2">
-          <dl className="grid gap-8 text-lg">
-            <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.address}</dt>
-              <dd className="mt-2">{seedSettings.address[lang]}</dd>
-            </div>
-            <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.phone}</dt>
-              <dd className="mt-2">
-                <a href={PHONE_HREF} className="border-b border-gold no-underline">
-                  {seedSettings.phone}
+      <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-20 text-paper md:px-16 md:py-28">
+        <div className="mx-auto max-w-[1280px]">
+          <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <dl className="divide-y divide-paper/10 border-y border-paper/10 lg:col-span-5">
+              {contactRows.map((r) => (
+                <div key={r.label} data-reveal className="grid grid-cols-[7.5rem_1fr] gap-4 py-5">
+                  <dt className="pt-0.5 text-[11px] uppercase tracking-[0.08em] text-gold">{r.label}</dt>
+                  <dd className="text-[15px] leading-relaxed">{r.value}</dd>
+                </div>
+              ))}
+              <div className="pt-8">
+                <a
+                  data-magnet
+                  href={PHONE_HREF}
+                  className="inline-flex h-12 items-center bg-gold px-7 text-[15px] font-medium text-navy no-underline hover:bg-paper"
+                >
+                  {t.ui.call}
                 </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.email}</dt>
-              <dd className="mt-2">
-                <a href={`mailto:${seedSettings.email}`} className="border-b border-gold no-underline">
-                  {seedSettings.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.hours}</dt>
-              <dd className="mt-2">{seedSettings.hours[lang]}</dd>
-            </div>
-            <div>
-              <dt className="text-sm uppercase tracking-[0.08em] text-gold">{t.contact.license}</dt>
-              <dd className="mt-2">{seedSettings.license}</dd>
-            </div>
-            <div className="pt-2">
+              </div>
+            </dl>
+
+            <div className="relative lg:col-span-7">
+              <div aria-hidden="true" className="absolute -inset-3 translate-x-3 translate-y-3 border border-gold/40" />
+              <iframe
+                title={t.mapTitle}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="relative h-[400px] w-full border-0 grayscale-[30%] contrast-105"
+                src="https://yandex.com/map-widget/v1/?ll=69.324979,41.269669&z=17&pt=69.324979,41.269669,pm2rdm"
+              />
               <a
-                data-magnet
-                href={PHONE_HREF}
-                className="inline-flex h-14 items-center bg-gold px-8 font-medium text-navy no-underline hover:bg-paper"
+                href={YANDEX_PIN}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-block border-b border-gold text-sm text-paper no-underline"
               >
-                {t.ui.call}
+                {t.ui.openMap}
               </a>
             </div>
-          </dl>
-          <div>
-            <iframe
-              title={t.mapTitle}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-[420px] w-full border-0 grayscale-[30%] contrast-105"
-              src="https://yandex.com/map-widget/v1/?ll=69.324979,41.269669&z=17&pt=69.324979,41.269669,pm2rdm"
-            />
-            <a href={YANDEX_PIN} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block border-b border-gold text-sm text-paper no-underline">
-              {t.ui.openMap}
-            </a>
           </div>
         </div>
       </section>
 
-      <footer className="relative z-10 bg-navy-2 px-6 py-12 text-paper md:px-16">
+      <footer className="relative z-10 bg-navy-2 px-6 py-10 text-paper md:px-16">
         <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-6 md:flex-row md:justify-between">
           <div className="flex items-center gap-5">
-            <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-16 w-auto" />
-            <span className="font-serif text-xl">{t.tagline}</span>
+            <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-14 w-auto" />
+            <span className="font-serif text-lg">{t.tagline}</span>
           </div>
-          <p className="text-sm text-paper/60">
+          <p className="text-[13px] text-paper/60">
             © {new Date().getFullYear()} JB GROUP. {t.rights}
           </p>
         </div>
