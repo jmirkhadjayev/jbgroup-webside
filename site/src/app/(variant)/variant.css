@@ -1,11 +1,11 @@
 /* Variant tipografiyasi.
-   Sarlavha: Playfair Display (klassik, elegant). Matn: Manrope (aniq, o‘qilishi oson).
+   Shrift: Onest (zamonaviy, kirill va lotin).
    Harflar orasi normal, qatorlar orasi keng — o‘qish qulay bo‘lishi uchun. */
 
 :root {
-  --font-serif: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 body {

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import SmoothScroll from '@/components/SmoothScroll'
-// Shriftlar loyiha ichida (tarmoqqa bog‘liq emas): sarlavha — Playfair Display, matn — Manrope
-import '@fontsource/manrope/400.css'
-import '@fontsource/manrope/500.css'
-import '@fontsource/manrope/600.css'
+// Shrift loyiha ichida (tarmoqqa bog‘liq emas): Onest — barcha matn, sarlavha va raqamlar
+import '@fontsource/onest/400.css'
+import '@fontsource/onest/500.css'
+import '@fontsource/onest/600.css'
 import '@/styles/globals.css'
 import './variant.css'
 

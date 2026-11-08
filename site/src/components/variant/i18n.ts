@@ -12,7 +12,7 @@ const uz = {
     services: 'Xizmatlar',
     warehouses: 'Omborlar',
     admin: 'Rahbariyat',
-    tariffs: 'Tariflar',
+    tariffs: 'Hujjatlar',
     contact: 'Aloqa',
   },
   ui: {
@@ -83,7 +83,7 @@ const ru: Dict = {
     services: 'Услуги',
     warehouses: 'Склады',
     admin: 'Руководство',
-    tariffs: 'Тарифы',
+    tariffs: 'Документы',
     contact: 'Контакты',
   },
   ui: {
@@ -152,7 +152,7 @@ const en: Dict = {
     services: 'Services',
     warehouses: 'Warehouses',
     admin: 'Management',
-    tariffs: 'Tariffs',
+    tariffs: 'Documents',
     contact: 'Contact',
   },
   ui: {

@@ -1038,14 +1038,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
         </div>
       </section>
 
-      {/* Takliflar sahifasiga doimiy havola */}
-      <a
-        href={`${BASE}/variant/takliflar`}
-        className="glass fixed bottom-5 right-5 z-40 px-5 py-3 font-sans text-xs font-semibold text-paper no-underline transition-colors duration-300 hover:text-gold"
-      >
-        Takliflar →
-      </a>
-
       {zoom && (
         <div
           role="dialog"
