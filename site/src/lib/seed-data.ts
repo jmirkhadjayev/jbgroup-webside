@@ -4,7 +4,7 @@
 type L = { uz: string; ru: string; en: string }
 
 export const seedSettings = {
-  license: '[Litsenziya raqami]',
+  license: 'L-7310903462128',
   phone: '+998 93 523 53 00',
   email: 'zulfiya1023@mail.ru',
   mapQuery: '41.269669,69.324979',
@@ -98,7 +98,6 @@ export const seedTeam: { name: string; role: L; bio: L }[] = [
 ]
 
 export const seedTariffs: { file: string; date: string; title: L }[] = [
-  { file: 'tarif-saqlash.pdf', date: '[sana]', title: { uz: 'Bojxona saqlash tarifi', ru: 'Тариф на таможенное хранение', en: 'Customs storage tariff' } },
-  { file: 'tarif-konteyner.pdf', date: '[sana]', title: { uz: 'Konteyner xizmatlari tarifi', ru: 'Тариф на контейнерные услуги', en: 'Container services tariff' } },
-  { file: 'tarif-qoshimcha.pdf', date: '[sana]', title: { uz: 'Qo‘shimcha xizmatlar tarifi', ru: 'Тариф на дополнительные услуги', en: 'Additional services tariff' } },
+  { file: 'Tarif-ru.xlsx', date: '[sana]', title: { uz: 'TARIFLAR', ru: 'ТАРИФЫ', en: 'TARIFFS' } },
+  { file: 'shartnoma-ru.docx', date: '[sana]', title: { uz: 'SHARTNOMA', ru: 'ДОГОВОР', en: 'CONTRACT' } },
 ]

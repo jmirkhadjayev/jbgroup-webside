@@ -5,7 +5,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import SmoothScroll from '@/components/SmoothScroll'
-import '../globals.css'
+import '@/styles/globals.css'
 
 const serif = Source_Serif_4({
   subsets: ['latin', 'cyrillic'],

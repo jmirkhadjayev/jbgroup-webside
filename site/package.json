@@ -6,10 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:pages": "node scripts/build-pages.mjs"
   },
   "dependencies": {
-    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/onest": "^5.3.1",
     "@fontsource/playfair-display": "^5.3.0",
     "@payloadcms/db-sqlite": "^3.93.0",
     "@payloadcms/next": "^3.93.0",
