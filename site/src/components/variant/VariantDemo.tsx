@@ -291,6 +291,25 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
   const rootRef = useRef<HTMLDivElement>(null)
   const [lang, setLang] = useState<Lang>(initialLang)
   const t = T[lang]
+  const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null)
+  const [zoomed, setZoomed] = useState(false)
+  const openZoom = (src: string, alt: string) => {
+    setZoomed(false)
+    setZoom({ src, alt })
+  }
+  useEffect(() => {
+    if (!zoom) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setZoom(null)
+    }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [zoom])
 
   // <html lang> ni til bilan moslashtiramiz
   useEffect(() => {
@@ -593,8 +612,38 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
         <div className="mx-auto max-w-[1280px]">
           <SectionHead index="03" kicker={t.sections.warehouses.kicker} title={t.sections.warehouses.title} />
           <div className="grid auto-rows-[260px] grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Kirish majmuasi: birinchi, to‘liq kenglikda */}
+            <figure data-reveal className="group relative overflow-hidden bg-navy lg:col-span-4">
+              <button
+                type="button"
+                onClick={() => openZoom(`${BASE}/images/kirish-majmuasi.jpg`, t.gate.name)}
+                aria-label={`${t.ui.enlarge}: ${t.gate.name}`}
+                className="absolute inset-0 z-10 cursor-zoom-in"
+              />
+              <Image
+                src={`${BASE}/images/kirish-majmuasi.jpg`}
+                alt={t.gate.name}
+                fill
+                sizes="100vw"
+                className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/15 to-transparent" />
+              <span className="pointer-events-none absolute right-4 top-4 z-20 bg-navy/60 px-2 py-1 font-mono text-[10px] tracking-[0.1em] text-paper/85 backdrop-blur">
+                {t.ui.enlarge}
+              </span>
+              <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 grid gap-2 p-5 text-paper md:p-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{t.gate.type}</p>
+                <h3 className="font-serif text-2xl leading-[1.02] md:text-3xl">{t.gate.name}</h3>
+              </figcaption>
+            </figure>
             {seedWarehouses.map((w, i) => (
               <figure key={w.name.uz} data-reveal className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}>
+                <button
+                  type="button"
+                  onClick={() => openZoom(`${BASE}/images/${w.image}`, w.name[lang])}
+                  aria-label={`${t.ui.enlarge}: ${w.name[lang]}`}
+                  className="absolute inset-0 z-10 cursor-zoom-in"
+                />
                 <Image
                   src={`${BASE}/images/${w.image}`}
                   alt={w.name[lang]}
@@ -606,7 +655,7 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
                 <span className="absolute left-4 top-4 bg-navy/50 px-2 py-1 font-mono text-[10px] tracking-[0.1em] text-paper/85 backdrop-blur">
                   {pad(i + 1)}
                 </span>
-                <figcaption className="absolute inset-x-0 bottom-0 grid gap-2 p-5 text-paper md:p-6">
+                <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 grid gap-2 p-5 text-paper md:p-6">
                   <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{w.type[lang]}</p>
                   <div className="flex items-end justify-between gap-3">
                     <h3 className={`font-serif leading-[1.02] ${i === 0 ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'}`}>
@@ -813,6 +862,45 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
           </div>
         </div>
       </section>
+
+      {zoom && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={zoom.alt}
+          onClick={() => setZoom(null)}
+          className="fixed inset-0 z-[60] bg-navy/95 backdrop-blur-sm"
+        >
+          <div className="absolute left-4 top-4 z-10">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setZoomed((z) => !z)
+              }}
+              className="h-10 border border-paper/30 px-4 text-sm text-paper hover:border-gold hover:text-gold"
+            >
+              {zoomed ? t.ui.zoomOut : t.ui.zoomIn}
+            </button>
+          </div>
+          <button
+            type="button"
+            aria-label={t.ui.close}
+            onClick={() => setZoom(null)}
+            className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center border border-paper/30 text-xl text-paper hover:border-gold hover:text-gold"
+          >
+            ×
+          </button>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`absolute inset-0 p-4 pt-20 md:p-10 md:pt-24 ${zoomed ? 'overflow-auto' : 'overflow-hidden'}`}
+          >
+            <div className={`relative mx-auto ${zoomed ? 'h-[200%] w-[200%]' : 'h-full w-full'}`}>
+              <Image src={zoom.src} alt={zoom.alt} fill sizes="100vw" className="object-contain" />
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="relative z-10 bg-navy-2 px-6 py-10 text-paper md:px-16">
         <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-6 md:flex-row md:justify-between">
