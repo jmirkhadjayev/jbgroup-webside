@@ -3,8 +3,9 @@
    Harflar orasi normal, qatorlar orasi keng — o‘qish qulay bo‘lishi uchun. */
 
 :root {
-  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-serif: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 body {
@@ -20,11 +21,59 @@ h1,
 h2,
 h3 {
   font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
   line-height: 1.12;
 }
 
 p {
   text-wrap: pretty;
+}
+
+/* Lenta (ticker): harakat kamaytirilgan foydalanuvchilar uchun o‘chadi */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
+}
+
+/* Suyuq shisha (liquid glass) — karta va panellar uchun */
+.glass {
+  overflow: hidden;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
+    0 30px 60px -25px rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+}
+.glass-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.04) 38%, transparent 60%);
+}
+
+/* UX: tanlash rangi, silliq scroll, kamaytirilgan harakatda o‘tishlarni o‘chirish */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
+}
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

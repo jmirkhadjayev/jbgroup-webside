@@ -178,6 +178,127 @@ function Truck() {
   )
 }
 
+// Yuk oqimi: darvozadan bayga yorug‘ chiziq va unda siljiydigan nur.
+// flow.p bilan bog‘langan: nur konteyner joylanguncha yo‘lda, keyin so‘nadi.
+function FlowLine() {
+  const pulse = useRef<THREE.Mesh>(null)
+  const { curve, tube } = useMemo(() => {
+    const c = new THREE.CatmullRomCurve3(
+      [
+        new THREE.Vector3(-22, 0.25, -1.8),
+        new THREE.Vector3(-10, 0.25, -1.8),
+        new THREE.Vector3(6, 0.25, -1.8),
+        new THREE.Vector3(6, 0.25, -3.6),
+        new THREE.Vector3(6, 0.25, -5.2),
+      ],
+      false,
+      'catmullrom',
+      0.2,
+    )
+    return { curve: c, tube: new THREE.TubeGeometry(c, 160, 0.035, 8, false) }
+  }, [])
+  const lineMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: '#f2d27a', transparent: true, opacity: 0.32, toneMapped: false }),
+    [],
+  )
+  const glowMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: '#f2d27a', transparent: true, opacity: 0.35, toneMapped: false }),
+    [],
+  )
+
+  useFrame(() => {
+    const m = pulse.current
+    if (!m) return
+    const p = flow.p
+    const k = clamp(p / 0.72, 0, 1)
+    m.position.copy(curve.getPointAt(k))
+    m.visible = p < 0.8
+  })
+
+  return (
+    <group>
+      <mesh geometry={tube} material={lineMat} />
+      <mesh ref={pulse}>
+        <sphereGeometry args={[0.13, 16, 16]} />
+        <meshBasicMaterial color="#fff3c4" toneMapped={false} />
+        <mesh scale={3} material={glowMat}>
+          <sphereGeometry args={[0.13, 12, 12]} />
+        </mesh>
+      </mesh>
+    </group>
+  )
+}
+
+// Skanerlash va yorliq: dock'da lazer skaneri konteyner ustidan o‘tadi,
+// joylashtirilgach bay ustida 3D yorliq paydo bo‘ladi. flow.p bilan bog‘langan.
+function ScanTag() {
+  const beam = useRef<THREE.Mesh>(null)
+  const tag = useRef<THREE.Group>(null)
+  const beamMat = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        color: '#ffe39a',
+        transparent: true,
+        opacity: 0.45,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    [],
+  )
+  const tagMat = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#0b2545',
+        roughness: 0.3,
+        metalness: 0.2,
+        emissive: '#c9a227',
+        emissiveIntensity: 0.35,
+      }),
+    [],
+  )
+  const barMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#f2d27a', toneMapped: false }), [])
+
+  useFrame((_, delta) => {
+    const p = flow.p
+    const b = beam.current
+    if (b) {
+      const scanning = p > 0.06 && p < 0.3
+      b.visible = scanning
+      // Lazer tekisligi konteyner ustidan chapdan o‘ngga siljiydi
+      b.position.x = lerp(-12.4, -7.6, clamp(seg(p, 0.06, 0.3), 0, 1))
+    }
+    const g = tag.current
+    if (g) {
+      const target = p > 0.78 ? 1 : 0
+      g.scale.setScalar(damp(g.scale.x, target, 6, delta) || 0.0001)
+      g.visible = g.scale.x > 0.01
+    }
+  })
+
+  return (
+    <group>
+      {/* Lazer skaneri (vertikal tekislik) */}
+      <mesh ref={beam} position={[-12.4, 1.2, 0]} rotation={[0, Math.PI / 2, 0]} material={beamMat}>
+        <planeGeometry args={[3.2, 2.8]} />
+      </mesh>
+
+      {/* Bay ustidagi yorliq */}
+      <group ref={tag} position={[TARGET.x, 3.7, TARGET.z]}>
+        <mesh material={tagMat}>
+          <boxGeometry args={[1.5, 0.7, 0.06]} />
+        </mesh>
+        <mesh position={[0, -0.2, 0.035]} material={barMat}>
+          <boxGeometry args={[1.1, 0.06, 0.01]} />
+        </mesh>
+        <mesh position={[0, 0.18, 0.035]} material={barMat}>
+          <boxGeometry args={[0.6, 0.06, 0.01]} />
+        </mesh>
+      </group>
+    </group>
+  )
+}
+
 function Scene() {
   const fk = useRef<THREE.Group>(null)
   const forks = useRef<THREE.Group>(null)
@@ -305,6 +426,10 @@ function Scene() {
           <Edges color="#f2d27a" />
         </mesh>
       </group>
+
+      {/* Yuk oqimi */}
+      <FlowLine />
+      <ScanTag />
 
       {/* Chang zarralari — atmosfera */}
       <Sparkles count={isMobile ? 0 : 70} scale={[40, 6, 16]} position={[4, 3, 0]} size={2.5} speed={0.25} color="#f2d27a" opacity={0.7} />
