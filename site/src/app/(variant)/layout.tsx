@@ -6,7 +6,7 @@ import '@fontsource/playfair-display/600.css'
 import '@fontsource/manrope/400.css'
 import '@fontsource/manrope/500.css'
 import '@fontsource/manrope/600.css'
-import '../(frontend)/globals.css'
+import '@/styles/globals.css'
 import './variant.css'
 
 export const metadata: Metadata = {

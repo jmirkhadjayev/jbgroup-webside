@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { flow } from './flow'
 import { LANGS, T, type Dict, type Lang } from './i18n'
+import { BASE } from './base'
 import { seedServices, seedSettings, seedTariffs, seedTeam, seedWarehouses } from '@/lib/seed-data'
 
 // 3D sahna faqat brauzerda yuklanadi (SSR yo‘q)
@@ -14,12 +15,12 @@ const WarehouseScene = dynamic(() => import('./WarehouseScene'), { ssr: false })
 
 const NAV_IDS = ['about', 'services', 'warehouses', 'admin', 'tariffs', 'contact'] as const
 const LOGO = {
-  src: '/brand/jb-group-logo.png', // och fonlar uchun (header)
-  dark: '/brand/jb-group-logo-dark.png', // to‘q fonlar uchun (hero, footer)
+  src: `${BASE}/brand/jb-group-logo.png`, // och fonlar uchun (header)
+  dark: `${BASE}/brand/jb-group-logo-dark.png`, // to‘q fonlar uchun (hero, footer)
   width: 988,
   height: 739,
 }
-const LICENSES = [{ src: '/licenses/litsenziya.jpg' }, { src: '/licenses/litsenziya-ilova.jpg' }]
+const LICENSES = [{ src: `${BASE}/licenses/litsenziya.jpg` }, { src: `${BASE}/licenses/litsenziya-ilova.jpg` }]
 // Galereya: 5 ta karta — birinchi (A) katta (2×2), qolgan 4 tasi o‘ng tomonda 2×2
 const GALLERY_SPAN = ['lg:col-span-2 lg:row-span-2', '', '', '', '']
 const PHONE_HREF = `tel:${seedSettings.phone.replace(/\s/g, '')}`
@@ -286,9 +287,9 @@ function SectionHead({
   )
 }
 
-export default function VariantDemo() {
+export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang }) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const [lang, setLang] = useState<Lang>('uz')
+  const [lang, setLang] = useState<Lang>(initialLang)
   const t = T[lang]
 
   // <html lang> ni til bilan moslashtiramiz
@@ -595,7 +596,7 @@ export default function VariantDemo() {
             {seedWarehouses.map((w, i) => (
               <figure key={w.name.uz} data-reveal className={`group relative overflow-hidden bg-navy ${GALLERY_SPAN[i] ?? ''}`}>
                 <Image
-                  src={`/images/${w.image}`}
+                  src={`${BASE}/images/${w.image}`}
                   alt={w.name[lang]}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -715,7 +716,7 @@ export default function VariantDemo() {
                 {seedTariffs.map((tf, i) => (
                   <li key={tf.file} data-index-row>
                     <a
-                      href={`/files/${tf.file}`}
+                      href={`${BASE}/files/${tf.file}`}
                       download
                       className="group relative grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 overflow-hidden border-b border-line py-5 text-navy no-underline"
                     >
