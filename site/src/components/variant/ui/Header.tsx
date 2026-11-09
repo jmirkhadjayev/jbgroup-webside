@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { LANGS, type Dict, type Lang } from '../i18n'
-import { LOGO, NAV_IDS, PHONE_HREF } from '../constants'
+import { LOGO, NAV_IDS } from '../constants'
 import { pad } from '../format'
-import { seedSettings } from '@/lib/seed-data'
 
 // Suzuvchi shisha navigatsiya: faol bo‘lim, til tanlagich, mobil menyu
 export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t: Dict }) {
@@ -234,53 +233,61 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
         </div>
       </aside>
 
-      {/* Mobil menyu: to‘liq ekran, raqamli linklar ketma-ket chiqadi */}
+      {/* Mobil menyu: doira shaklida ochiladi (clip-path), bo‘limlar chapdan siljib chiqadi */}
       <div
         aria-hidden={!open}
-        className={`fixed inset-0 z-40 flex flex-col bg-navy px-6 pb-10 pt-28 text-paper transition-[opacity,visibility] duration-500 lg:hidden ${
-          open ? 'visible opacity-100' : 'invisible opacity-0'
-        }`}
+        className="fixed inset-0 z-40 flex flex-col overflow-hidden bg-navy px-6 pb-10 pt-28 text-paper lg:hidden"
+        style={{
+          clipPath: open ? 'circle(150% at calc(100% - 2.5rem) 2.5rem)' : 'circle(0% at calc(100% - 2.5rem) 2.5rem)',
+          visibility: open ? 'visible' : 'hidden',
+          transition: `clip-path 700ms cubic-bezier(.7,0,.2,1), visibility 0s linear ${open ? 0 : 700}ms`,
+        }}
       >
-        <ul className="space-y-1">
+        <span
+          aria-hidden="true"
+          className={`mb-2 block h-px w-full origin-left bg-gold transition-transform duration-700 ease-out ${
+            open ? 'scale-x-100' : 'scale-x-0'
+          }`}
+          style={{ transitionDelay: open ? '180ms' : '0ms' }}
+        />
+        <ul>
           {NAV_IDS.map((id, i) => (
             <li
               key={id}
-              className={`transition-all duration-500 ${open ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-              style={{ transitionDelay: open ? `${i * 60 + 120}ms` : '0ms' }}
+              className={`transition-all duration-700 ease-out ${
+                open ? 'translate-x-0 opacity-100 blur-0' : '-translate-x-6 opacity-0 blur-sm'
+              }`}
+              style={{ transitionDelay: open ? `${260 + i * 70}ms` : '0ms' }}
             >
               <a
                 href={id === 'about' ? '#top' : `#${id}`}
                 onClick={() => setOpen(false)}
-                className="flex items-baseline gap-4 rounded-2xl px-2 py-3 font-sans text-3xl font-semibold tracking-[-0.03em] no-underline transition-colors hover:bg-paper/5"
+                className="group flex items-center justify-between border-b border-paper/10 py-4 font-sans text-[22px] font-medium tracking-[-0.01em] no-underline transition-colors duration-300 hover:text-gold"
               >
-                <span className="font-mono text-[11px] text-gold">{pad(i + 1)}</span>
                 {t.nav[id]}
+                <span
+                  aria-hidden="true"
+                  className="text-gold opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                >
+                  →
+                </span>
               </a>
             </li>
           ))}
         </ul>
-        {/* Mobil menyuda til tanlash: uchta katta tugma */}
-        <div role="group" aria-label={t.ui.lang} className="mt-8 grid grid-cols-3 gap-3">
+        <div role="group" aria-label={t.ui.lang} className="mt-auto flex gap-6 font-mono text-[12px] tracking-[0.14em]">
           {LANGS.map((l) => (
             <button
               key={l}
               type="button"
               aria-pressed={l === lang}
-              onClick={() => {
-                onLang(l)
-                setOpen(false)
-              }}
-              className={`h-12 rounded-full border font-mono text-sm font-semibold transition-colors duration-300 ${
-                l === lang ? 'border-gold bg-gold text-navy' : 'border-paper/25 text-paper/80'
-              }`}
+              onClick={() => onLang(l)}
+              className={`transition-colors duration-300 ${l === lang ? 'text-gold' : 'text-paper/45 hover:text-paper'}`}
             >
               {l.toUpperCase()}
             </button>
           ))}
         </div>
-        <a href={PHONE_HREF} className="mt-auto pt-8 font-sans text-2xl font-semibold text-gold no-underline">
-          {seedSettings.phone}
-        </a>
       </div>
     </>
   )
