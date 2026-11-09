@@ -26,7 +26,6 @@ export function Hero({ t }: { t: Dict }) {
       {/* Logotip — o‘ng yuqorida: qiyshaygan plitka, oltin ramka, hover’da qo‘g‘irchoq tekislanadi va yorug‘lik o‘tadi */}
       <div className="absolute right-6 top-28 hidden md:block md:right-16">
         <div className="group relative -rotate-3 transition-transform duration-700 ease-out hover:rotate-0">
-          <span aria-hidden="true" className="absolute -inset-2.5 rounded-[2rem] border border-gold/60" />
           <div className="relative overflow-hidden rounded-[1.5rem] bg-paper/90 p-4 shadow-[0_24px_50px_-18px_rgba(11,37,69,0.55)]">
             <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-20 w-auto" />
             <span
