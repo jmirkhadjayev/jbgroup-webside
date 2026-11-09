@@ -18,7 +18,7 @@ export function Hero({ t }: { t: Dict }) {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.16]"
-        style={{ backgroundImage: `url(${BASE}/images/fon-ombor.jpg)` }}
+        style={{ backgroundImage: `url(${BASE}/images/fon-aloqa.jpg)` }}
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy/80 to-transparent" />
