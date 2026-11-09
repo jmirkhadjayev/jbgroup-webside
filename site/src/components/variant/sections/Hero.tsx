@@ -98,12 +98,6 @@ export function Hero({ t }: { t: Dict }) {
           ))}
         </div>
 
-        <p data-fade className="mt-10 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.12em] text-paper/55">
-          <span className="flex h-9 w-5 justify-center rounded-full border border-paper/30 p-1">
-            <span className="block h-2 w-full animate-bounce rounded-full bg-gold" />
-          </span>
-          {t.ui.scroll}
-        </p>
       </div>
     </section>
   )
