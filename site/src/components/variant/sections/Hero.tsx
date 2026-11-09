@@ -30,7 +30,7 @@ export function Hero({ t }: { t: Dict }) {
           alt="JB GROUP"
           width={LOGO.width}
           height={LOGO.height}
-          className="h-20 w-auto -rotate-3 transition-transform duration-700 ease-out hover:rotate-0"
+          className="h-32 w-auto -rotate-3 transition-transform duration-700 ease-out hover:rotate-0 lg:h-40"
         />
       </div>
 
