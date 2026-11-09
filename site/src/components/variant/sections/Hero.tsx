@@ -4,7 +4,6 @@ import type { Dict } from '../i18n'
 import { LOGO } from '../constants'
 import { BASE } from '../base'
 import { fmt } from '../format'
-import { Credit } from '../ui/Credit'
 
 // 1-bo‘lim: hero — sarlavha, tavsif, tugmalar, raqamlar panel
 export function Hero({ t }: { t: Dict }) {
@@ -33,7 +32,6 @@ export function Hero({ t }: { t: Dict }) {
           height={LOGO.height}
           className="h-32 w-auto -rotate-3 transition-transform duration-700 ease-out hover:rotate-0 lg:h-40"
         />
-        <Credit />
       </div>
 
       <div className="relative max-w-4xl">

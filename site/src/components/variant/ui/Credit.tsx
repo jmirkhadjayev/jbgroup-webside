@@ -1,13 +1,19 @@
-// Muallif belgisi: logotip tagida juda kichik va xira matn
+// Muallif belgisi: bitta qator, nuqta bilan; nom sichqoncha ustida oltinga o‘tadi
 export function Credit() {
   return (
     <a
       href="http://mirkhadjayev.uz/"
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-2 block text-center font-mono text-[9px] lowercase tracking-[0.08em] text-paper/40 no-underline transition-colors duration-300 hover:text-gold"
+      className="group inline-flex items-center gap-2 font-mono text-[11px] text-paper/50 no-underline"
     >
-      created by jmirkhadjayev
+      <span aria-hidden="true" className="text-gold">
+        ·
+      </span>
+      <span className="transition-colors duration-500 group-hover:text-gold">jmirkhadjayev</span>
+      <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
+        ↗
+      </span>
     </a>
   )
 }

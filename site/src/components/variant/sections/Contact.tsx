@@ -1,3 +1,4 @@
+import { Credit } from '../ui/Credit'
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict, Lang } from '../i18n'
 import { PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
@@ -80,6 +81,7 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
           <p className="font-mono text-[10px] tracking-[0.06em] text-paper/45">
             © {new Date().getFullYear()} JB GROUP. {t.rights}
           </p>
+          <Credit />
         </div>
       </div>
     </section>
