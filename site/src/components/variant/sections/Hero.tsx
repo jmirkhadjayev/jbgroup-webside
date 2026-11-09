@@ -23,17 +23,15 @@ export function Hero({ t }: { t: Dict }) {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy/80 to-transparent" />
 
-      {/* Logotip — o‘ng yuqorida: qiyshaygan plitka, oltin ramka, hover’da qo‘g‘irchoq tekislanadi va yorug‘lik o‘tadi */}
+      {/* Logotip — o‘ng yuqorida, oddiy; hover’da biroz qiyshayadi */}
       <div className="absolute right-6 top-28 hidden md:block md:right-16">
-        <div className="group relative -rotate-3 transition-transform duration-700 ease-out hover:rotate-0">
-          <div className="relative overflow-hidden rounded-[1.5rem] bg-paper/90 p-4 shadow-[0_24px_50px_-18px_rgba(11,37,69,0.55)]">
-            <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-20 w-auto" />
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-white/80 to-transparent transition-transform duration-1000 ease-out group-hover:translate-x-[260%]"
-            />
-          </div>
-        </div>
+        <Image
+          src={LOGO.dark}
+          alt="JB GROUP"
+          width={LOGO.width}
+          height={LOGO.height}
+          className="h-20 w-auto -rotate-3 transition-transform duration-700 ease-out hover:rotate-0"
+        />
       </div>
 
       <div className="relative max-w-4xl">
