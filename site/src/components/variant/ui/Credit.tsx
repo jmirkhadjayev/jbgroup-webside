@@ -10,6 +10,7 @@ export function Credit() {
       <span aria-hidden="true" className="text-gold">
         ·
       </span>
+      <span className="text-paper/50">created by</span>
       <span className="transition-colors duration-500 group-hover:text-gold">jmirkhadjayev</span>
       <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
         ↗
