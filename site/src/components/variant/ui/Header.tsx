@@ -259,7 +259,26 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
             </li>
           ))}
         </ul>
-        <a href={PHONE_HREF} className="mt-auto font-sans text-2xl font-semibold text-gold no-underline">
+        {/* Mobil menyuda til tanlash: uchta katta tugma */}
+        <div role="group" aria-label={t.ui.lang} className="mt-8 grid grid-cols-3 gap-3">
+          {LANGS.map((l) => (
+            <button
+              key={l}
+              type="button"
+              aria-pressed={l === lang}
+              onClick={() => {
+                onLang(l)
+                setOpen(false)
+              }}
+              className={`h-12 rounded-full border font-mono text-sm font-semibold transition-colors duration-300 ${
+                l === lang ? 'border-gold bg-gold text-navy' : 'border-paper/25 text-paper/80'
+              }`}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
+        <a href={PHONE_HREF} className="mt-auto pt-8 font-sans text-2xl font-semibold text-gold no-underline">
           {seedSettings.phone}
         </a>
       </div>
