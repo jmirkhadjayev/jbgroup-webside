@@ -178,7 +178,7 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
         <Lightbox zoom={zoom} zoomed={zoomed} onClose={() => setZoom(null)} onToggleZoom={() => setZoomed((z) => !z)} t={t} />
       )}
 
-      <Footer t={t} lang={lang} />
+      <Footer t={t} />
     </div>
   )
 }
