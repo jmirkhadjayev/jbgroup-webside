@@ -53,7 +53,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
     <>
       <header className="sticky top-0 z-50 px-3 pt-2 md:px-6 md:pt-3">
         <div
-          className={`mx-auto flex max-w-[1240px] items-center justify-between gap-4 rounded-full border py-1.5 pl-2.5 pr-1.5 backdrop-blur-xl transition-all duration-500 md:pl-3 ${panel}`}
+          className={`mx-auto flex max-w-[1240px] items-center justify-between gap-4 rounded-[28px_10px_28px_10px] border py-1.5 pl-2.5 pr-1.5 backdrop-blur-xl transition-all duration-500 md:pl-3 ${panel}`}
         >
           <a href="#top" aria-label="JB GROUP" className="flex min-w-0 items-center gap-3 no-underline">
             <Image
@@ -68,23 +68,33 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
           <nav aria-label="Asosiy" className="hidden min-w-0 flex-1 justify-center lg:flex">
             <ul className="flex w-full max-w-xl items-center justify-center gap-1">
-              {NAV_IDS.map((id) => {
+              {NAV_IDS.map((id, i) => {
                 const isActive = active === id
                 const style = isActive
                   ? scrolled
-                    ? 'bg-navy text-paper shadow-[0_8px_18px_-8px_rgba(11,37,69,0.6)]'
-                    : 'bg-gold text-navy shadow-[0_8px_18px_-8px_rgba(201,162,39,0.7)]'
+                    ? 'text-navy'
+                    : 'text-gold'
                   : scrolled
-                    ? 'text-steel hover:bg-navy/5 hover:text-navy'
-                    : 'text-paper/80 hover:bg-paper/10 hover:text-paper'
+                    ? 'text-steel hover:text-navy'
+                    : 'text-paper/75 hover:text-paper'
                 return (
                   <li key={id} className="flex-1 text-center">
                     <a
                       href={`#${id}`}
                       aria-current={isActive ? 'true' : undefined}
-                      className={`block whitespace-nowrap rounded-full px-3 py-1.5 font-sans text-[12px] font-medium no-underline transition-all duration-300 ${style}`}
+                      className={`group relative block whitespace-nowrap px-3 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.06em] no-underline transition-colors duration-300 ${style}`}
                     >
+                      <span aria-hidden="true" className="mr-1.5 font-mono text-[9px] text-gold/80">
+                        {pad(i + 1)}
+                      </span>
                       {t.nav[id]}
+                      {/* Faol belgi: pastdan chiziq — pill o‘rniga */}
+                      <span
+                        aria-hidden="true"
+                        className={`absolute inset-x-3 -bottom-px h-[2px] origin-left bg-gold transition-transform duration-500 ${
+                          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                        }`}
+                      />
                     </a>
                   </li>
                 )
@@ -125,7 +135,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
             <a
               href="#contact"
-              className="group hidden h-9 w-[9.5rem] items-center justify-between rounded-full bg-gold pl-4 pr-1 font-sans text-[12px] font-semibold text-navy no-underline transition-colors duration-300 hover:bg-paper md:inline-flex"
+              className="group hidden h-9 w-[9.5rem] items-center justify-between rounded-[14px_4px_14px_4px] bg-gold pl-4 pr-1 font-sans text-[12px] font-semibold uppercase tracking-[0.06em] text-navy no-underline transition-colors duration-300 hover:bg-paper md:inline-flex"
             >
               {t.ui.cta}
               <span
