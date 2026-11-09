@@ -282,6 +282,86 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
           {seedSettings.phone}
         </a>
       </div>
+      {!open && <MobileTabBar t={t} active={active} />}
     </>
+  )
+}
+
+const ICON_PROPS = {
+  width: 22,
+  height: 22,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.6,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+}
+
+const TAB_ICONS: Record<string, React.ReactNode> = {
+  about: (
+    <svg {...ICON_PROPS}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" />
+    </svg>
+  ),
+  services: (
+    <svg {...ICON_PROPS}>
+      <path d="M3 7l9-4 9 4v10l-9 4-9-4z" />
+      <path d="M3 7l9 4 9-4M12 11v10" />
+    </svg>
+  ),
+  tariffs: (
+    <svg {...ICON_PROPS}>
+      <path d="M7 3h7l5 5v13H7z" />
+      <path d="M14 3v5h5M10 13h6M10 17h6" />
+    </svg>
+  ),
+  admin: (
+    <svg {...ICON_PROPS}>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
+    </svg>
+  ),
+}
+
+// Pastki tab-bar (faqat mobil/planshet): 4 ta belgi va markazda oltin olti burchakli "+" (aloqa)
+function MobileTabBar({ t, active }: { t: Dict; active: string }) {
+  const left = ['about', 'services'] as const
+  const right = ['tariffs', 'admin'] as const
+
+  const tab = (id: string) => (
+    <a
+      key={id}
+      href={id === 'about' ? '#top' : `#${id}`}
+      aria-label={t.nav[id as keyof Dict['nav']]}
+      aria-current={active === id ? 'true' : undefined}
+      className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-300 ${
+        active === id ? 'bg-navy/5 text-navy' : 'text-steel'
+      }`}
+    >
+      {TAB_ICONS[id]}
+    </a>
+  )
+
+  return (
+    <nav aria-label="Asosiy" className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 lg:hidden">
+      <div className="relative mx-auto flex max-w-sm items-center justify-between rounded-[2rem] border border-navy/10 bg-paper/95 px-5 pb-2 pt-3 shadow-[0_-10px_40px_-15px_rgba(11,37,69,0.35)] backdrop-blur-xl">
+        {left.map(tab)}
+        <span aria-hidden="true" className="w-16" />
+        {right.map(tab)}
+        <a
+          href="#contact"
+          aria-label={t.nav.contact}
+          className="absolute left-1/2 -top-7 flex h-16 w-16 -translate-x-1/2 items-center justify-center bg-gold text-navy transition-transform duration-300 hover:scale-105"
+          style={{ clipPath: 'polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%)' }}
+        >
+          <svg {...ICON_PROPS} width={26} height={26} strokeWidth={2}>
+            <path d="M12 6v12M6 12h12" />
+          </svg>
+        </a>
+      </div>
+    </nav>
   )
 }

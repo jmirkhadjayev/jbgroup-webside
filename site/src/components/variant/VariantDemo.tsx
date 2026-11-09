@@ -163,7 +163,7 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
   }, [lang])
 
   return (
-    <div ref={rootRef} className="overflow-x-clip bg-paper text-navy lg:pl-20">
+    <div ref={rootRef} className="overflow-x-clip bg-paper pb-24 text-navy lg:pl-20 lg:pb-0">
       <Header lang={lang} onLang={setLang} t={t} />
       <Hero t={t} />
       <Services lang={lang} t={t} />
