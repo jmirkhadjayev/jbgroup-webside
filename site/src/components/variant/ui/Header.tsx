@@ -252,15 +252,15 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
         />
         <ul>
           {NAV_IDS.map((id, i) => (
-            <li key={id} className={`overflow-hidden ${i % 2 === 1 ? 'pl-10' : ''}`}>
+            <li key={id} className={`overflow-hidden ${i % 2 === 1 ? 'pl-6' : ''}`}>
               <a
                 href={id === 'about' ? '#top' : `#${id}`}
                 onClick={() => setOpen(false)}
-                className="group flex items-center justify-between gap-4 border-b border-paper/10 py-3 no-underline"
+                className="group flex items-center justify-between gap-4 border-b border-paper/10 py-2.5 no-underline"
               >
                 <span className="block overflow-hidden">
                   <span
-                    className={`block font-serif text-[clamp(1.9rem,8vw,2.6rem)] leading-tight transition-[transform,color] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:italic group-hover:text-gold ${
+                    className={`block font-sans text-[clamp(1.1rem,4.6vw,1.4rem)] font-light leading-tight tracking-[0.01em] transition-[transform,color] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:italic group-hover:text-gold ${
                       open ? 'translate-y-0' : 'translate-y-full'
                     }`}
                     style={{ transitionDelay: open ? `${280 + i * 80}ms` : '0ms' }}
