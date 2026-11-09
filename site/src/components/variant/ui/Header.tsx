@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { LANGS, type Dict, type Lang } from '../i18n'
 import { LOGO, NAV_IDS } from '../constants'
-import { pad } from '../format'
 
 // Suzuvchi shisha navigatsiya: faol bo‘lim, til tanlagich, mobil menyu
 export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => void; t: Dict }) {
@@ -65,41 +64,6 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
             />
           </a>
 
-          <nav aria-label="Asosiy" className="hidden min-w-0 flex-1 justify-center lg:flex">
-            <ul className="flex w-full max-w-xl items-center justify-center gap-1">
-              {NAV_IDS.map((id, i) => {
-                const isActive = active === id
-                const style = isActive
-                  ? scrolled
-                    ? 'text-navy'
-                    : 'text-gold'
-                  : scrolled
-                    ? 'text-steel hover:text-navy'
-                    : 'text-paper/75 hover:text-paper'
-                return (
-                  <li key={id} className="flex-1 text-center">
-                    <a
-                      href={id === 'about' ? '#top' : `#${id}`}
-                      aria-current={isActive ? 'true' : undefined}
-                      className={`group relative block whitespace-nowrap px-3 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.06em] no-underline transition-colors duration-300 ${style}`}
-                    >
-                      <span aria-hidden="true" className="mr-1.5 font-mono text-[9px] text-gold/80">
-                        {pad(i + 1)}
-                      </span>
-                      {t.nav[id]}
-                      {/* Faol belgi: pastdan chiziq — pill o‘rniga */}
-                      <span
-                        aria-hidden="true"
-                        className={`absolute inset-x-3 -bottom-px h-[2px] origin-left bg-gold transition-transform duration-500 ${
-                          isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                        }`}
-                      />
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
 
           <div className="flex items-center gap-2">
             <div
@@ -169,7 +133,6 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
           </div>
         </div>
 
-        <div data-progress className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gold" style={{ transform: 'scaleX(0)' }} />
       </header>
 
       {/* Desktop: chap tomonda vertikal rels — yuqoridan pastga: logotip, bo‘limlar, til, aloqa */}

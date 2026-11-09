@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { T, type Lang } from './i18n'
-import { CAPACITY_PCT } from './constants'
 import { fmt } from './format'
 import { Header } from './ui/Header'
 import { Lightbox, type ZoomState } from './ui/Lightbox'
@@ -108,29 +107,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
           })
         })
 
-        // Bay taxtasi va sig‘im chizig‘i (yashirilgan bo‘lsa ham xavfsiz)
-        gsap.from('[data-bay]', {
-          scale: 0.7,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: 'back.out(2)',
-          scrollTrigger: { trigger: '[data-board]', start: 'top 85%' },
-        })
-        q<HTMLElement>('[data-live]').forEach((el, i) =>
-          gsap.to(el, { opacity: 0.2, duration: 0.8, repeat: -1, yoyo: true, delay: i * 0.2, ease: 'sine.inOut' }),
-        )
-        gsap.fromTo(
-          '[data-capacity]',
-          { scaleX: 0 },
-          {
-            scaleX: CAPACITY_PCT / 100,
-            duration: 1.6,
-            ease: 'power3.out',
-            transformOrigin: 'left center',
-            scrollTrigger: { trigger: '[data-capacity]', start: 'top 85%' },
-          },
-        )
       }
 
       // CTA: kursorga tortiladigan magnit effekti (faqat sichqoncha bilan)

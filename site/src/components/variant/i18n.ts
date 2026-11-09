@@ -19,8 +19,6 @@ const uz = {
     menu: 'Menyu',
     lang: 'Til',
     cta: 'Aloqa',
-    scroll: 'Pastga aylantiring ↓',
-    hint: 'Surib ko‘ring →',
     enlarge: 'Kattalashtirish',
     zoomIn: 'Yaqinlashtirish',
     zoomOut: 'Kichraytirish',
@@ -28,7 +26,6 @@ const uz = {
     call: 'Qo‘ng‘iroq qilish',
     download: 'Yuklab olish',
     fullView: 'To‘liq ko‘rish',
-    map: 'Xarita',
     openMap: 'Yandex Xaritada ochish',
   },
   hero: {
@@ -37,13 +34,6 @@ const uz = {
     cta1: 'Tariflarni ko‘rish',
     cta2: 'Bog‘lanish',
   },
-  beats: [
-    { title: 'Yuk keldi', text: 'Bojxona yuki darvozadan kiradi va rasmiy ro‘yxatga olinadi.' },
-    { title: 'Forklift yukni oldi', text: 'Malakali operator yukni xavfsiz ilib, yo‘lak bo‘ylab olib boradi.' },
-    { title: 'Skladga joylashtirildi', text: 'Yuk belgilangan bay (katak)ga aniq va xavfsiz joylashtiriladi.' },
-    { title: 'Saqlandi', text: 'Yuk nazorat ostida saqlanadi va hujjat bilan tasdiqlanadi.' },
-  ],
-  stamp: { main: 'TASDIQLANDI', sub: 'BOJXONA OMBORI' },
   gate: { type: 'Kirish nazorati', name: 'Kirish majmuasi' },
   sections: {
     services: { kicker: 'Nima qilamiz', title: 'Xizmatlar' },
@@ -61,14 +51,6 @@ const uz = {
   },
   tariffsLabel: 'Tariflar',
   stats: { area: 'm² maydon', capacity: 'tonna sig‘im', years: 'yil faoliyat' },
-  board: {
-    title: 'Jonli holat (namuna)',
-    occupancy: 'Bandlik',
-    total: 'Umumiy sig‘im bandligi',
-    free: 'Bo‘sh',
-    busy: 'Band',
-    full: 'To‘lgan',
-  },
   contact: { address: 'Manzil', phone: 'Telefon', email: 'Email', hours: 'Ish vaqti', license: 'Litsenziya' },
   mapTitle: 'Xarita',
 }
@@ -90,8 +72,6 @@ const ru: Dict = {
     menu: 'Меню',
     lang: 'Язык',
     cta: 'Связаться',
-    scroll: 'Прокрутите вниз ↓',
-    hint: 'Листайте →',
     enlarge: 'Увеличить',
     zoomIn: 'Приблизить',
     zoomOut: 'Отдалить',
@@ -99,7 +79,6 @@ const ru: Dict = {
     call: 'Позвонить',
     download: 'Скачать',
     fullView: 'Открыть полностью',
-    map: 'Карта',
     openMap: 'Открыть в Яндекс Картах',
   },
   hero: {
@@ -108,13 +87,6 @@ const ru: Dict = {
     cta1: 'Смотреть тарифы',
     cta2: 'Связаться',
   },
-  beats: [
-    { title: 'Груз прибыл', text: 'Таможенный груз проходит через ворота и официально регистрируется.' },
-    { title: 'Погрузчик забрал груз', text: 'Опытный оператор безопасно поднимает груз и перевозит его по проходу.' },
-    { title: 'Размещение на складе', text: 'Груз точно и безопасно устанавливается в назначенную ячейку.' },
-    { title: 'Хранение', text: 'Груз хранится под контролем и подтверждается документально.' },
-  ],
-  stamp: { main: 'ПОДТВЕРЖДЕНО', sub: 'ТАМОЖЕННЫЙ СКЛАД' },
   gate: { type: 'Контрольно-пропускной пункт', name: 'Въездная группа' },
   sections: {
     services: { kicker: 'Что мы делаем', title: 'Услуги' },
@@ -132,14 +104,6 @@ const ru: Dict = {
   },
   tariffsLabel: 'Тарифы',
   stats: { area: 'м² площади', capacity: 'тонн вместимости', years: 'лет работы' },
-  board: {
-    title: 'Оперативный статус (пример)',
-    occupancy: 'Заполненность',
-    total: 'Общая заполненность',
-    free: 'Свободно',
-    busy: 'Занято',
-    full: 'Заполнен',
-  },
   contact: { address: 'Адрес', phone: 'Телефон', email: 'Email', hours: 'Часы работы', license: 'Лицензия' },
   mapTitle: 'Карта',
 }
@@ -159,8 +123,6 @@ const en: Dict = {
     menu: 'Menu',
     lang: 'Language',
     cta: 'Contact',
-    scroll: 'Scroll down ↓',
-    hint: 'Scroll sideways →',
     enlarge: 'Enlarge',
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
@@ -168,7 +130,6 @@ const en: Dict = {
     call: 'Call us',
     download: 'Download',
     fullView: 'View full size',
-    map: 'Map',
     openMap: 'Open in Yandex Maps',
   },
   hero: {
@@ -177,13 +138,6 @@ const en: Dict = {
     cta1: 'View tariffs',
     cta2: 'Get in touch',
   },
-  beats: [
-    { title: 'Cargo arrives', text: 'Customs cargo passes the gate and is officially registered.' },
-    { title: 'Forklift picks it up', text: 'An experienced operator lifts the cargo safely and moves it along the aisle.' },
-    { title: 'Placed in the warehouse', text: 'The cargo is precisely and safely placed in its assigned bay.' },
-    { title: 'Stored under control', text: 'The cargo is kept under supervision and confirmed with documents.' },
-  ],
-  stamp: { main: 'CONFIRMED', sub: 'CUSTOMS WAREHOUSE' },
   gate: { type: 'Access control', name: 'Entrance complex' },
   sections: {
     services: { kicker: 'What we do', title: 'Services' },
@@ -201,14 +155,6 @@ const en: Dict = {
   },
   tariffsLabel: 'Tariffs',
   stats: { area: 'm² area', capacity: 'tonnes capacity', years: 'years in operation' },
-  board: {
-    title: 'Live status (sample)',
-    occupancy: 'Occupancy',
-    total: 'Overall occupancy',
-    free: 'Free',
-    busy: 'Occupied',
-    full: 'Full',
-  },
   contact: { address: 'Address', phone: 'Phone', email: 'Email', hours: 'Working hours', license: 'License' },
   mapTitle: 'Map',
 }

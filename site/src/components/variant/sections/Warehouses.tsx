@@ -5,7 +5,6 @@ import { BASE } from '../base'
 import { GALLERY_SPAN } from '../constants'
 import { fmt, pad } from '../format'
 import { SectionHead } from '../ui/SectionHead'
-import { LiveStatus } from './LiveStatus'
 
 type L = { uz: string; ru: string; en: string }
 type Card = { image: string; name: L; type: L; area?: number; span: string }
@@ -109,10 +108,6 @@ export function Warehouses({
           ))}
         </div>
 
-        {/* Vaqtincha yashirilgan: qayta ko‘rsatish uchun "hidden" ni olib tashlang */}
-        <div className="hidden">
-          <LiveStatus t={t} />
-        </div>
       </div>
     </section>
   )

@@ -7,7 +7,6 @@ Texnologiyalar:
 - **GSAP + ScrollTrigger** — animatsiyalar (hero, statistika, omborlar lentasi)
 - **Lenis** — silliq scroll
 - **next-intl** — uz / ru / en
-- **Three.js / React Three Fiber** — hero'dagi 3D sahna
 - **Payload CMS 3** (SQLite) — kontent boshqaruvi, admin: `/admin`
 
 ## Ishga tushirish
@@ -41,7 +40,7 @@ Birinchi marta:
 | `src/lib/data.ts` | Saytga kerakli ma’lumotlarni Payload’dan o‘qish |
 | `src/lib/seed-data.ts` | Default ma’lumotlar (uz/ru/en) |
 | `messages/*.json` | Interfeys matnlari (tarjimalar) |
-| `src/components/` | UI komponentlar (Hero, HeroScene, BaysTrack, Counter, ...) |
+| `src/components/` | UI komponentlar (Hero, BaysTrack, Counter, ...; yangi sayt: `variant/`) |
 | `seed-assets/` | Default rasmlar va PDF tariflar |
 
 ## Muhim eslatmalar
