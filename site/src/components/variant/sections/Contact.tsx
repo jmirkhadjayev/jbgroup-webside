@@ -1,6 +1,7 @@
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict, Lang } from '../i18n'
 import { PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
+import { BASE } from '../base'
 import { SectionHead } from '../ui/SectionHead'
 
 // 9-bo‘lim: aloqa — ma’lumotlar paneli va xarita
@@ -28,8 +29,14 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
   ]
 
   return (
-    <section id="contact" className="relative z-10 scroll-mt-20 bg-navy px-6 py-24 text-paper md:px-16 md:py-32">
-      <div className="mx-auto max-w-[1280px]">
+    <section id="contact" className="relative z-10 scroll-mt-20 overflow-hidden bg-navy px-6 py-24 text-paper md:px-16 md:py-32">
+      {/* Fon: sklad ichki ko‘rinishi — bosh sahifadagidek juda shaffof */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.16]"
+        style={{ backgroundImage: `url(${BASE}/images/fon-aloqa.jpg)` }}
+      />
+      <div className="relative mx-auto max-w-[1280px]">
         <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
         <div data-reveal className="grid overflow-hidden rounded-3xl border border-paper/10 bg-navy-2/50 md:grid-cols-12">
           <div className="p-6 md:col-span-5 md:p-10">
