@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict } from '../i18n'
 import { LOGO } from '../constants'
+import { BASE } from '../base'
 import { fmt } from '../format'
 
 // 1-bo‘lim: hero — sarlavha, tavsif, tugmalar, raqamlar panel
@@ -21,6 +22,32 @@ export function Hero({ t }: { t: Dict }) {
         <span aria-hidden="true" className="glass-sheen" />
         <div className="relative">
           <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-20 w-auto" />
+        </div>
+      </div>
+
+      {/* O‘ng tomon — sklad fotosi shisha ramkada, pastida jonli holat yorlig‘i */}
+      <div
+        data-fade
+        className="glass absolute bottom-14 right-6 top-72 hidden w-[min(38vw,520px)] p-2 md:block md:bottom-20 md:right-16"
+      >
+        <span aria-hidden="true" className="glass-sheen" />
+        <div className="relative h-full w-full overflow-hidden rounded-[1.25rem]">
+          <Image
+            src={`${BASE}/images/ombor-3.png`}
+            alt={t.tagline}
+            fill
+            priority
+            sizes="(min-width: 768px) 38vw, 0px"
+            className="object-cover"
+          />
+          <div className="glass absolute bottom-4 left-4 right-4 flex items-center gap-2.5 rounded-full px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-gold">
+            <span aria-hidden="true" className="glass-sheen" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-gold" />
+            </span>
+            <span className="relative">{t.tagline}</span>
+          </div>
         </div>
       </div>
 
