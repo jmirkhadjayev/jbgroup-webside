@@ -17,7 +17,7 @@ export function Hero({ t }: { t: Dict }) {
       {/* Fon: sklad ichki ko‘rinishi — juda shaffof */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.08]"
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.16]"
         style={{ backgroundImage: `url(${BASE}/images/fon-ombor.jpg)` }}
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
