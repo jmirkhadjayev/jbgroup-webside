@@ -181,7 +181,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
         <nav aria-label="Asosiy" className="flex items-center">
           <ul className="flex flex-col items-center gap-8">
-            {NAV_IDS.map((id, i) => {
+            {NAV_IDS.map((id) => {
               const isActive = active === id
               return (
                 <li key={id}>
@@ -192,14 +192,6 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
                       isActive ? 'text-gold' : 'text-paper/55 hover:text-paper'
                     }`}
                   >
-                    <span
-                      aria-hidden="true"
-                      className={`rounded-full px-1.5 py-0.5 font-mono text-[9px] tracking-[0.1em] transition-colors duration-300 ${
-                        isActive ? 'bg-gold text-navy' : ''
-                      }`}
-                    >
-                      {pad(i + 1)}
-                    </span>
                     <span className="text-[11px] font-medium uppercase tracking-[0.22em] [writing-mode:vertical-rl] rotate-180">
                       {t.nav[id]}
                     </span>
@@ -211,14 +203,22 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
         </nav>
 
         <div className="flex flex-col items-center gap-5">
-          <div role="group" aria-label={t.ui.lang} className="flex flex-col items-center gap-1.5 font-mono text-[10px]">
+          {/* Til: vertikal "slider" — oltin tugmacha tanlangan tilga siljiydi */}
+          <div role="group" aria-label={t.ui.lang} className="relative flex w-9 flex-col rounded-full border border-paper/20 bg-paper/5 p-1">
+            <span
+              aria-hidden="true"
+              className="absolute left-1 top-1 h-7 w-7 rounded-full bg-gold shadow-[0_6px_16px_-6px_rgba(201,162,39,0.9)] transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)]"
+              style={{ transform: `translateY(${Math.max(0, LANGS.indexOf(lang)) * 28}px)` }}
+            />
             {LANGS.map((l) => (
               <button
                 key={l}
                 type="button"
                 aria-pressed={l === lang}
                 onClick={() => onLang(l)}
-                className={`transition-colors duration-300 ${l === lang ? 'text-gold' : 'text-paper/50 hover:text-paper'}`}
+                className={`relative z-10 flex h-7 w-7 items-center justify-center font-mono text-[10px] font-semibold transition-colors duration-300 ${
+                  l === lang ? 'text-navy' : 'text-paper/55 hover:text-paper'
+                }`}
               >
                 {l.toUpperCase()}
               </button>
