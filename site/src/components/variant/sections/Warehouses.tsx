@@ -7,6 +7,30 @@ import { fmt, pad } from '../format'
 import { SectionHead } from '../ui/SectionHead'
 import { LiveStatus } from './LiveStatus'
 
+type L = { uz: string; ru: string; en: string }
+type Card = { image: string; name: L; type: L; area?: number; span: string }
+
+// Stellaj qatorlari fotolari — ombor galereyasi oxirida, to‘liq kenglikda (maydon ma’lum emas, ko‘rsatilmaydi)
+const RACK_CARDS: Card[] = [
+  {
+    image: 'ombor-a-qator.png',
+    name: { uz: 'A. Stellaj yo‘laklari (A1–A6)', ru: 'A. Стеллажные ряды (A1–A6)', en: 'A. Racking aisles (A1–A6)' },
+    type: { uz: 'Stellaj tizimi', ru: 'Стеллажная система', en: 'Racking system' },
+    span: 'lg:col-span-2',
+  },
+  {
+    image: 'ombor-b-qator.png',
+    name: { uz: 'B. Stellaj yo‘laklari (B2–B6)', ru: 'B. Стеллажные ряды (B2–B6)', en: 'B. Racking aisles (B2–B6)' },
+    type: { uz: 'Stellaj tizimi', ru: 'Стеллажная система', en: 'Racking system' },
+    span: 'lg:col-span-2',
+  },
+]
+
+const CARDS: Card[] = [
+  ...seedWarehouses.map((w, i) => ({ ...w, span: GALLERY_SPAN[i] ?? '' })),
+  ...RACK_CARDS,
+]
+
 // 5-bo‘lim: ombor galereyasi. Kartani bosganda to‘liq ekranda kattalashadi (openZoom).
 export function Warehouses({
   lang,
@@ -47,11 +71,11 @@ export function Warehouses({
             </figcaption>
           </figure>
 
-          {seedWarehouses.map((w, i) => (
+          {CARDS.map((w, i) => (
             <figure
-              key={w.name.uz}
+              key={w.image}
               data-reveal
-              className={`group relative overflow-hidden rounded-3xl bg-navy ${GALLERY_SPAN[i] ?? ''}`}
+              className={`group relative overflow-hidden rounded-3xl bg-navy ${w.span}`}
             >
               <button
                 type="button"
@@ -78,7 +102,7 @@ export function Warehouses({
                   >
                     {w.name[lang]}
                   </h3>
-                  <p className="shrink-0 font-mono text-sm text-paper/85">{fmt(w.area)} m²</p>
+                  {w.area !== undefined && <p className="shrink-0 font-mono text-sm text-paper/85">{fmt(w.area)} m²</p>}
                 </div>
               </figcaption>
             </figure>
