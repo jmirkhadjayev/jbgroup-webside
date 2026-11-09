@@ -281,19 +281,6 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
             </li>
           ))}
         </ul>
-        <div role="group" aria-label={t.ui.lang} className="mt-auto flex gap-6 font-mono text-[12px] tracking-[0.14em]">
-          {LANGS.map((l) => (
-            <button
-              key={l}
-              type="button"
-              aria-pressed={l === lang}
-              onClick={() => onLang(l)}
-              className={`transition-colors duration-300 ${l === lang ? 'text-gold' : 'text-paper/45 hover:text-paper'}`}
-            >
-              {l.toUpperCase()}
-            </button>
-          ))}
-        </div>
       </div>
     </>
   )
