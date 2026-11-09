@@ -236,9 +236,9 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
       {/* Mobil menyu: doira shaklida ochiladi (clip-path), bo‘limlar chapdan siljib chiqadi */}
       <div
         aria-hidden={!open}
-        className="fixed inset-0 z-40 flex flex-col overflow-hidden bg-navy px-6 pb-10 pt-28 text-paper lg:hidden"
+        className="fixed inset-x-0 top-0 z-40 flex h-[75svh] flex-col overflow-hidden rounded-b-[2rem] bg-navy px-6 pb-8 pt-28 text-paper shadow-2xl lg:hidden"
         style={{
-          clipPath: open ? 'circle(150% at calc(100% - 2.5rem) 2.5rem)' : 'circle(0% at calc(100% - 2.5rem) 2.5rem)',
+          clipPath: open ? 'inset(0 0 0 0 round 0 0 2rem 2rem)' : 'inset(0 0 100% 0 round 0 0 2rem 2rem)',
           visibility: open ? 'visible' : 'hidden',
           transition: `clip-path 700ms cubic-bezier(.7,0,.2,1), visibility 0s linear ${open ? 0 : 700}ms`,
         }}
