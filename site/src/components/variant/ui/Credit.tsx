@@ -1,19 +1,18 @@
-// Muallif belgisi: bitta qator, nuqta bilan; nom sichqoncha ustida oltinga o‘tadi
+// Muallif belgisi: ikki qator — "created by" kichik, muallif nomi pastda; sichqoncha ustida oltinga o‘tadi
 export function Credit() {
   return (
     <a
       href="http://mirkhadjayev.uz/"
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 font-mono text-[13px] text-paper/60 no-underline"
+      className="group inline-flex flex-col items-end font-mono no-underline"
     >
-      <span aria-hidden="true" className="text-gold">
-        ·
-      </span>
-      <span className="text-paper/50">created by</span>
-      <span className="transition-colors duration-500 group-hover:text-gold">jmirkhadjayev</span>
-      <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
-        ↗
+      <span className="text-[10px] tracking-[0.04em] text-paper/50">created by</span>
+      <span className="flex items-center gap-1.5 text-[13px] text-paper/70 transition-colors duration-500 group-hover:text-gold">
+        jmirkhadjayev
+        <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
+          ↗
+        </span>
       </span>
     </a>
   )
