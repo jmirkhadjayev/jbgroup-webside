@@ -80,7 +80,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
                 return (
                   <li key={id} className="flex-1 text-center">
                     <a
-                      href={`#${id}`}
+                      href={id === 'about' ? '#top' : `#${id}`}
                       aria-current={isActive ? 'true' : undefined}
                       className={`group relative block whitespace-nowrap px-3 py-2 font-sans text-[12px] font-medium uppercase tracking-[0.06em] no-underline transition-colors duration-300 ${style}`}
                     >
@@ -186,7 +186,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
               return (
                 <li key={id}>
                   <a
-                    href={`#${id}`}
+                    href={id === 'about' ? '#top' : `#${id}`}
                     aria-current={isActive ? 'true' : undefined}
                     className={`flex flex-col items-center gap-4 no-underline transition-colors duration-300 ${
                       isActive ? 'text-gold' : 'text-paper/55 hover:text-paper'
@@ -249,7 +249,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
               style={{ transitionDelay: open ? `${i * 60 + 120}ms` : '0ms' }}
             >
               <a
-                href={`#${id}`}
+                href={id === 'about' ? '#top' : `#${id}`}
                 onClick={() => setOpen(false)}
                 className="flex items-baseline gap-4 rounded-2xl px-2 py-3 font-sans text-3xl font-semibold tracking-[-0.03em] no-underline transition-colors hover:bg-paper/5"
               >
