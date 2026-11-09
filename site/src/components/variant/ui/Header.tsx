@@ -106,7 +106,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
             <div
               role="group"
               aria-label={t.ui.lang}
-              className={`hidden items-center rounded-full p-0.5 text-[10px] font-semibold transition-colors duration-500 sm:flex ${
+              className={`flex items-center rounded-full p-0.5 text-[10px] font-semibold transition-colors duration-500 ${
                 scrolled ? 'bg-navy/5' : 'bg-paper/10'
               }`}
             >
