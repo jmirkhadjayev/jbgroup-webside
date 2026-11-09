@@ -1,5 +1,5 @@
-import type { Dict } from '../i18n'
-import { Credit } from '../ui/Credit'
+import type { Dict } from '@/components/variant/i18n'
+import { Credit } from '@/components/variant/ui/Credit'
 
 // Footer: faqat huquqlar va muallif belgisi (logotip va aloqa ma’lumoti Aloqa bo‘limiga ko‘chirildi)
 export function Footer({ t }: { t: Dict }) {

@@ -1,3 +1,4 @@
+import { Credit } from '../ui/Credit'
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict, Lang } from '../i18n'
 import { PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
@@ -75,6 +76,13 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
           </div>
         </div>
 
+        {/* Pastki chiziq: huquqlar va muallif — ixcham, bitta qatorda */}
+        <div data-reveal className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-dashed border-paper/15 pt-5 md:flex-row">
+          <p className="font-mono text-[10px] tracking-[0.06em] text-paper/45">
+            © {new Date().getFullYear()} JB GROUP. {t.rights}
+          </p>
+          <Credit />
+        </div>
       </div>
     </section>
   )

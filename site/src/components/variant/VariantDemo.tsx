@@ -15,7 +15,6 @@ import { Metrics } from './sections/Metrics'
 import { Team } from './sections/Team'
 import { Documents } from './sections/Documents'
 import { Contact } from './sections/Contact'
-import { Footer } from './sections/Footer'
 
 
 // Sahifa: bo‘limlar. Holat (til, kattalashtirish) va GSAP animatsiyalari shu yerda.
@@ -178,7 +177,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
         <Lightbox zoom={zoom} zoomed={zoomed} onClose={() => setZoom(null)} onToggleZoom={() => setZoomed((z) => !z)} t={t} />
       )}
 
-      <Footer t={t} />
     </div>
   )
 }
