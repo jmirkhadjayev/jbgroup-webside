@@ -51,7 +51,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
   return (
     <>
-      <header className="sticky top-0 z-50 px-3 pt-2 md:px-6 md:pt-3">
+      <header className="sticky top-0 z-50 px-3 pt-2 md:px-6 md:pt-3 lg:hidden">
         <div
           className={`mx-auto flex max-w-[1240px] items-center justify-between gap-4 rounded-[28px_10px_28px_10px] border py-1.5 pl-2.5 pr-1.5 backdrop-blur-xl transition-all duration-500 md:pl-3 ${panel}`}
         >
@@ -172,6 +172,67 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
         <div data-progress className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gold" style={{ transform: 'scaleX(0)' }} />
       </header>
+
+      {/* Desktop: chap tomonda vertikal rels — yuqoridan pastga: logotip, bo‘limlar, til, aloqa */}
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-20 flex-col items-center justify-between border-r border-gold/25 bg-navy/95 py-7 text-paper backdrop-blur-xl lg:flex">
+        <a href="#top" aria-label="JB GROUP" className="block">
+          <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-9 w-auto" />
+        </a>
+
+        <nav aria-label="Asosiy" className="flex items-center">
+          <ul className="flex flex-col items-center gap-8">
+            {NAV_IDS.map((id, i) => {
+              const isActive = active === id
+              return (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    aria-current={isActive ? 'true' : undefined}
+                    className={`flex flex-col items-center gap-4 no-underline transition-colors duration-300 ${
+                      isActive ? 'text-gold' : 'text-paper/55 hover:text-paper'
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`rounded-full px-1.5 py-0.5 font-mono text-[9px] tracking-[0.1em] transition-colors duration-300 ${
+                        isActive ? 'bg-gold text-navy' : ''
+                      }`}
+                    >
+                      {pad(i + 1)}
+                    </span>
+                    <span className="text-[11px] font-medium uppercase tracking-[0.22em] [writing-mode:vertical-rl] rotate-180">
+                      {t.nav[id]}
+                    </span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+
+        <div className="flex flex-col items-center gap-5">
+          <div role="group" aria-label={t.ui.lang} className="flex flex-col items-center gap-1.5 font-mono text-[10px]">
+            {LANGS.map((l) => (
+              <button
+                key={l}
+                type="button"
+                aria-pressed={l === lang}
+                onClick={() => onLang(l)}
+                className={`transition-colors duration-300 ${l === lang ? 'text-gold' : 'text-paper/50 hover:text-paper'}`}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <a
+            href="#contact"
+            aria-label={t.ui.cta}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-gold text-lg text-navy no-underline transition-transform duration-500 hover:rotate-[135deg]"
+          >
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
 
       {/* Mobil menyu: to‘liq ekran, raqamli linklar ketma-ket chiqadi */}
       <div
