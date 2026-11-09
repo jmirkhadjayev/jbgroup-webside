@@ -1,6 +1,7 @@
+import Image from 'next/image'
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict, Lang } from '../i18n'
-import { PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
+import { LOGO, PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
 import { BASE } from '../base'
 import { SectionHead } from '../ui/SectionHead'
 
@@ -73,6 +74,25 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
               {t.ui.openMap}
             </a>
           </div>
+        </div>
+
+        {/* Imzo qatori: logotip, telefon va email — katta serif, sichqoncha ustida oltinga o‘tadi */}
+        <div data-reveal className="mt-14 grid gap-8 border-t border-paper/15 pt-10 md:grid-cols-[auto_1fr_auto] md:items-end">
+          <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-14 w-auto" />
+          <div className="grid gap-3 md:justify-items-center">
+            <a
+              href={PHONE_HREF}
+              className="font-serif text-[clamp(1.8rem,3.6vw,3rem)] leading-none tracking-[-0.02em] text-paper no-underline transition-colors duration-300 hover:text-gold"
+            >
+              {seedSettings.phone}
+            </a>
+          </div>
+          <a
+            href={`mailto:${seedSettings.email}`}
+            className="font-serif text-xl leading-none text-paper/80 no-underline transition-colors duration-300 hover:text-gold md:justify-self-end"
+          >
+            {seedSettings.email}
+          </a>
         </div>
       </div>
     </section>
