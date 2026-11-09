@@ -3,6 +3,7 @@ import { seedSettings } from '@/lib/seed-data'
 import type { Dict, Lang } from '../i18n'
 import { PHONE_HREF, YANDEX_MAP_SRC, YANDEX_PIN } from '../constants'
 import { BASE } from '../base'
+import { pad } from '../format'
 import { SectionHead } from '../ui/SectionHead'
 
 // 9-bo‘lim: aloqa — ma’lumotlar paneli va xarita
@@ -41,20 +42,29 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
         <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
         <div data-reveal className="grid overflow-hidden rounded-3xl border border-paper/10 bg-navy-2/50 md:grid-cols-12">
           <div className="p-6 md:col-span-5 md:p-10">
-            <dl className="divide-y divide-paper/10">
-              {contactRows.map((r) => (
-                <div key={r.label} className="grid grid-cols-[6.5rem_1fr] gap-4 py-4">
-                  <dt className="pt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{r.label}</dt>
-                  <dd className="text-[15px] leading-relaxed">{r.value}</dd>
+            <dl className="flex flex-col">
+              {contactRows.map((r, i) => (
+                <div key={r.label} className="grid gap-2 border-t border-paper/10 py-5 first:border-t-0 first:pt-0">
+                  <dt className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-gold">
+                    <span className="text-paper/35">{pad(i + 1)}</span>
+                    {r.label}
+                  </dt>
+                  <dd className="font-serif text-xl leading-snug md:text-2xl">{r.value}</dd>
                 </div>
               ))}
             </dl>
             <a
               data-magnet
               href={PHONE_HREF}
-              className="mt-8 inline-flex h-12 items-center rounded-full bg-gold px-7 text-sm font-semibold text-navy no-underline transition-colors duration-300 hover:bg-paper"
+              className="group mt-10 inline-flex h-14 items-center gap-5 rounded-full bg-gold pl-7 pr-2 text-sm font-semibold text-navy no-underline transition-colors duration-300 hover:bg-paper"
             >
               {t.ui.call}
+              <span
+                aria-hidden="true"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-navy text-paper transition-transform duration-500 group-hover:rotate-45"
+              >
+                →
+              </span>
             </a>
           </div>
           <div className="relative min-h-[360px] md:col-span-7">
