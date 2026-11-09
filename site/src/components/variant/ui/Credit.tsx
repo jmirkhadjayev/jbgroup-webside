@@ -8,7 +8,7 @@ export function Credit() {
       className="group inline-flex flex-col items-end font-mono no-underline"
     >
       <span className="text-[10px] tracking-[0.04em] text-paper/50">created by</span>
-      <span className="flex items-center gap-1.5 text-[13px] text-paper/70 transition-colors duration-500 group-hover:text-gold">
+      <span className="flex items-center gap-1.5 text-[13px] font-semibold text-gold transition-colors duration-500 group-hover:text-paper">
         jmirkhadjayev
         <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
           ↗
