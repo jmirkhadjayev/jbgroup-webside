@@ -34,7 +34,7 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.16]"
-        style={{ backgroundImage: `url(${BASE}/images/fon-aloqa.jpg)` }}
+        style={{ backgroundImage: `url(${BASE}/images/fon-ombor.jpg)` }}
       />
       <div className="relative mx-auto max-w-[1280px]">
         <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
