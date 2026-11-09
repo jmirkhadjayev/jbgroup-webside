@@ -233,41 +233,47 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
         </div>
       </aside>
 
-      {/* Mobil menyu: doira shaklida ochiladi (clip-path), bo‘limlar chapdan siljib chiqadi */}
+      {/* Mobil menyu: to‘liq ekran, doira shaklida ochiladi; bo‘limlar satr ichidan ko‘tarilib chiqadi */}
       <div
         aria-hidden={!open}
-        className="fixed inset-x-0 top-0 z-40 flex h-[75svh] flex-col overflow-hidden rounded-b-[2rem] bg-navy px-6 pb-8 pt-28 text-paper shadow-2xl lg:hidden"
+        className="fixed inset-0 z-40 flex flex-col overflow-hidden bg-navy px-6 pb-10 pt-28 text-paper lg:hidden"
         style={{
-          clipPath: open ? 'inset(0 0 0 0 round 0 0 2rem 2rem)' : 'inset(0 0 100% 0 round 0 0 2rem 2rem)',
+          clipPath: open ? 'circle(150% at calc(100% - 2.5rem) 2.5rem)' : 'circle(0% at calc(100% - 2.5rem) 2.5rem)',
           visibility: open ? 'visible' : 'hidden',
-          transition: `clip-path 700ms cubic-bezier(.7,0,.2,1), visibility 0s linear ${open ? 0 : 700}ms`,
+          transition: `clip-path 800ms cubic-bezier(.7,0,.2,1), visibility 0s linear ${open ? 0 : 800}ms`,
         }}
       >
         <span
           aria-hidden="true"
-          className={`mb-2 block h-px w-full origin-left bg-gold transition-transform duration-700 ease-out ${
+          className={`mb-3 block h-px w-full origin-left bg-gold transition-transform duration-900 ease-out ${
             open ? 'scale-x-100' : 'scale-x-0'
           }`}
-          style={{ transitionDelay: open ? '180ms' : '0ms' }}
+          style={{ transitionDelay: open ? '200ms' : '0ms', transitionDuration: '900ms' }}
         />
         <ul>
           {NAV_IDS.map((id, i) => (
-            <li
-              key={id}
-              className={`transition-all duration-700 ease-out ${
-                open ? 'translate-x-0 opacity-100 blur-0' : '-translate-x-6 opacity-0 blur-sm'
-              }`}
-              style={{ transitionDelay: open ? `${260 + i * 70}ms` : '0ms' }}
-            >
+            <li key={id} className={`overflow-hidden ${i % 2 === 1 ? 'pl-10' : ''}`}>
               <a
                 href={id === 'about' ? '#top' : `#${id}`}
                 onClick={() => setOpen(false)}
-                className="group flex items-center justify-between border-b border-paper/10 py-4 font-sans text-[22px] font-medium tracking-[-0.01em] no-underline transition-colors duration-300 hover:text-gold"
+                className="group flex items-center justify-between gap-4 border-b border-paper/10 py-3 no-underline"
               >
-                {t.nav[id]}
+                <span className="block overflow-hidden">
+                  <span
+                    className={`block font-serif text-[clamp(1.9rem,8vw,2.6rem)] leading-tight transition-[transform,color] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:italic group-hover:text-gold ${
+                      open ? 'translate-y-0' : 'translate-y-full'
+                    }`}
+                    style={{ transitionDelay: open ? `${280 + i * 80}ms` : '0ms' }}
+                  >
+                    {t.nav[id]}
+                  </span>
+                </span>
                 <span
                   aria-hidden="true"
-                  className="text-gold opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                  className={`text-xl text-gold transition-all duration-500 group-hover:translate-x-1 ${
+                    open ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  style={{ transitionDelay: open ? `${420 + i * 80}ms` : '0ms' }}
                 >
                   →
                 </span>
