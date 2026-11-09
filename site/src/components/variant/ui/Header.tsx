@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { LANGS, type Dict, type Lang } from '../i18n'
 import { LOGO, NAV_IDS, PHONE_HREF } from '../constants'
+import { BASE } from '../base'
 import { pad } from '../format'
 import { seedSettings } from '@/lib/seed-data'
 
@@ -174,12 +175,22 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
       </header>
 
       {/* Desktop: chap tomonda vertikal rels — yuqoridan pastga: logotip, bo‘limlar, til, aloqa */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-20 flex-col items-center justify-between border-r border-gold/25 bg-navy/95 py-7 text-paper backdrop-blur-xl lg:flex">
-        <a href="#top" aria-label="JB GROUP" className="block">
+      <aside className="fixed left-3 top-1/2 z-50 hidden h-[min(600px,calc(100svh-2rem))] w-20 -translate-y-1/2 flex-col items-center justify-between overflow-hidden rounded-[2.5rem] border border-white/25 bg-navy/45 py-7 text-paper shadow-[inset_0_1px_1px_rgba(255,255,255,0.45),inset_0_-12px_24px_rgba(255,255,255,0.06),0_24px_60px_-20px_rgba(11,37,69,0.6)] backdrop-blur-2xl backdrop-saturate-150 lg:flex">
+        {/* Suyuq shisha yorug‘ligi: ikki yumshoq porlash qatlami */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-[radial-gradient(120%_55%_at_25%_0%,rgba(255,255,255,0.35),transparent_60%),radial-gradient(90%_50%_at_100%_100%,rgba(201,162,39,0.22),transparent_65%)]"
+        />
+
+        <a
+          href={lang === 'en' ? `${BASE}/en` : `${BASE}/`}
+          aria-label="JB GROUP — bosh sahifa"
+          className="relative flex items-center justify-center rounded-2xl px-2 py-1 transition-transform duration-500 hover:scale-110"
+        >
           <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-9 w-auto" />
         </a>
 
-        <nav aria-label="Asosiy" className="flex items-center">
+        <nav aria-label="Asosiy" className="relative flex items-center">
           <ul className="flex flex-col items-center gap-8">
             {NAV_IDS.map((id) => {
               const isActive = active === id
@@ -202,7 +213,7 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
           </ul>
         </nav>
 
-        <div className="flex flex-col items-center gap-5">
+        <div className="relative flex flex-col items-center gap-5">
           {/* Til: vertikal "slider" — oltin tugmacha tanlangan tilga siljiydi */}
           <div role="group" aria-label={t.ui.lang} className="relative flex w-9 flex-col rounded-full border border-paper/20 bg-paper/5 p-1">
             <span
