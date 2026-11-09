@@ -3,7 +3,6 @@ import { seedSettings } from '@/lib/seed-data'
 import type { Dict } from '../i18n'
 import { LOGO } from '../constants'
 import { fmt } from '../format'
-import { BayPlan } from '../ui/BayPlan'
 
 // 1-bo‘lim: hero — sarlavha, tavsif, tugmalar, raqamlar panel
 export function Hero({ t }: { t: Dict }) {
@@ -23,11 +22,6 @@ export function Hero({ t }: { t: Dict }) {
         <div className="relative">
           <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-20 w-auto" />
         </div>
-      </div>
-
-      {/* O‘ng tomon — jonli sklad xaritasi: birliklar bandligi shisha kataklarda */}
-      <div data-fade className="absolute bottom-14 right-6 hidden md:bottom-20 md:right-16 md:block">
-        <BayPlan t={t} />
       </div>
 
       <div className="relative max-w-4xl">
