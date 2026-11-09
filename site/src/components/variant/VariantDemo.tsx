@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import dynamic from 'next/dynamic'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { flow, stageOf, STAGE_STARTS } from './flow'
@@ -20,8 +19,6 @@ import { Documents } from './sections/Documents'
 import { Contact } from './sections/Contact'
 import { Footer } from './sections/Footer'
 
-// 3D sahna faqat brauzerda yuklanadi (SSR yo‘q)
-const WarehouseScene = dynamic(() => import('./WarehouseScene'), { ssr: false })
 
 // Sahifa: 3D fon + bo‘limlar. Holat (til, kattalashtirish) va GSAP animatsiyalari shu yerda.
 export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang }) {
@@ -253,11 +250,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
 
   return (
     <div ref={rootRef} className="overflow-x-clip bg-paper text-navy">
-      {/* Doimiy 3D fon: scroll bilan forklift va yuk harakatlanadi */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <WarehouseScene />
-      </div>
-
       <Header lang={lang} onLang={setLang} t={t} />
       <Hero t={t} />
       <Beats t={t} />

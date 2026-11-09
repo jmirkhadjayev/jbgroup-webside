@@ -4,7 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Edges, Sparkles } from '@react-three/drei'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
-import { flow } from './flow'
+import { flow } from '@/components/variant/flow'
 
 // Ombor yo‘lagi: forklift yukni dock’dan olib, 2-bay (Bay 02) ga joylaydi.
 // Barcha harakat `flow.p` (0..1) ga bog‘langan — scroll bilan boshqariladi.
