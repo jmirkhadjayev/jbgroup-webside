@@ -1,23 +1,19 @@
-// Muallif belgisi: ramkasiz matn; nom tagidagi oltin chiziq hover'da to‘liq ochiladi
+// Muallif belgisi: bitta qator, nuqta bilan; nom sichqoncha ustida oltinga o‘tadi
 export function Credit() {
   return (
     <a
       href="http://mirkhadjayev.uz/"
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex flex-col items-start gap-1 no-underline"
+      className="group inline-flex items-center gap-2 font-mono text-[11px] text-paper/50 no-underline"
     >
-      <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-paper/50">created by</span>
-      <span className="flex items-center gap-1.5 font-sans text-[13px] font-semibold text-gold">
-        jmirkhadjayev
-        <span aria-hidden="true" className="transition-transform duration-500 group-hover:rotate-45">
-          ↗
-        </span>
+      <span aria-hidden="true" className="text-gold">
+        ·
       </span>
-      <span
-        aria-hidden="true"
-        className="block h-px w-full origin-left scale-x-50 bg-gold transition-transform duration-700 ease-out group-hover:scale-x-100"
-      />
+      <span className="transition-colors duration-500 group-hover:text-gold">jmirkhadjayev</span>
+      <span aria-hidden="true" className="text-gold transition-transform duration-500 group-hover:rotate-45">
+        ↗
+      </span>
     </a>
   )
 }
