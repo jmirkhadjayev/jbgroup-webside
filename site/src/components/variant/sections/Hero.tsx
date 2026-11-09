@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { seedSettings } from '@/lib/seed-data'
 import type { Dict } from '../i18n'
 import { LOGO } from '../constants'
+import { BASE } from '../base'
 import { fmt } from '../format'
 
 // 1-bo‘lim: hero — sarlavha, tavsif, tugmalar, raqamlar panel
@@ -13,6 +14,12 @@ export function Hero({ t }: { t: Dict }) {
       id="top"
       className="relative z-10 flex min-h-[100svh] items-end overflow-hidden px-6 pb-14 pt-32 text-paper md:px-16 md:pb-20"
     >
+      {/* Fon: sklad ichki ko‘rinishi — juda shaffof */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-[0.08]"
+        style={{ backgroundImage: `url(${BASE}/images/fon-ombor.jpg)` }}
+      />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy via-navy/60 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy/80 to-transparent" />
 
