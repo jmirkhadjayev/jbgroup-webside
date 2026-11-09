@@ -1,14 +1,11 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Link } from '@/i18n/navigation'
 import { heroScroll } from '@/lib/scroll-store'
 
-// 3D sahna faqat brauzerda yuklanadi (SSR yo‘q)
-const HeroScene = dynamic(() => import('./HeroScene'), { ssr: false })
 
 type Props = {
   title: string
@@ -62,9 +59,6 @@ export default function Hero({ title, lede, cta1, cta2 }: Props) {
       id="top"
       className="relative isolate h-[100svh] min-h-[640px] overflow-hidden bg-navy text-paper"
     >
-      <div className="absolute inset-0 -z-10">
-        <HeroScene />
-      </div>
       {/* Matn o‘qilishi uchun chapdan qorong‘i gradient */}
       <div className="pointer-events-none absolute inset-0 -z-[5] bg-gradient-to-r from-navy via-navy/75 to-navy/10" />
 

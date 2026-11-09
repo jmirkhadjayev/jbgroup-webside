@@ -34,9 +34,9 @@ export const seedWarehouses: { image: string; area: number; name: L; type: L }[]
       en: 'A1 · 731 m²  |  A2 · 814 m²  |  A3 · 5,131 m²',
     },
   },
-  { image: 'ombor-3.jpg', area: 3120, name: { uz: 'C. Sklad', ru: 'C. Склад', en: 'C. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
-  { image: 'ombor-4.jpg', area: 3072, name: { uz: 'F. Sklad + garaj', ru: 'F. Склад + гараж', en: 'F. Warehouse + garage' }, type: { uz: 'F1 · 480 m²  |  F2 · 2 592 m²', ru: 'F1 · 480 м²  |  F2 · 2 592 м²', en: 'F1 · 480 m²  |  F2 · 2,592 m²' } },
-  { image: 'ombor-5.jpg', area: 1560, name: { uz: 'D. Sklad', ru: 'D. Склад', en: 'D. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
+  { image: 'ombor-3.png', area: 3120, name: { uz: 'C. Sklad', ru: 'C. Склад', en: 'C. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
+  { image: 'ombor-4.png', area: 3072, name: { uz: 'F. Sklad + garaj', ru: 'F. Склад + гараж', en: 'F. Warehouse + garage' }, type: { uz: 'F1 · 480 m²  |  F2 · 2 592 m²', ru: 'F1 · 480 м²  |  F2 · 2 592 м²', en: 'F1 · 480 m²  |  F2 · 2,592 m²' } },
+  { image: 'ombor-5.png', area: 1560, name: { uz: 'D. Sklad', ru: 'D. Склад', en: 'D. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
   { image: 'ombor-6.jpg', area: 1800, name: { uz: 'E. Sklad', ru: 'E. Склад', en: 'E. Warehouse' }, type: { uz: 'Umumiy sklad', ru: 'Склад', en: 'Warehouse' } },
 ]
 
