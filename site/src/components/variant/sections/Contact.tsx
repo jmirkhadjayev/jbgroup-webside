@@ -30,7 +30,7 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
   ]
 
   return (
-    <section id="contact" className="relative z-10 scroll-mt-20 overflow-hidden bg-navy px-6 py-16 text-paper md:px-16 md:py-20">
+    <section id="contact" className="relative z-10 scroll-mt-20 overflow-hidden bg-navy px-6 py-24 text-paper md:px-16 md:py-32">
       {/* Fon: sklad ichki ko‘rinishi — bosh sahifadagidek juda shaffof */}
       <div
         aria-hidden="true"
@@ -40,24 +40,24 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
       <div className="relative mx-auto max-w-[1280px]">
         <SectionHead index="06" kicker={t.sections.contact.kicker} title={t.sections.contact.title} light />
         <div data-reveal className="grid overflow-hidden rounded-3xl border border-paper/10 bg-navy-2/50 md:grid-cols-12">
-          <div className="p-5 md:col-span-5 md:p-7">
+          <div className="p-6 md:col-span-5 md:p-10">
             <dl className="divide-y divide-paper/10">
               {contactRows.map((r) => (
-                <div key={r.label} className="grid grid-cols-[5.5rem_1fr] gap-3 py-2.5">
+                <div key={r.label} className="grid grid-cols-[6.5rem_1fr] gap-4 py-4">
                   <dt className="pt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gold">{r.label}</dt>
-                  <dd className="text-sm leading-relaxed">{r.value}</dd>
+                  <dd className="text-[15px] leading-relaxed">{r.value}</dd>
                 </div>
               ))}
             </dl>
             <a
               data-magnet
               href={PHONE_HREF}
-              className="mt-5 inline-flex h-10 items-center rounded-full bg-gold px-6 text-sm font-semibold text-navy no-underline transition-colors duration-300 hover:bg-paper"
+              className="mt-8 inline-flex h-12 items-center rounded-full bg-gold px-7 text-sm font-semibold text-navy no-underline transition-colors duration-300 hover:bg-paper"
             >
               {t.ui.call}
             </a>
           </div>
-          <div className="relative min-h-[300px] md:col-span-7">
+          <div className="relative min-h-[360px] md:col-span-7">
             <iframe
               title={t.mapTitle}
               loading="lazy"
