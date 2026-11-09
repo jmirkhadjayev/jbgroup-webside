@@ -5,7 +5,7 @@ export function Credit() {
       href="http://mirkhadjayev.uz/"
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-2 font-mono text-[11px] text-paper/50 no-underline"
+      className="group inline-flex items-center gap-2 font-mono text-[13px] text-paper/60 no-underline"
     >
       <span aria-hidden="true" className="text-gold">
         ·

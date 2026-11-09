@@ -78,7 +78,7 @@ export function Contact({ lang, t }: { lang: Lang; t: Dict }) {
 
         {/* Pastki chiziq: huquqlar va muallif — ixcham, bitta qatorda */}
         <div data-reveal className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-dashed border-paper/15 pt-5 md:flex-row">
-          <p className="font-mono text-[10px] tracking-[0.06em] text-paper/45">
+          <p className="font-mono text-[12px] tracking-[0.06em] text-paper/55">
             © {new Date().getFullYear()} JB GROUP. {t.rights}
           </p>
           <Credit />
