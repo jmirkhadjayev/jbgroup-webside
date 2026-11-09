@@ -3,15 +3,13 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { flow, stageOf, STAGE_STARTS } from './flow'
 import { T, type Lang } from './i18n'
 import { CAPACITY_PCT } from './constants'
 import { fmt } from './format'
 import { Header } from './ui/Header'
 import { Lightbox, type ZoomState } from './ui/Lightbox'
 import { Hero } from './sections/Hero'
-import { Beats } from './sections/Beats'
-import { Services, Ticker } from './sections/Services'
+import { Services } from './sections/Services'
 import { Warehouses } from './sections/Warehouses'
 import { Metrics } from './sections/Metrics'
 import { Team } from './sections/Team'
@@ -20,7 +18,7 @@ import { Contact } from './sections/Contact'
 import { Footer } from './sections/Footer'
 
 
-// Sahifa: 3D fon + bo‘limlar. Holat (til, kattalashtirish) va GSAP animatsiyalari shu yerda.
+// Sahifa: bo‘limlar. Holat (til, kattalashtirish) va GSAP animatsiyalari shu yerda.
 export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [lang, setLang] = useState<Lang>(initialLang)
@@ -70,88 +68,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
           .timeline({ defaults: { ease: 'power3.out' } })
           .from('[data-hero-word] > span', { yPercent: 115, duration: 1.1, stagger: 0.08 })
           .from('[data-fade]', { y: 22, opacity: 0, duration: 0.9, stagger: 0.12 }, '-=0.7')
-      }
-
-      // 3D bosqich: yopishqoq sahna — progress matn, qadamlar va muhr bilan birga almashadi
-      const beats = root.querySelector<HTMLElement>('[data-beats]')
-      if (beats) {
-        const items = q<HTMLElement>('[data-beat]')
-        const dots = q<HTMLElement>('[data-step-dot]')
-        const stamp = root.querySelector<HTMLElement>('[data-stamp]')
-        const segs = q<HTMLElement>('[data-seg]')
-
-        const show = (idx: number) => {
-          items.forEach((el, i) => {
-            gsap.to(el, {
-              autoAlpha: i === idx ? 1 : 0,
-              y: i === idx ? 0 : i < idx ? -28 : 28,
-              duration: 0.55,
-              ease: 'power3.out',
-              overwrite: true,
-            })
-          })
-          // Faol kartadagi so‘zlar pastdan ketma-ket chiqadi
-          const words = items[idx]?.querySelectorAll('[data-word]')
-          if (words && words.length && !reduce) {
-            gsap.fromTo(
-              words,
-              { yPercent: 115 },
-              { yPercent: 0, duration: 0.9, stagger: 0.07, ease: 'power4.out', delay: 0.15, overwrite: true },
-            )
-          }
-          dots.forEach((el, i) => {
-            el.classList.toggle('text-gold', i <= idx)
-            el.classList.toggle('text-paper/40', i > idx)
-          })
-        }
-
-        // Skanerlash chizig‘i: sahna ustidan doimiy o‘tadi
-        const scan = root.querySelector<HTMLElement>('[data-scan]')
-        if (scan && !reduce) {
-          gsap.fromTo(scan, { top: '0%' }, { top: '100%', duration: 5, ease: 'none', repeat: -1 })
-        }
-
-        if (reduce) {
-          flow.p = 1
-          show(items.length - 1)
-          gsap.set('[data-progress]', { scaleX: 1 })
-          segs.forEach((sg) => gsap.set(sg, { scaleX: 1 }))
-          if (stamp) gsap.set(stamp, { autoAlpha: 1, scale: 1 })
-        } else {
-          show(0)
-          let last = -1
-          ScrollTrigger.create({
-            trigger: beats,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-            onUpdate: (self) => {
-              flow.p = self.progress
-              gsap.set('[data-progress]', { scaleX: self.progress })
-              segs.forEach((sg, k) => {
-                const lo = STAGE_STARTS[k]
-                const hi = k + 1 < STAGE_STARTS.length ? STAGE_STARTS[k + 1] : 1
-                gsap.set(sg, { scaleX: Math.min(1, Math.max(0, (self.progress - lo) / (hi - lo))) })
-              })
-              const idx = stageOf(self.progress)
-              if (idx !== last) {
-                last = idx
-                show(idx)
-              }
-              if (stamp) {
-                const done = self.progress > 0.8
-                gsap.to(stamp, {
-                  autoAlpha: done ? 1 : 0,
-                  scale: done ? 1 : 1.6,
-                  rotate: -12,
-                  duration: 0.5,
-                  ease: 'back.out(2)',
-                  overwrite: true,
-                })
-              }
-            },
-          })
-        }
       }
 
       if (!reduce) {
@@ -244,7 +160,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
     return () => {
       cleanups.forEach((fn) => fn())
       ctx.revert()
-      flow.p = 0
     }
   }, [lang])
 
@@ -252,8 +167,6 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
     <div ref={rootRef} className="overflow-x-clip bg-paper text-navy">
       <Header lang={lang} onLang={setLang} t={t} />
       <Hero t={t} />
-      <Beats t={t} />
-      <Ticker lang={lang} />
       <Services lang={lang} t={t} />
       <Warehouses lang={lang} t={t} openZoom={openZoom} />
       <Metrics t={t} />

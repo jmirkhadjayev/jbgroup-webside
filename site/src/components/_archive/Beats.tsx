@@ -1,6 +1,6 @@
-import type { Dict } from '../i18n'
-import { pad } from '../format'
-import { Stamp } from '../ui/Stamp'
+import type { Dict } from '@/components/variant/i18n'
+import { pad } from '@/components/variant/format'
+import { Stamp } from '@/components/variant/ui/Stamp'
 
 // 2-bo‘lim: yopishqoq sahna — markazda suyuq shisha karta, chap pastda telemetriya.
 // Matn, qadamlar va muhr GSAP (VariantDemo) orqali 3D progress bilan boshqariladi.
