@@ -13,7 +13,9 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
   // Scroll: panel zichlashadi, logotip kichrayadi
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -46,6 +48,30 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
   const panel = scrolled
     ? 'border-navy/10 bg-paper/80 shadow-[0_18px_40px_-20px_rgba(11,37,69,0.35)]'
     : 'border-paper/15 bg-navy/25'
+
+  // Desktop bo‘lim havolasi: hover'da oltin marker chapdan o‘ngga surtiladi
+  const renderLink = (id: (typeof NAV_IDS)[number]) => {
+    const isActive = active === id
+    return (
+      <li key={id}>
+        <a
+          href={id === 'about' ? '#top' : `#${id}`}
+          aria-current={isActive ? 'true' : undefined}
+          className={`group relative isolate block px-1 py-2 text-[12px] font-semibold uppercase tracking-[0.18em] no-underline transition-colors duration-300 ${
+            scrolled ? 'text-navy' : 'text-paper'
+          }`}
+        >
+          {t.nav[id]}
+          <span
+            aria-hidden="true"
+            className={`absolute inset-x-0 bottom-1 -z-10 h-2 origin-left bg-gold/60 transition-transform duration-500 ease-[cubic-bezier(.7,0,.2,1)] ${
+              isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+            }`}
+          />
+        </a>
+      </li>
+    )
+  }
 
   return (
     <>
@@ -135,66 +161,64 @@ export function Header({ lang, onLang, t }: { lang: Lang; onLang: (l: Lang) => v
 
       </header>
 
-      {/* Desktop: chap tomonda vertikal rels — yuqoridan pastga: logotip, bo‘limlar, til, aloqa */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-20 flex-col items-center justify-between border-r border-gold/25 bg-navy/95 py-7 text-paper backdrop-blur-xl lg:flex">
-        <a href="#top" aria-label="JB GROUP" className="block">
-          <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} className="h-9 w-auto" />
-        </a>
+      {/* Desktop: simmetrik panel — o‘rtada panel ostiga "osilgan" logotip yorlig‘i, ikki yonida bo‘limlar; hover'da oltin marker surtiladi */}
+      <header
+        className={`fixed inset-x-0 top-0 z-50 hidden transition-all duration-500 lg:block ${
+          scrolled
+            ? 'border-b border-navy/10 bg-paper/85 backdrop-blur-xl'
+            : 'border-b border-paper/10 bg-navy/20 backdrop-blur-sm'
+        }`}
+      >
+        <div className="relative mx-auto grid h-16 max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-8">
+          <ul className="flex items-center justify-start gap-9">{NAV_IDS.slice(0, 3).map(renderLink)}</ul>
 
-        <nav aria-label="Asosiy" className="flex items-center">
-          <ul className="flex flex-col items-center gap-8">
-            {NAV_IDS.map((id) => {
-              const isActive = active === id
-              return (
-                <li key={id}>
-                  <a
-                    href={id === 'about' ? '#top' : `#${id}`}
-                    aria-current={isActive ? 'true' : undefined}
-                    className={`flex flex-col items-center gap-4 no-underline transition-colors duration-300 ${
-                      isActive ? 'text-gold' : 'text-paper/55 hover:text-paper'
-                    }`}
-                  >
-                    <span className="text-[11px] font-medium uppercase tracking-[0.22em] [writing-mode:vertical-rl] rotate-180">
-                      {t.nav[id]}
-                    </span>
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
-
-        <div className="flex flex-col items-center gap-5">
-          {/* Til: vertikal "slider" — oltin tugmacha tanlangan tilga siljiydi */}
-          <div role="group" aria-label={t.ui.lang} className="relative flex w-9 flex-col rounded-full border border-paper/20 bg-paper/5 p-1">
-            <span
-              aria-hidden="true"
-              className="absolute left-1 top-1 h-7 w-7 rounded-full bg-gold shadow-[0_6px_16px_-6px_rgba(201,162,39,0.9)] transition-transform duration-500 ease-[cubic-bezier(.2,.8,.2,1)]"
-              style={{ transform: `translateY(${Math.max(0, LANGS.indexOf(lang)) * 28}px)` }}
-            />
-            {LANGS.map((l) => (
-              <button
-                key={l}
-                type="button"
-                aria-pressed={l === lang}
-                onClick={() => onLang(l)}
-                className={`relative z-10 flex h-7 w-7 items-center justify-center font-mono text-[10px] font-semibold transition-colors duration-300 ${
-                  l === lang ? 'text-navy' : 'text-paper/55 hover:text-paper'
-                }`}
-              >
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
+          {/* Osilgan logotip yorlig‘i */}
           <a
-            href="#contact"
-            aria-label={t.ui.cta}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-gold text-lg text-navy no-underline transition-transform duration-500 hover:rotate-[135deg]"
+            href="#top"
+            aria-label="JB GROUP"
+            className="relative z-10 flex h-[92px] w-44 items-center justify-center self-start rounded-b-[34px] border-x border-b-[3px] border-gold/30 border-b-gold bg-navy shadow-[0_22px_40px_-18px_rgba(11,37,69,0.7)] transition-transform duration-500 hover:translate-y-1"
           >
-            <span aria-hidden="true">→</span>
+            <Image src={LOGO.dark} alt="JB GROUP" width={LOGO.width} height={LOGO.height} priority className="h-12 w-auto" />
           </a>
+
+          <div className="flex items-center justify-end gap-9">
+            <ul className="flex items-center gap-9">{NAV_IDS.slice(3).map(renderLink)}</ul>
+
+            <div role="group" aria-label={t.ui.lang} className="flex items-center gap-1 text-[11px] font-semibold tracking-widest">
+              {LANGS.map((l) => (
+                <button
+                  key={l}
+                  type="button"
+                  aria-pressed={l === lang}
+                  onClick={() => onLang(l)}
+                  className={`rounded-full px-2 py-1 transition-all duration-300 ${
+                    l === lang
+                      ? 'bg-gold text-navy'
+                      : scrolled
+                        ? 'text-steel hover:text-navy'
+                        : 'text-paper/70 hover:text-paper'
+                  }`}
+                >
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <a
+              href="#contact"
+              className="group inline-flex h-10 items-center gap-2.5 rounded-full bg-gold pl-5 pr-1.5 font-sans text-[12px] font-bold uppercase tracking-[0.08em] text-navy no-underline transition-colors duration-500 hover:bg-navy hover:text-paper"
+            >
+              {t.ui.cta}
+              <span
+                aria-hidden="true"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-navy text-paper transition-all duration-500 group-hover:rotate-45 group-hover:bg-gold group-hover:text-navy"
+              >
+                →
+              </span>
+            </a>
+          </div>
         </div>
-      </aside>
+      </header>
 
       {/* Mobil menyu: to‘liq ekran, doira shaklida ochiladi; bo‘limlar satr ichidan ko‘tarilib chiqadi */}
       <div

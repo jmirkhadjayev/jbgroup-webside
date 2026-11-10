@@ -2,7 +2,7 @@ import { seedSettings } from '@/lib/seed-data'
 import { BASE } from './base'
 
 // Navigatsiya bo‘limlari (menyu va faol bo‘lim belgisi uchun)
-export const NAV_IDS = ['about', 'services', 'warehouses', 'admin', 'tariffs', 'contact'] as const
+export const NAV_IDS = ['about', 'services', 'warehouses', 'tariffs', 'contact'] as const
 
 export const LOGO = {
   src: `${BASE}/brand/jb-group-logo.png`, // och fonlar uchun (header)

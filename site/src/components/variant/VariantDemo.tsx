@@ -11,7 +11,7 @@ import { Hero } from './sections/Hero'
 import { Services } from './sections/Services'
 import { Warehouses } from './sections/Warehouses'
 import { Metrics } from './sections/Metrics'
-import { Team } from './sections/Team'
+// import { Team } from './sections/Team' (vaqtincha o‘chirilgan)
 import { Documents } from './sections/Documents'
 import { Contact } from './sections/Contact'
 
@@ -139,13 +139,13 @@ export default function VariantDemo({ initialLang = 'uz' }: { initialLang?: Lang
   }, [lang])
 
   return (
-    <div ref={rootRef} className="overflow-x-clip bg-paper text-navy lg:pl-20">
+    <div ref={rootRef} className="overflow-x-clip bg-paper text-navy">
       <Header lang={lang} onLang={setLang} t={t} />
       <Hero t={t} />
       <Services lang={lang} t={t} />
       <Warehouses lang={lang} t={t} openZoom={openZoom} />
       <Metrics t={t} />
-      <Team lang={lang} t={t} />
+      {/* Rahbariyat vaqtincha o‘chirilgan: <Team lang={lang} t={t} /> */}
       <Documents lang={lang} t={t} />
       <Contact lang={lang} t={t} />
 
