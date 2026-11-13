@@ -4,7 +4,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 // PAGES_BUILD=1 — GitHub Pages uchun statik eksport (Payload/server qismisiz)
 const PAGES = process.env.PAGES_BUILD === '1'
-const PAGES_BASE = '/webside-jbgroup'
+const PAGES_BASE = '/jbgroup-webside'
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
