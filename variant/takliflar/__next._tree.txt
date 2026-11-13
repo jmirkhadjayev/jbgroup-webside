@@ -1,0 +1,7 @@
+:HL["/jbgroup-webside/_next/static/chunks/232vtv8rg0jxw.css","style"]
+:HC["/",""]
+4:[["children",{"s":"__PAGE__","h":160}]]
+3:[["children",{"s":"takliflar","h":96,"c":"$Q4"}]]
+2:[["children",{"s":"variant","h":96,"c":"$Q3"}]]
+1:[["children",{"s":"(variant)","h":112,"c":"$Q2"}]]
+0:{"b":"DPXt4HB96Y8L_peZEB4Cl","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
