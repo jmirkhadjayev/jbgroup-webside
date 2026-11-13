@@ -1,0 +1,9 @@
+# Netlify: statik eksport (Next.js `output: export`) — root domenda, basePath'siz
+[build]
+  base = "site"
+  command = "npm run build:pages"
+  publish = "out"
+
+[build.environment]
+  PAGES_BASE = "root"
+  NODE_VERSION = "22"
