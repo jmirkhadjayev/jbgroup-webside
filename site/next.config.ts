@@ -1,5 +1,4 @@
 import type { NextConfig } from 'next'
-import createNextIntlPlugin from 'next-intl/plugin'
 import { withPayload } from '@payloadcms/next/withPayload'
 
 // PAGES_BUILD=1 — GitHub Pages uchun statik eksport (Payload/server qismisiz)
@@ -8,7 +7,14 @@ const PAGES = process.env.PAGES_BUILD === '1'
 const PAGES_BASE =
   process.env.PAGES_BASE === 'root' ? '' : (process.env.PAGES_BASE ?? '/jbgroup-webside')
 
-const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
+// next-intl plagini @swc/core ni yuklaydi (Cloudflare build'da native fayl keshi xato beradi),
+// statik Pages build'ga u kerak emas — shuning uchun faqat oddiy rejimda yuklanadi.
+const withNextIntl = (config: NextConfig): NextConfig => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const mod = require('next-intl/plugin')
+  const createNextIntlPlugin = mod.default ?? mod
+  return createNextIntlPlugin('./src/i18n/request.ts')(config)
+}
 
 const baseConfig: NextConfig = {
   reactStrictMode: true,
