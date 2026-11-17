@@ -6,7 +6,7 @@ type L = { uz: string; ru: string; en: string }
 export const seedSettings = {
   license: 'L-7310903462128',
   phone: '+998 93 523 53 00',
-  email: 'zulfiya1023@mail.ru',
+  email: 'jarkurganbuildgroup@gmail.com',
   mapQuery: '41.269669,69.324979',
   address: {
     uz: 'Toshkent shahri, Yashnobod tumani, Do‘stobod MFY, Maxtumquli ko‘chasi, 99-uy, 25-xona',
